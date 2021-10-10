@@ -2,4 +2,4 @@
 
 cmake -S ./ -B ./Build/
 
-bash Build/build-main.sh
+# bash Build/build-main.sh
