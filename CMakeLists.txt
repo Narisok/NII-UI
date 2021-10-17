@@ -8,8 +8,15 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 project(Main)
 
+find_package(SFML 2.5 REQUIRED graphics window system)
+set(SFML_LIBRARIES sfml-graphics sfml-window sfml-system)
+
 set(SOURCES ${SOURCES} main.cpp)
+
 add_subdirectory("${PROJECT_SOURCE_DIR}/API/Sources")
-add_executable(Main ${SOURCES})
 add_subdirectory("${PROJECT_SOURCE_DIR}/API/Includes")
+
+add_executable(Main ${SOURCES})
+
 target_include_directories(Main PUBLIC ${HEADERS})
+target_link_libraries(Main PUBLIC ${SFML_LIBRARIES})

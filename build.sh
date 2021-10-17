@@ -1,5 +1,5 @@
 #!/bin/bash
 
-cmake -S ./ -B ./Build/
+cmake -DCMAKE_BUILD_TYPE=Debug  -S ./ -B ./Build/
 
 # bash Build/build-main.sh
