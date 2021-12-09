@@ -65,35 +65,35 @@ namespace nii::util
     {
         Indents() 
             : top(0)
-            , buttom(0)
+            , bottom(0)
             , left(0)
             , right(0)
         {}
 
         Indents(T all) 
             : top(all)
-            , buttom(all)
+            , bottom(all)
             , left(all)
             , right(all)
         {}
 
-        Indents(T topButtom, T leftRight) 
-            : top(topButtom)
-            , buttom(topButtom)
+        Indents(T topBottom, T leftRight) 
+            : top(topBottom)
+            , bottom(topBottom)
             , left(leftRight)
             , right(leftRight)
         {}
 
-        Indents(T top, T leftRight, T buttom) 
+        Indents(T top, T leftRight, T bottom) 
             : top(top)
-            , buttom(buttom)
+            , bottom(bottom)
             , left(leftRight)
             , right(leftRight)
         {}
 
-        Indents(T top, T buttom, T left, T right)
+        Indents(T top, T bottom, T left, T right)
             : top(top)
-            , buttom(buttom)
+            , bottom(bottom)
             , left(left)
             , right(right)
         {}
@@ -102,14 +102,14 @@ namespace nii::util
         template<class U>
         inline Indents& operator=(const Indents<U>& other) {
             top     = static_cast<T>(other.top);
-            buttom  = static_cast<T>(other.buttom);
+            bottom  = static_cast<T>(other.bottom);
             left    = static_cast<T>(other.left);
             right   = static_cast<T>(other.right);
         }
 
 
         
-        T top, buttom, left, right;
+        T top, bottom, left, right;
     };
 
 }

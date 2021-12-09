@@ -1,11 +1,13 @@
 #pragma once
 
 #include "Primitive.hpp"
+#include "Traits.hpp"
+
 #include <SFML/Graphics/RectangleShape.hpp>
 
 namespace nii::ui
 {
-    class Border: public Primitive
+    class Border: public Primitive, public Paddingable
     {
     public:
         Border();
@@ -14,6 +16,10 @@ namespace nii::ui
         ~Border();
     
         void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+
+
+        void setBound(const IndentsFloat& bound) override;
+        IndentsFloat getBound() const override;
 
         // void setChild(Primitive* newChild);
 

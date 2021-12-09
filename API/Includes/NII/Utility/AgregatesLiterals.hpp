@@ -1,6 +1,6 @@
 #pragma once
 
-#include <NII/Utility/Agregates.hpp>
+#include "Agregates.hpp"
 
 using nii::util::Indents;
 using IndentsFloat = Indents<float>;

@@ -15,6 +15,10 @@ namespace nii::ui
     // protected:
         void redraw() override;
 
+
+        void setBound(const IndentsFloat& bound) override;
+        IndentsFloat getBound() const override;
+
     // private:
         mutable sf::RenderTexture renderer;
         Primitive *root;

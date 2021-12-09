@@ -1,4 +1,4 @@
-#include <NII/UI/Widget.hpp>
+#include "NII/UI/Widget.hpp"
 
 #include <SFML/Graphics/Sprite.hpp>
 
@@ -21,5 +21,17 @@ namespace nii::ui
 
         target.draw(sf::Sprite(renderer.getTexture()), states);
     }
+
+
+        void Widget::setBound(const IndentsFloat& bound)
+        {
+
+        }
+
+        IndentsFloat Widget::getBound() const
+        {
+            return {};
+        }
+
 
 }
