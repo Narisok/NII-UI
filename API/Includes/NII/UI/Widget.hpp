@@ -1,12 +1,12 @@
 #pragma once
 
-#include "Primitive.hpp"
+#include "Core/Primitive.hpp"
 
 #include <SFML/Graphics/RenderTexture.hpp>
 
 namespace nii::ui
 {
-    class Widget: public Primitive
+    class Widget: public core::Primitive
     {
         
     public:
@@ -15,13 +15,14 @@ namespace nii::ui
     // protected:
         void redraw() override;
 
+        void setRoot(core::Primitive* root);
 
-        void setBound(const IndentsFloat& bound) override;
-        IndentsFloat getBound() const override;
+
+        void setSize(const Vec2f& size) override;
+        Vec2f getShrinkedSize() const override;
 
     // private:
         mutable sf::RenderTexture renderer;
-        Primitive *root;
-        mutable bool needRedraw;
+        core::Primitive *root;
     };
 }

@@ -7,17 +7,13 @@
 
 namespace nii::ui
 {
-    class Border: public core::Primitive, public Paddingable
+    class Image: public core::Primitive
     {
     public:
-        Border();
-        Border(const Border& other);
-        Border(Border&& other);
-        ~Border();
-
-        void setChild(core::Primitive* child);
-
-        Vec2f getChildSize() const;
+        Image();
+        Image(const Image& other);
+        Image(Image&& other);
+        ~Image();
     
         void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
@@ -26,8 +22,9 @@ namespace nii::ui
         Vec2f getShrinkedSize() const override;
 
     // private:
-        core::Primitive* child;
         sf::RectangleShape shape;
+
+        Vec2f size;
         
     };
 }

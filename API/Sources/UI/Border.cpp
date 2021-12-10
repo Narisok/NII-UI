@@ -12,7 +12,7 @@ namespace nii::ui
      Border::Border()
         : Primitive()
         , child(nullptr)
-        , shape({150, 100})
+        , shape({100, 100})
     { 
         padding = {10, 10, 10, 10};
         cout << "Border ()" << endl; 
@@ -21,50 +21,61 @@ namespace nii::ui
     Border::Border(const Border& other)
         : Primitive()
         , child(nullptr)
-        , shape({150, 100})
+        , shape({100, 100})
     { cout << "Border cp" << endl; }
 
     Border::Border(Border&& other)
         : Primitive()
         , child(nullptr)
-        , shape({150, 100})
+        , shape({100, 100})
     { cout << "Border mv" << endl; }
 
     Border::~Border()
     { cout << "Border ~~" << endl; }
+
+    void Border::setChild(Primitive* newChild)
+    {
+        child = newChild;
+        child->setBoundSize(getChildSize());
+        child->setParent(this);
+    }
 
     void Border::draw(sf::RenderTarget& target, sf::RenderStates states) const
     {
         target.draw(shape, states);
         if(child) {
             states.transform *= shape.getTransform();
+            states.transform.translate(padding.left, padding.top);
             target.draw(*child, states);
         }
     }
 
-    void Border::setBound(const IndentsFloat& bound)
+    Vec2f Border::getChildSize() const
     {
-        shape.setPosition(bound.left, bound.top);
-        shape.setSize({bound.right - bound.left, bound.bottom - bound.top});
-
-        if (child) {
-            child->setBound({
-                bound.top + padding.top,
-                bound.bottom - padding.bottom,
-                bound.left + padding.left,
-                bound.right - padding.right,
-            });
-        }
+        auto [width, height] = shape.getSize();
+        return {
+            width - padding.left - padding.right, 
+            height - padding.top - padding.bottom
+        };
     }
 
-    IndentsFloat Border::getBound() const
+    void Border::setSize(const Vec2f& size)
     {
-        return {
-            shape.getPosition().x, 
-            shape.getPosition().y, 
-            shape.getSize().x + shape.getPosition().x, 
-            shape.getSize().y + shape.getPosition().y
-        };
+        shape.setSize({size.x, size.y});
+        if (child) {
+            child->setBoundSize(getChildSize());
+        }
+        redraw();
+    }
+
+    Vec2f Border::getShrinkedSize() const
+    {
+        if(child) {
+            auto [width, height] = child->getShrinkedSize();
+            return {width + padding.right + padding.left, height + padding.bottom + padding.top};
+        } else {
+            return {padding.right + padding.left, padding.bottom + padding.top};
+        }
     }
 
 }

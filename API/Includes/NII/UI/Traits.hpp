@@ -14,4 +14,19 @@ namespace nii::ui
     protected:
         IndentsFloat padding;
     };
+
+    enum class HorizontalAlignment: char
+    {
+        Left = 0x1,
+        Center = 0x2,
+        Right = 0x4,
+    };
+
+    enum class VerticalAlignment: char
+    {
+        Top = 0x1,
+        Center = 0x2,
+        Bottom = 0x4,
+    };
+
 }
