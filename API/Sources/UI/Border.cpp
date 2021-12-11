@@ -53,8 +53,6 @@ namespace nii::ui
         }
 
         needRedraw = false;
-
-        // Primitive::redraw();
     }
 
     void Border::draw(sf::RenderTarget& target, sf::RenderStates states) const

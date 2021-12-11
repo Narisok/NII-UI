@@ -27,12 +27,16 @@ namespace nii::ui
         void setUseTexture(bool use);
 
         void setFillColor(sf::Color newColor);
+        void setBackgroundColor(sf::Color newColor);
 
         void setViewSize(const Vec2f& newSize);
         void resetViewSize();
 
+        void setObjectFit(ObjectFit fit);
+
     private:
-        void restartRenderer(const Vec2f& size) const;
+        void restartRenderer(Vec2f size);
+        void recalculateTextCoordinates(Vec2f size);
     public:
 
 
@@ -43,6 +47,7 @@ namespace nii::ui
         ObjectFit objectFit;
         Vec2f size;
         sf::Color color;
+        sf::Color backgroundColor;
 
         sf::Texture texture;
         mutable sf::Vertex vertexesBuffer[4];

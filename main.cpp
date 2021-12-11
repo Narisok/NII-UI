@@ -69,6 +69,7 @@ int main(int argc, char **argv)
 
     image.setFillColor({100, 255, 60});
     image.setTexture(textureFace, false);
+    image.setViewSize({200, 200});
 
 
     
@@ -128,6 +129,27 @@ int main(int argc, char **argv)
         {
             if (event.type == sf::Event::Closed) {
                 window.close();
+            }
+            if (event.type == sf::Event::KeyPressed) {
+                switch (event.key.code) {
+                    case sf::Keyboard::A:
+                        image.setObjectFit(nii::ui::ObjectFit::Fill);
+                        break;
+                    case sf::Keyboard::O:
+                    image.setObjectFit(nii::ui::ObjectFit::Cover);
+                        break;
+                    case sf::Keyboard::E:
+                    image.setObjectFit(nii::ui::ObjectFit::Contain);
+                        break;
+
+                    case sf::Keyboard::U:
+                     image.setViewSize({200, 200});
+                     break;
+
+                    case sf::Keyboard::I:
+                     image.setViewSize({300, 150});
+                     break;
+                }
             }
             if (event.type == sf::Event::MouseButtonPressed) {
                 switch(event.mouseButton.button) {

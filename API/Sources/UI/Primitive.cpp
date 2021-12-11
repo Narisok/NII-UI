@@ -61,11 +61,9 @@ namespace nii::ui::core
         if (shrink) {
             shrinkToFit = true;
             newSize = getShrinkedSize(); 
-            // setSize(getShrinkedSize());
         } else {
             shrinkToFit = false;
             newSize = getBoundSize();
-            // setSize(getBoundSize());
         }
         if (newSize.x != width || newSize.y != height) {
             setSize(newSize);

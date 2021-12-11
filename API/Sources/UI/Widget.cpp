@@ -11,7 +11,6 @@ namespace nii::ui
         renderer.display();
 
         needRedraw = false;
-        // Primitive::redraw();
     }
 
     void Widget::draw(sf::RenderTarget& target, sf::RenderStates states) const
