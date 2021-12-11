@@ -32,9 +32,9 @@ namespace nii::ui
         void setChild(core::Primitive* child);
     
         void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+        void redraw() /* override */;
 
-
-        void setSize(const Vec2f& size) override;
+        void setSize(const Vec2f& size, bool withRedraw = true) override;
         Vec2f getShrinkedSize() const override;
 
     // private:

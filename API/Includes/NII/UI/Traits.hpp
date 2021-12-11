@@ -29,4 +29,11 @@ namespace nii::ui
         Bottom = 0x4,
     };
 
+    enum class ObjectFit: char
+    {
+        Fill = 0x1,
+        Contain = 0x2,
+        Cover = 0x4,
+    };
+
 }

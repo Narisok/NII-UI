@@ -12,6 +12,7 @@ namespace nii::ui::core
         : parent(nullptr)
         , boundSize({0, 0})
         , shrinkToFit(false)
+        , needRedraw(true)
     { cout << "Primitive ()" << endl; }
 
     Primitive::Primitive(Primitive* parent)
@@ -36,9 +37,13 @@ namespace nii::ui::core
     { cout << "Primitive ~~" << endl; }
 
 
-    void Primitive::redraw()
+    void Primitive::redraw() const
     {
-        if(parent) {
+        static size_t redrawsCount = 0;
+        std::cout << "REDRAWS: " << ++redrawsCount << std::endl;
+        bool recursive = !needRedraw;
+        needRedraw = true;
+        if(recursive && parent) {
             parent->redraw();
         }
     }
@@ -51,21 +56,30 @@ namespace nii::ui::core
 
     void Primitive::setShrinkToFit(bool shrink)
     {
+        Vec2f newSize;
+        auto [width, height] = getSize();
         if (shrink) {
             shrinkToFit = true;
-            setSize(getShrinkedSize());
+            newSize = getShrinkedSize(); 
+            // setSize(getShrinkedSize());
         } else {
             shrinkToFit = false;
-            setSize(getBoundSize());
+            newSize = getBoundSize();
+            // setSize(getBoundSize());
+        }
+        if (newSize.x != width || newSize.y != height) {
+            setSize(newSize);
         }
     }
 
 
     void Primitive::setBoundSize(const Vec2f& size)
     {
-        boundSize = size;
-        if(!shrinkToFit) {
-            setSize(size);
+        if (size.x != boundSize.x || size.y != boundSize.y) {
+            boundSize = size;
+            if (!shrinkToFit) {
+                setSize(size);
+            }
         }
     }
 

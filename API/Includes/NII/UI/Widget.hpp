@@ -13,16 +13,16 @@ namespace nii::ui
         void draw(sf::RenderTarget& target, sf::RenderStates states) const override final;
         
     // protected:
-        void redraw() override;
+        void redraw() /* override */;
 
         void setRoot(core::Primitive* root);
 
 
-        void setSize(const Vec2f& size) override;
+        void setSize(const Vec2f& size, bool withRedraw = true) override;
         Vec2f getShrinkedSize() const override;
 
     // private:
-        mutable sf::RenderTexture renderer;
+        sf::RenderTexture renderer;
         core::Primitive *root;
     };
 }

@@ -10,20 +10,27 @@ namespace nii::ui
         root->draw(renderer, sf::RenderStates::Default);
         renderer.display();
 
-        Primitive::redraw();
+        needRedraw = false;
+        // Primitive::redraw();
     }
 
     void Widget::draw(sf::RenderTarget& target, sf::RenderStates states) const
     {
+        if (needRedraw) {
+            const_cast<Widget*>(this)->redraw();
+        }
+
         target.draw(sf::Sprite(renderer.getTexture()), states);
     }
 
 
 
-     void Widget::setSize(const Vec2f& size)
+    void Widget::setSize(const Vec2f& size, bool withRedraw)
     {
         renderer.create(size.x, size.y);
-        redraw();
+        if (withRedraw) {
+            redraw();
+        }
     }
 
     Vec2f Widget::getShrinkedSize() const
@@ -36,7 +43,7 @@ namespace nii::ui
     {
         root = newRoot;
         auto [width, height] = renderer.getSize();
-        root->setBoundSize({width, height});
+        root->setBoundSize({static_cast<float>(width), static_cast<float>(height)});
         root->setParent(this);
         // redraw();
     }

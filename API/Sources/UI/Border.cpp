@@ -46,10 +46,25 @@ namespace nii::ui
         child->setParent(this);
     }
 
+    void Border::redraw()
+    {
+        if (shrinkToFit) {
+            setSize(getShrinkedSize(), false);
+        }
+
+        needRedraw = false;
+
+        // Primitive::redraw();
+    }
+
     void Border::draw(sf::RenderTarget& target, sf::RenderStates states) const
     {
+        if (needRedraw) {
+            const_cast<Border*>(this)->redraw();
+        }
+
         target.draw(shape, states);
-        if(child) {
+        if (child) {
             states.transform *= shape.getTransform();
             states.transform.translate(padding.left, padding.top);
             target.draw(*child, states);
@@ -65,13 +80,15 @@ namespace nii::ui
         };
     }
 
-    void Border::setSize(const Vec2f& size)
+    void Border::setSize(const Vec2f& size, bool withRedraw)
     {
         shape.setSize({size.x, size.y});
         if (child) {
             child->setBoundSize(getChildBoundSize());
         }
-        redraw();
+        if (withRedraw) {
+            Primitive::redraw();
+        }
     }
 
     Vec2f Border::getShrinkedSize() const
@@ -97,26 +114,26 @@ namespace nii::ui
     void Border::setBorderColor(const sf::Color& color)
     {
         shape.setFillColor(color);
-        redraw();
+        Primitive::redraw();
     }
 
     void Border::setBorderRadius(float radius)
     {
         shape.setRadius(radius);
-        redraw();
+        Primitive::redraw();
     }
 
 
     void Border::setOutlineThickness(float thickness)
     {
         shape.setOutlineThickness(thickness);
-        redraw();
+        Primitive::redraw();
     }
 
     void Border::setOutlineColor(const sf::Color& color)
     {
         shape.setOutlineColor(color);
-        redraw();
+        Primitive::redraw();
     }
 
 }

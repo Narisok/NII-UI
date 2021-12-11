@@ -18,7 +18,8 @@ namespace nii::ui::core
         void draw(sf::RenderTarget& target, sf::RenderStates states) const override =0;
 
 
-        virtual void redraw();
+        void redraw() const;
+        // virtual void updatedGeometry();
 
         virtual void setParent(Primitive* parent); //TODO: IS NEED? 
 
@@ -32,7 +33,7 @@ namespace nii::ui::core
         virtual Vec2f getShrinkedSize() const =0;
 
         void setBoundSize(const Vec2f& size);
-        virtual void setSize(const Vec2f& size) =0;
+        virtual void setSize(const Vec2f& size, bool withRedraw = true) =0;
 
 
 
@@ -40,6 +41,7 @@ namespace nii::ui::core
         Primitive *parent;
         Vec2f boundSize;
         bool shrinkToFit;
+        mutable bool needRedraw;
 
     };
 }
