@@ -3,6 +3,8 @@
 #include "Core/Primitive.hpp"
 #include "Traits.hpp"
 
+#include <NII/Graphics/Shapes/RoundedShape.hpp>
+
 #include <SFML/Graphics/RectangleShape.hpp>
 
 namespace nii::ui
@@ -15,9 +17,19 @@ namespace nii::ui
         Border(Border&& other);
         ~Border();
 
-        void setChild(core::Primitive* child);
 
-        Vec2f getChildSize() const;
+        const sf::Color& getBorderColor() const;
+        void setBorderColor(const sf::Color& color);
+
+        float getBorderRadius(float radius) const;
+        void setBorderRadius(float radius);
+        
+        void setOutlineThickness(float thickness);
+        void setOutlineColor(const sf::Color& color);
+
+
+        Vec2f getChildBoundSize() const;
+        void setChild(core::Primitive* child);
     
         void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
@@ -27,7 +39,7 @@ namespace nii::ui
 
     // private:
         core::Primitive* child;
-        sf::RectangleShape shape;
+        nii::graphics::shapes::RoundedShape shape;
         
     };
 }

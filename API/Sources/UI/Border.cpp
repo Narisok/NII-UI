@@ -12,7 +12,7 @@ namespace nii::ui
      Border::Border()
         : Primitive()
         , child(nullptr)
-        , shape({100, 100})
+        , shape()
     { 
         padding = {10, 10, 10, 10};
         cout << "Border ()" << endl; 
@@ -21,22 +21,28 @@ namespace nii::ui
     Border::Border(const Border& other)
         : Primitive()
         , child(nullptr)
-        , shape({100, 100})
-    { cout << "Border cp" << endl; }
+        , shape()
+    { 
+        cout << "Border cp" << endl; 
+    }
 
     Border::Border(Border&& other)
         : Primitive()
         , child(nullptr)
-        , shape({100, 100})
-    { cout << "Border mv" << endl; }
+        , shape()
+    { 
+        cout << "Border mv" << endl; 
+    }
 
     Border::~Border()
-    { cout << "Border ~~" << endl; }
+    { 
+        cout << "Border ~~" << endl; 
+    }
 
     void Border::setChild(Primitive* newChild)
     {
         child = newChild;
-        child->setBoundSize(getChildSize());
+        child->setBoundSize(getChildBoundSize());
         child->setParent(this);
     }
 
@@ -50,7 +56,7 @@ namespace nii::ui
         }
     }
 
-    Vec2f Border::getChildSize() const
+    Vec2f Border::getChildBoundSize() const
     {
         auto [width, height] = shape.getSize();
         return {
@@ -63,7 +69,7 @@ namespace nii::ui
     {
         shape.setSize({size.x, size.y});
         if (child) {
-            child->setBoundSize(getChildSize());
+            child->setBoundSize(getChildBoundSize());
         }
         redraw();
     }
@@ -76,6 +82,41 @@ namespace nii::ui
         } else {
             return {padding.right + padding.left, padding.bottom + padding.top};
         }
+    }
+
+    const sf::Color& Border::getBorderColor() const
+    {
+        return shape.getFillColor();
+    }
+
+    float Border::getBorderRadius(float radius) const
+    {
+        return shape.getRadius();
+    }
+
+    void Border::setBorderColor(const sf::Color& color)
+    {
+        shape.setFillColor(color);
+        redraw();
+    }
+
+    void Border::setBorderRadius(float radius)
+    {
+        shape.setRadius(radius);
+        redraw();
+    }
+
+
+    void Border::setOutlineThickness(float thickness)
+    {
+        shape.setOutlineThickness(thickness);
+        redraw();
+    }
+
+    void Border::setOutlineColor(const sf::Color& color)
+    {
+        shape.setOutlineColor(color);
+        redraw();
     }
 
 }
