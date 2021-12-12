@@ -23,6 +23,10 @@ int main(int argc, char **argv)
     sf::Texture textureFace;
     std::cout << (textureFace.loadFromFile("face.png") ? "texture close loaded successfully" : "texture close error loading") << std::endl;
 
+    sf::Font font;
+    
+    std::cout << (font.loadFromFile("Fonts/Hauora-Regular.ttf") ? "font loaded successfully" : "font error loading") << std::endl;
+
     sf::VertexArray quad(sf::Quads, 4);
 
     // define it as a rectangle, located at (10, 10) and with size 100x100
@@ -61,6 +65,14 @@ int main(int argc, char **argv)
     nii::ui::Border border;
     nii::ui::Border border1;
 
+    nii::ui::Text text;
+    text.setCharacterSize(20);
+    text.setFont(font);
+    text.setFillColor({255, 0,0});
+    text.setText("Hello1");
+    text.setWrapEnabled(true);
+    text.setWrapAfter(200);
+
     // border.shape.setFillColor({255,0,0});
     // border1.shape.setFillColor({0,255,0});
 
@@ -81,7 +93,8 @@ int main(int argc, char **argv)
 
     widget.setRoot(&border);
     border.setChild(&border1);
-    border1.setChild(&image);
+    // border1.setChild(&image);
+    border1.setChild(&text);
 
     // border.setBorderThickness(10);
     border1.setBorderColor({50, 50, 255, 100});
@@ -134,21 +147,32 @@ int main(int argc, char **argv)
                 switch (event.key.code) {
                     case sf::Keyboard::A:
                         image.setObjectFit(nii::ui::ObjectFit::Fill);
+                        text.setFontStyle(nii::ui::FontStyle::Regular);
+                        
                         break;
                     case sf::Keyboard::O:
-                    image.setObjectFit(nii::ui::ObjectFit::Cover);
+                        image.setObjectFit(nii::ui::ObjectFit::Cover);
+                        text.setFontStyle(nii::ui::FontStyle::Bold);
                         break;
                     case sf::Keyboard::E:
-                    image.setObjectFit(nii::ui::ObjectFit::Contain);
+                        image.setObjectFit(nii::ui::ObjectFit::Contain);
+                        text.setFontStyle(nii::ui::FontStyle::StrikeThrough);
+                   
                         break;
 
                     case sf::Keyboard::U:
-                     image.setViewSize({200, 200});
-                     break;
+                        image.setViewSize({200, 200});
+                        text.setText("Hello");
+                    break;
 
                     case sf::Keyboard::I:
-                     image.setViewSize({300, 150});
-                     break;
+                        image.setViewSize({300, 150});
+                        text.setText(L"Привіт це дуже великий текст\nThis is a very long text!");
+                    break;
+
+                    case sf::Keyboard::W:
+                        text.setWrapEnabled(!text.wrapEnabled);
+                    break;
                 }
             }
             if (event.type == sf::Event::MouseButtonPressed) {
