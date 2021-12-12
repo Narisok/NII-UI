@@ -1,5 +1,4 @@
-#include <NII/UI/Image.hpp>
-#include <SFML/Graphics/RenderTarget.hpp>
+#include "NII/UI/Image.hpp"
 
 #include <iostream>
 
@@ -128,7 +127,7 @@ namespace nii::ui
         }
     }
 
-    void Image::restartRenderer( Vec2f size)
+    void Image::restartRenderer(Vec2f size)
     {
         auto [width, height] = renderer.getSize();
         if(size.x > width || size.y > height) {
@@ -217,9 +216,9 @@ namespace nii::ui
         switch (objectFit) {
             case ObjectFit::Fill:
                 vertexesBuffer[0].texCoords = {0, 0};
-                vertexesBuffer[1].texCoords = {width, 0};
-                vertexesBuffer[2].texCoords = {width, height};
-                vertexesBuffer[3].texCoords = {0, height};
+                vertexesBuffer[1].texCoords = {static_cast<float>(width), 0};
+                vertexesBuffer[2].texCoords = {static_cast<float>(width), static_cast<float>(height)};
+                vertexesBuffer[3].texCoords = {0, static_cast<float>(height)};
                 break;
             case ObjectFit::Cover: {
                 float x = size.x / width;
@@ -227,9 +226,9 @@ namespace nii::ui
                 float mult = x < y ? y : x;
                 if (mult == 0.f) {
                     vertexesBuffer[0].texCoords = {0, 0};
-                    vertexesBuffer[1].texCoords = {width, 0};
-                    vertexesBuffer[2].texCoords = {width, height};
-                    vertexesBuffer[3].texCoords = {0, height};
+                    vertexesBuffer[1].texCoords = {static_cast<float>(width), 0};
+                    vertexesBuffer[2].texCoords = {static_cast<float>(width), static_cast<float>(height)};
+                    vertexesBuffer[3].texCoords = {0, static_cast<float>(height)};
                 } else {
                     float wx = (size.x - width * mult) / 2;
                     float hy = (size.y - height * mult) / 2;
@@ -246,9 +245,9 @@ namespace nii::ui
                 float mult = x > y ? y : x;
                 if (mult == 0.f) {
                     vertexesBuffer[0].texCoords = {0, 0};
-                    vertexesBuffer[1].texCoords = {width, 0};
-                    vertexesBuffer[2].texCoords = {width, height};
-                    vertexesBuffer[3].texCoords = {0, height};
+                    vertexesBuffer[1].texCoords = {static_cast<float>(width), 0};
+                    vertexesBuffer[2].texCoords = {static_cast<float>(width), static_cast<float>(height)};
+                    vertexesBuffer[3].texCoords = {0, static_cast<float>(height)};
                 } else {
                     float wx = (size.x - width * mult) / 2;
                     float hy = (size.y - height * mult) / 2;

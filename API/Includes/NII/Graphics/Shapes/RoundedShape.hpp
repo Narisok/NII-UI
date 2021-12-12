@@ -87,6 +87,7 @@ namespace nii::graphics::shapes
                     return {radius-x,size.y-radius+ y};
                 }
             }
+            return {0.f, 0.f};
         }
 
 

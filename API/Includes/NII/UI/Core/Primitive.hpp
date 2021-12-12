@@ -1,6 +1,6 @@
 #pragma once
 
-#include "NII/Utility/AgregatesLiterals.hpp"
+#include <NII/Utility/AgregatesLiterals.hpp>
 
 #include <SFML/Graphics/Drawable.hpp>
 
