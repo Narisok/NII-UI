@@ -2,6 +2,8 @@
 
 #include "NII/Utility/AgregatesLiterals.hpp"
 
+#include <SFML/Graphics/Text.hpp>
+
 namespace nii::ui
 {
     class Paddingable
@@ -34,6 +36,15 @@ namespace nii::ui
         Fill = 0x1,
         Contain = 0x2,
         Cover = 0x4,
+    };
+
+    enum class FontStyle: char
+    {
+        Regular         = sf::Text::Style::Regular,
+        Bold            = sf::Text::Style::Bold,
+        Italic          = sf::Text::Style::Italic,
+        Underlined      = sf::Text::Style::Underlined,
+        StrikeThrough   = sf::Text::Style::StrikeThrough,
     };
 
 }
