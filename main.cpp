@@ -69,8 +69,8 @@ int main(int argc, char **argv)
     text.setCharacterSize(20);
     text.setFont(font);
     text.setFillColor({255, 0,0});
-    text.setText("Hello1");
-    text.setWrapEnabled(true);
+    text.setText("Hello1 omg long text omg oeunths sntaoeu");
+    // text.setWrapEnabled(true);
     text.setWrapAfter(200);
 
     // border.shape.setFillColor({255,0,0});
@@ -82,9 +82,6 @@ int main(int argc, char **argv)
     image.setFillColor({100, 255, 60});
     image.setTexture(textureFace, false);
     image.setViewSize({200, 200});
-
-
-    
 
     // image.shape.setFillColor({100, 10, 60});
     // image.shape.setTexture(&textureBookmark);
@@ -104,17 +101,7 @@ int main(int argc, char **argv)
 
     
 
-    // auto imgSize = image.getSize();
-
-    // nii::ui::Border border1;
-    // widget.root = &border;
-    // border.parent = &widget;
-
-    // border1.parent = &border;
-    // border.child = &border1;
-
-    // border1.child = &image;
-    // image.parent = &border1;
+    auto imgSize = image.getSize();
 
    
     nii::graphics::shapes::RoundedShape rshape({500, 500});
@@ -127,13 +114,6 @@ int main(int argc, char **argv)
     rshape.setPosition(200, 200);
 
     
-    // border.setBound({0, 150, 0, 200});
-
-    // border1.setBound({0, 140, 0, 190});
-
-    // widget.needRedraw = true;
-    // widget.renderer.
-    // border.redraw();
     
     while (window.isOpen())
     {
@@ -146,18 +126,31 @@ int main(int argc, char **argv)
             if (event.type == sf::Event::KeyPressed) {
                 switch (event.key.code) {
                     case sf::Keyboard::A:
-                        image.setObjectFit(nii::ui::ObjectFit::Fill);
-                        text.setFontStyle(nii::ui::FontStyle::Regular);
+                        // image.setObjectFit(nii::ui::ObjectFit::Fill);
+                        // text.setFontStyle(nii::ui::FontStyle::Regular);
+                        border1.child.setAlign(nii::ui::AlignLeft);
                         
                         break;
                     case sf::Keyboard::O:
-                        image.setObjectFit(nii::ui::ObjectFit::Cover);
-                        text.setFontStyle(nii::ui::FontStyle::Bold);
+                        // image.setObjectFit(nii::ui::ObjectFit::Cover);
+                        // text.setFontStyle(nii::ui::FontStyle::Bold);
+                        border1.child.setAlign(nii::ui::AlignCenter);
                         break;
                     case sf::Keyboard::E:
-                        image.setObjectFit(nii::ui::ObjectFit::Contain);
-                        text.setFontStyle(nii::ui::FontStyle::StrikeThrough);
-                   
+                        // image.setObjectFit(nii::ui::ObjectFit::Contain);
+                        // text.setFontStyle(nii::ui::FontStyle::StrikeThrough);
+                        border1.child.setAlign(nii::ui::AlignRight);
+                        break;
+
+                        case sf::Keyboard::SemiColon:
+                        border1.child.setVAlign(nii::ui::VAlignTop);
+                        
+                        break;
+                    case sf::Keyboard::Q:
+                        border1.child.setVAlign(nii::ui::VAlignCenter);
+                        break;
+                    case sf::Keyboard::J:
+                        border1.child.setVAlign(nii::ui::VAlignBottom);
                         break;
 
                     case sf::Keyboard::U:
@@ -184,6 +177,7 @@ int main(int argc, char **argv)
                         break;
                     case sf::Mouse::Button::Right:
                         image.setShrinkToFit(!image.shrinkToFit);
+                        text.setShrinkToFit(!text.shrinkToFit);
                         rshape.setRadius(rshape.getRadius()-5);
                         break;
 
@@ -208,47 +202,7 @@ int main(int argc, char **argv)
         }
 
         window.clear();
-        // auto tmp = sf::CircleShape(2);
-        // tmp.setFillColor({255,0,0});
-        // window.draw(rshape);
-        // for(int i = 0; i < rshape.getPointCount(); i++) {
-        //     tmp.setFillColor({255, i*(255/(rshape.getPointCount()/4)), 0});
-        //     tmp.setPosition(rshape.getPoint(i)+rshape.getPosition());
-        //     window.draw(tmp);
-        // }
-
-        // window.clear(sf::Color(200, 200, 200));
         window.draw(widget);
-
-    //     quadState.texture = nullptr;
-    //     quadState.blendMode = sf::BlendAlpha;
-
-    // quad[0].color = sf::Color({30, 30, 30});
-    // quad[1].color = sf::Color({30, 30, 30});
-    // quad[2].color = sf::Color({30, 30, 30});
-    // quad[3].color = sf::Color({30, 30, 30});
-    //     window.draw(quad, quadState);
-
-    // quad[0].color = sf::Color({255, 255, 255});
-    // quad[1].color = sf::Color({255, 255, 0});
-    // quad[2].color = sf::Color({255, 0, 255});
-    // quad[3].color = sf::Color({0, 255, 255});
-
-    //     quadState.texture = &textureTrash;
-    //     quadState.blendMode = sf::BlendAlpha;
-    //     window.draw(quad, quadState);
-
-    //     quadState.texture = nullptr;
-    //     quadState.blendMode = sf::BlendMultiply;
-    //     window.draw(quad, quadState);
-
-    //     quadState.texture = &textureTrash;
-    //     quadState.blendMode = sf::BlendAlpha;
-
-        // window.draw(quad, quadState);
-        
-        // window.draw(rs1);
-        // window.draw(rs2, rs1.getTransform());
         window.display();
     }
 

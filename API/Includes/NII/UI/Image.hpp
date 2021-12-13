@@ -11,7 +11,7 @@ namespace nii::ui
     {
     public:
         Image();
-        ~Image();
+        virtual ~Image();
     
         void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 

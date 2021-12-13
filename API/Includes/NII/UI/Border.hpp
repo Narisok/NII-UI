@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Core/Primitive.hpp"
+#include "Core/ChildPrimitive.hpp"
 #include "Traits.hpp"
 
 #include <NII/Graphics/Shapes/RoundedShape.hpp>
@@ -15,7 +16,7 @@ namespace nii::ui
         Border();
         Border(const Border& other);
         Border(Border&& other);
-        ~Border();
+        virtual ~Border();
 
 
         const sf::Color& getBorderColor() const;
@@ -38,7 +39,7 @@ namespace nii::ui
         Vec2f getShrinkedSize() const override;
 
     // private:
-        core::Primitive* child;
+        core::ChildPrimitive child;
         nii::graphics::shapes::RoundedShape shape;
         
     };

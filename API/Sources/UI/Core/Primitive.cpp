@@ -1,10 +1,5 @@
 #include "NII/UI/Core/Primitive.hpp"
 
-#include <iostream>
-
-using std::cout;
-using std::endl;
-
 
 namespace nii::ui::core
 {
@@ -13,34 +8,14 @@ namespace nii::ui::core
         , boundSize({0, 0})
         , shrinkToFit(false)
         , needRedraw(true)
-    { cout << "Primitive ()" << endl; }
-
-    Primitive::Primitive(Primitive* parent)
-        : parent(parent)
-        , boundSize({0, 0})
-        , shrinkToFit(false)
-    { cout << "Primitive pa" << endl; }
-
-    Primitive::Primitive(const Primitive& other)
-        : parent(nullptr)
-        , boundSize({0, 0})
-        , shrinkToFit(false)
-    { cout << "Primitive cp" << endl; }
-
-    Primitive::Primitive(Primitive&& other)
-        : parent(nullptr)
-        , boundSize({0, 0})
-        , shrinkToFit(false)
-    { cout << "Primitive mv" << endl; }
+    { /* cout << "Primitive ()" << endl; */ }
 
     Primitive::~Primitive()
-    { cout << "Primitive ~~" << endl; }
+    { /* cout << "Primitive ~~" << endl; */ }
 
 
     void Primitive::redraw() const
     {
-        static size_t redrawsCount = 0;
-        std::cout << "REDRAWS: " << ++redrawsCount << std::endl;
         bool recursive = !needRedraw;
         needRedraw = true;
         if(recursive && parent) {

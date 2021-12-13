@@ -10,7 +10,7 @@ namespace nii::ui
 {
      Border::Border()
         : Primitive()
-        , child(nullptr)
+        , child()
         , shape()
     { 
         padding = {10, 10, 10, 10};
@@ -19,7 +19,7 @@ namespace nii::ui
 
     Border::Border(const Border& other)
         : Primitive()
-        , child(nullptr)
+        , child()
         , shape()
     { 
         cout << "Border cp" << endl; 
@@ -27,7 +27,7 @@ namespace nii::ui
 
     Border::Border(Border&& other)
         : Primitive()
-        , child(nullptr)
+        , child()
         , shape()
     { 
         cout << "Border mv" << endl; 
@@ -40,9 +40,7 @@ namespace nii::ui
 
     void Border::setChild(Primitive* newChild)
     {
-        child = newChild;
-        child->setBoundSize(getChildBoundSize());
-        child->setParent(this);
+        child.setChild(this, newChild, getChildBoundSize());
     }
 
     void Border::redraw()
@@ -64,7 +62,7 @@ namespace nii::ui
         if (child) {
             states.transform *= shape.getTransform();
             states.transform.translate(padding.left, padding.top);
-            target.draw(*child, states);
+            target.draw(child, states);
         }
     }
 
@@ -80,9 +78,9 @@ namespace nii::ui
     void Border::setSize(const Vec2f& size, bool withRedraw)
     {
         shape.setSize({size.x, size.y});
-        if (child) {
-            child->setBoundSize(getChildBoundSize());
-        }
+        // if (child) {
+            child.setBoundSize(getChildBoundSize());
+        // }
         if (withRedraw) {
             Primitive::redraw();
         }
@@ -90,12 +88,12 @@ namespace nii::ui
 
     Vec2f Border::getShrinkedSize() const
     {
-        if(child) {
-            auto [width, height] = child->getShrinkedSize();
+        // if(child) {
+            auto [width, height] = child.getShrinkedSize();
             return {width + padding.right + padding.left, height + padding.bottom + padding.top};
-        } else {
-            return {padding.right + padding.left, padding.bottom + padding.top};
-        }
+        // } else {
+        //     return {padding.right + padding.left, padding.bottom + padding.top};
+        // }
     }
 
     const sf::Color& Border::getBorderColor() const

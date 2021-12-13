@@ -10,9 +10,6 @@ namespace nii::ui::core
     {
     public:
         Primitive();
-        Primitive(Primitive* parent);
-        Primitive(const Primitive& other);
-        Primitive(Primitive&& other);
         virtual ~Primitive();
         
         void draw(sf::RenderTarget& target, sf::RenderStates states) const override =0;

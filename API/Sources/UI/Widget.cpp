@@ -35,7 +35,7 @@ namespace nii::ui
     Vec2f Widget::getShrinkedSize() const
     {
         auto [width, height] = renderer.getSize();
-        return {width, height};
+        return {static_cast<float>(width), static_cast<float>(height)};
     }
 
     void Widget::setRoot(Primitive* newRoot)

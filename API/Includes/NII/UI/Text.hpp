@@ -11,7 +11,7 @@ namespace nii::ui
     {
     public:
         Text();
-        ~Text();
+        virtual ~Text();
     
         void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 

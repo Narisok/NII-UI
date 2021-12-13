@@ -1,6 +1,6 @@
 #pragma once
 
-#include "NII/Utility/AgregatesLiterals.hpp"
+#include <NII/Utility/AgregatesLiterals.hpp>
 
 #include <SFML/Graphics/Text.hpp>
 
@@ -15,20 +15,6 @@ namespace nii::ui
 
     protected:
         IndentsFloat padding;
-    };
-
-    enum class HorizontalAlignment: char
-    {
-        Left = 0x1,
-        Center = 0x2,
-        Right = 0x4,
-    };
-
-    enum class VerticalAlignment: char
-    {
-        Top = 0x1,
-        Center = 0x2,
-        Bottom = 0x4,
     };
 
     enum class ObjectFit: char
@@ -46,5 +32,36 @@ namespace nii::ui
         Underlined      = sf::Text::Style::Underlined,
         StrikeThrough   = sf::Text::Style::StrikeThrough,
     };
+
+    enum class HorizontalAlignment: char
+    {
+        Left = 0x1,
+        Center = 0x2,
+        Right = 0x4,
+        Fill = 0x8,
+    };
+
+    using Align = HorizontalAlignment;
+
+    inline constexpr Align AlignLeft    = Align::Left;
+    inline constexpr Align AlignCenter  = Align::Center;
+    inline constexpr Align AlignRight   = Align::Right;
+    inline constexpr Align AlignFill   = Align::Fill;
+
+    enum class VerticalAlignment: char
+    {
+        Top = 0x1,
+        Center = 0x2,
+        Bottom = 0x4,
+        Fill = 0x8,
+    };
+
+
+    using VAlign = VerticalAlignment;
+
+    inline constexpr VAlign VAlignTop    = VAlign::Top;
+    inline constexpr VAlign VAlignCenter = VAlign::Center;
+    inline constexpr VAlign VAlignBottom = VAlign::Bottom;
+    inline constexpr VAlign VAlignFill   = VAlign::Fill;
 
 }
