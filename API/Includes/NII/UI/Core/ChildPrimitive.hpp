@@ -14,13 +14,21 @@ namespace nii::ui::core
     public:
 
         ChildPrimitive();
+
+        ChildPrimitive(const ChildPrimitive&) = delete;
+
+        ChildPrimitive(ChildPrimitive&& other);
+        
+        ChildPrimitive(Primitive* parent, Primitive* newChild, Vec2f boundSize);
         virtual ~ChildPrimitive();
 
         void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
         void setChild(Primitive* parent, Primitive* newChild, Vec2f boundSize);
         void setBoundSize(Vec2f bound);
+
         Vec2f getShrinkedSize() const;
+        Vec2f getSize() const;
 
         const Primitive* getChildPrimitive() const;
         Primitive* getChildPrimitive();

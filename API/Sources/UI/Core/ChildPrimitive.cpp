@@ -8,6 +8,21 @@ namespace nii::ui::core
         , align(AlignFill)
         , valign(VAlignFill)
     {}
+    ChildPrimitive::ChildPrimitive(Primitive* parent, Primitive* newChild, Vec2f boundSize)
+        : child(nullptr)
+        , align(AlignFill)
+        , valign(VAlignFill)
+    {
+        setChild(parent, newChild, boundSize);
+    }
+
+    ChildPrimitive::ChildPrimitive(ChildPrimitive&& other)
+        : child(other.child)
+        , align(other.align)
+        , valign(other.valign)
+    {
+        other.child = nullptr;
+    }
 
     ChildPrimitive::~ChildPrimitive()
     {}
@@ -63,6 +78,11 @@ namespace nii::ui::core
         } else {
             return {0.f, 0.f};
         }
+    }
+
+    Vec2f ChildPrimitive::getSize() const
+    {
+        return child ? child->getSize() : Vec2f{0.f, 0.f};
     }
 
 

@@ -66,6 +66,12 @@ namespace nii::ui
 
     void Text::draw(sf::RenderTarget& target, sf::RenderStates states) const
     {
+        sf::RectangleShape shape(getSize());
+        shape.setFillColor({0,250,0,50});
+        shape.setOutlineColor({0,0,250,100});
+        shape.setOutlineThickness(5);
+        target.draw(shape, states);
+
         if (needRedraw) {
             const_cast<Text*>(this)->redraw();
         }

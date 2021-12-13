@@ -83,6 +83,12 @@ int main(int argc, char **argv)
     image.setTexture(textureFace, false);
     image.setViewSize({200, 200});
 
+    nii::ui::List list;
+
+    list.addChild(&image);
+    list.addChild(&text);
+    list.addChild(&image);
+
     // image.shape.setFillColor({100, 10, 60});
     // image.shape.setTexture(&textureBookmark);
     // image.setSize({32.f, 32.f});
@@ -91,7 +97,7 @@ int main(int argc, char **argv)
     widget.setRoot(&border);
     border.setChild(&border1);
     // border1.setChild(&image);
-    border1.setChild(&text);
+    border1.setChild(&list);
 
     // border.setBorderThickness(10);
     border1.setBorderColor({50, 50, 255, 100});
@@ -154,17 +160,21 @@ int main(int argc, char **argv)
                         break;
 
                     case sf::Keyboard::U:
-                        image.setViewSize({200, 200});
+                        // image.setViewSize({200, 200});
                         text.setText("Hello");
                     break;
 
                     case sf::Keyboard::I:
-                        image.setViewSize({300, 150});
+                        // image.setViewSize({300, 150});
                         text.setText(L"Привіт це дуже великий текст\nThis is a very long text!");
                     break;
 
                     case sf::Keyboard::W:
                         text.setWrapEnabled(!text.wrapEnabled);
+                    break;
+
+                    case sf::Keyboard::M:
+                        list.setPlane(list.plane == nii::ui::Plane::Vertical ? nii::ui::Plane::Horizontal : nii::ui::Plane::Vertical);
                     break;
                 }
             }
@@ -176,9 +186,10 @@ int main(int argc, char **argv)
                         rshape.setRadius(rshape.getRadius()+5);
                         break;
                     case sf::Mouse::Button::Right:
-                        image.setShrinkToFit(!image.shrinkToFit);
-                        text.setShrinkToFit(!text.shrinkToFit);
-                        rshape.setRadius(rshape.getRadius()-5);
+                        list.setShrinkToFit(!list.shrinkToFit);
+                        // image.setShrinkToFit(!image.shrinkToFit);
+                        // text.setShrinkToFit(!text.shrinkToFit);
+                        // rshape.setRadius(rshape.getRadius()-5);
                         break;
 
                     case sf::Mouse::Button::Middle:
@@ -194,8 +205,10 @@ int main(int argc, char **argv)
                         break;
                     case sf::Mouse::Button::XButton2:
                         // image.resetViewSize();
+                        image.setShrinkToFit(!text.shrinkToFit);
+                        text.setShrinkToFit(!text.shrinkToFit);
 
-                        image.setFillColor({255, 255, 0});
+                        // image.setFillColor({255, 255, 0});
                         break;
                 }
             }

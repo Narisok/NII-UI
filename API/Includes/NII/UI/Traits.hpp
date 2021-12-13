@@ -64,4 +64,14 @@ namespace nii::ui
     inline constexpr VAlign VAlignBottom = VAlign::Bottom;
     inline constexpr VAlign VAlignFill   = VAlign::Fill;
 
+
+    enum class Plane: char
+    {
+        Vertical,
+        Horizontal,
+    };
+
+    inline constexpr Plane PlaneVertical   = Plane::Vertical;
+    inline constexpr Plane PlaneHorizontal = Plane::Horizontal;
+
 }
