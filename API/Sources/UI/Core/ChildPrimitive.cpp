@@ -8,6 +8,7 @@ namespace nii::ui::core
         , align(AlignFill)
         , valign(VAlignFill)
     {}
+    
     ChildPrimitive::ChildPrimitive(Primitive* parent, Primitive* newChild, Vec2f boundSize)
         : child(nullptr)
         , align(AlignFill)

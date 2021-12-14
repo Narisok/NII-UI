@@ -8,16 +8,10 @@
 
 namespace nii::ui
 {
-    class List: public core::Primitive, public Paddingable
+    class List: public core::Primitive
     {
     public:
 
-        // struct ChildData
-        // {
-        //     Vec2f bound;
-        //     core::ChildPrimitive child;
-        // };
-    
         List();
         virtual ~List();
 
@@ -27,6 +21,7 @@ namespace nii::ui
         void addChild(core::Primitive* child);
         // void removeChild(size_t idx);
         // Primitive* fetchChild(size_t idx);
+        // void changeChild(size_t idx, core::Primitive* newChild);
     
         void redraw() /* override */;
         void draw(sf::RenderTarget& target, sf::RenderStates states) const override;

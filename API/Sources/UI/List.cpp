@@ -26,11 +26,11 @@ namespace nii::ui
 
     void List::draw(sf::RenderTarget& target, sf::RenderStates states) const
     {
-        sf::RectangleShape shape(getSize());
-        shape.setFillColor({0,0,0,50});
-        shape.setOutlineColor({255,0,0,100});
-        shape.setOutlineThickness(1);
-        target.draw(shape, states);
+        // sf::RectangleShape shape(getSize());
+        // shape.setFillColor({0,0,0,50});
+        // shape.setOutlineColor({255,0,0,100});
+        // shape.setOutlineThickness(1);
+        // target.draw(shape, states);
 
         if (needRedraw) {
             const_cast<List*>(this)->redraw();

@@ -83,11 +83,32 @@ int main(int argc, char **argv)
     image.setTexture(textureFace, false);
     image.setViewSize({200, 200});
 
+    nii::ui::Grid grid;
+
+    grid.addChild(&image,0,0);
+
+    grid.addChild(&image,0,1);
+
+    grid.addChild(&text,6,6);
+
+    grid.addChild(&text,5,6);
+
+    grid.addChild(&text,4,6);
+
+    grid.addChild(&text,3,6);
+
+    grid.addChild(&text,2,6);
+
+
+    grid.addChild(&text,1,0);
+
+    grid.addChild(&text,1,1);
+
     nii::ui::List list;
 
-    list.addChild(&image);
-    list.addChild(&text);
-    list.addChild(&image);
+    // list.addChild(&image);
+    // list.addChild(&text);
+    // list.addChild(&image);
 
     // image.shape.setFillColor({100, 10, 60});
     // image.shape.setTexture(&textureBookmark);
@@ -97,7 +118,8 @@ int main(int argc, char **argv)
     widget.setRoot(&border);
     border.setChild(&border1);
     // border1.setChild(&image);
-    border1.setChild(&list);
+    border1.setChild(&grid);
+    // border1.setChild(&list);
 
     // border.setBorderThickness(10);
     border1.setBorderColor({50, 50, 255, 100});
@@ -187,6 +209,7 @@ int main(int argc, char **argv)
                         break;
                     case sf::Mouse::Button::Right:
                         list.setShrinkToFit(!list.shrinkToFit);
+                        grid.setShrinkToFit(!grid.shrinkToFit);
                         // image.setShrinkToFit(!image.shrinkToFit);
                         // text.setShrinkToFit(!text.shrinkToFit);
                         // rshape.setRadius(rshape.getRadius()-5);
