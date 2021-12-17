@@ -10,6 +10,12 @@ namespace nii::ui
     {
         
     public:
+        inline Widget(Vec2f size)
+            : renderer()
+            , root(nullptr)
+            , size(size)
+        {}
+
         void draw(sf::RenderTarget& target, sf::RenderStates states) const override final;
         
     // protected:
@@ -24,5 +30,6 @@ namespace nii::ui
     // private:
         sf::RenderTexture renderer;
         core::Primitive *root;
+        Vec2f size;
     };
 }

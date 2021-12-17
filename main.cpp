@@ -12,7 +12,16 @@
 
 int main(int argc, char **argv)
 {
-    sf::RenderWindow window(sf::VideoMode(1200, 800), "SFML works!");
+    sf::ContextSettings contextSettings(
+        4, // depth
+        2, // stencil
+        0, // antialiasing
+        3,
+        0
+        );
+
+    sf::RenderWindow window(sf::VideoMode(1200, 800), "SFML works!", sf::Style::Default, contextSettings);
+   
 
     sf::Texture textureBookmark;
     std::cout << (textureBookmark.loadFromFile("bookmark-32.png") ? "texture bookmark loaded successfully" : "texture bookmark error loading") << std::endl;
@@ -59,8 +68,9 @@ int main(int argc, char **argv)
     sf::RectangleShape rs2({400, 300});
     rs2.setFillColor({0, 250,0});
 
-    nii::ui::Widget widget;
-    widget.renderer.create(1200, 800);
+    nii::ui::Widget widget({1200, 800});
+    widget.renderer.create(1920, 1080);
+    widget.renderer.setSmooth(true);
 
     nii::ui::Border border;
     nii::ui::Border border1;
@@ -114,11 +124,21 @@ int main(int argc, char **argv)
     // image.shape.setTexture(&textureBookmark);
     // image.setSize({32.f, 32.f});
 
+    text.setText(L"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.");
+    text.setWrapAfter(500);
+    text.setCharacterSize(16);
+    text.setWrapEnabled(true);
+
+    nii::ui::Scroll scroll;
+    scroll.setChild(&image);
+    image.setViewSize({1000, 1000});
+    scroll.setViewSize({200, 200});
+    scroll.setShrinkToFit(false);
 
     widget.setRoot(&border);
     border.setChild(&border1);
     // border1.setChild(&image);
-    border1.setChild(&grid);
+    border1.setChild(&scroll);
     // border1.setChild(&list);
 
     // border.setBorderThickness(10);
@@ -127,9 +147,6 @@ int main(int argc, char **argv)
 
     border1.setBorderRadius(20);
 
-    
-
-    auto imgSize = image.getSize();
 
    
     nii::graphics::shapes::RoundedShape rshape({500, 500});
@@ -141,13 +158,15 @@ int main(int argc, char **argv)
 
     rshape.setPosition(200, 200);
 
-    
+    auto tmp = window.getView();
+    // tmp.zoom(1.2);
     
     while (window.isOpen())
     {
         sf::Event event;
         while (window.pollEvent(event))
         {
+            bool h = sf::Keyboard::isKeyPressed(sf::Keyboard::LShift);
             if (event.type == sf::Event::Closed) {
                 window.close();
             }
@@ -200,6 +219,13 @@ int main(int argc, char **argv)
                     break;
                 }
             }
+            if (event.type == sf::Event::MouseWheelScrolled) {
+                if (event.mouseWheelScroll.delta > 0) {
+                    scroll.move({h ? -10.f : 0.f, h ? 0.f : -10.f});
+                } else {
+                    scroll.move({h ? 10.f : 0.f, h ? 0.f : 10.f});
+                }
+            }
             if (event.type == sf::Event::MouseButtonPressed) {
                 switch(event.mouseButton.button) {
 
@@ -238,7 +264,17 @@ int main(int argc, char **argv)
         }
 
         window.clear();
+        
+        // auto view = sf::View({0,200}, {1200/2, 800/2});// 1200, 800
+        window.setView(tmp);
+        // auto rect = view.getViewport();
         window.draw(widget);
+        // sf::RectangleShape sh(view.getSize());
+        // sh.setPosition(view.getCenter());
+        // sh.setOrigin(view.getSize().x/2, view.getSize().y/2);
+        // sh.setFillColor({255,0,0});
+        // window.draw(sh);
+
         window.display();
     }
 

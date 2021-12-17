@@ -34,14 +34,14 @@ namespace nii::ui
 
     Vec2f Widget::getShrinkedSize() const
     {
-        auto [width, height] = renderer.getSize();
+        auto [width, height] = size; //renderer.getSize();
         return {static_cast<float>(width), static_cast<float>(height)};
     }
 
     void Widget::setRoot(Primitive* newRoot)
     {
         root = newRoot;
-        auto [width, height] = renderer.getSize();
+        auto [width, height] = size;// renderer.getSize();
         root->setBoundSize({static_cast<float>(width), static_cast<float>(height)});
         root->setParent(this);
         // redraw();
