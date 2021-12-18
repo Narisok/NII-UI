@@ -86,6 +86,11 @@ namespace nii::ui::core
         return child ? child->getSize() : Vec2f{0.f, 0.f};
     }
 
+    Vec2f ChildPrimitive::getBoundSize() const
+    {
+        return child ? child->getBoundSize() : Vec2f{0.f, 0.f};
+    }
+
 
     void ChildPrimitive::setAlign(Align align)
     {

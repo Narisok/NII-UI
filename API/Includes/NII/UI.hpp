@@ -7,3 +7,4 @@
 #include "UI/List.hpp"
 #include "UI/Grid.hpp"
 #include "UI/Scroll.hpp"
+#include "UI/Canvas.hpp"

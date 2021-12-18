@@ -29,6 +29,8 @@ namespace nii::ui::core
 
         Vec2f getShrinkedSize() const;
         Vec2f getSize() const;
+        Vec2f getBoundSize() const;
+        
 
         const Primitive* getChildPrimitive() const;
         Primitive* getChildPrimitive();

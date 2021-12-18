@@ -95,24 +95,30 @@ int main(int argc, char **argv)
 
     nii::ui::Grid grid;
 
-    grid.addChild(&image,0,0);
+    // grid.addChild(&image,0,0);
 
-    grid.addChild(&image,0,1);
+    // grid.addChild(&image,0,1);
 
-    grid.addChild(&text,6,6);
+    // grid.addChild(&text,6,6);
 
-    grid.addChild(&text,5,6);
+    // grid.addChild(&text,5,6);
 
-    grid.addChild(&text,4,6);
+    // grid.addChild(&text,4,6);
 
-    grid.addChild(&text,3,6);
+    // grid.addChild(&text,3,6);
 
-    grid.addChild(&text,2,6);
+    // grid.addChild(&text,2,6);
 
 
-    grid.addChild(&text,1,0);
+    // grid.addChild(&text,1,0);
 
-    grid.addChild(&text,1,1);
+    // grid.addChild(&text,1,1);
+
+    nii::ui::Canvas canvas;
+    canvas.setViewSize({500.f, 500.f});
+    canvas.addChild(&text, {100.f, 100.f}, {20.f, 20.f});
+
+
 
     nii::ui::List list;
 
@@ -138,7 +144,8 @@ int main(int argc, char **argv)
     widget.setRoot(&border);
     border.setChild(&border1);
     // border1.setChild(&image);
-    border1.setChild(&scroll);
+    // border1.setChild(&scroll);
+    border1.setChild(&canvas);
     // border1.setChild(&list);
 
     // border.setBorderThickness(10);
@@ -146,6 +153,9 @@ int main(int argc, char **argv)
     // border1.setBorderThickness(5);
 
     border1.setBorderRadius(20);
+
+
+    canvas.addChild(&scroll, {300.f, 300.f}, {350.f, 100.f});
 
 
    
