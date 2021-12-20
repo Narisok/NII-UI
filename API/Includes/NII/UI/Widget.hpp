@@ -16,6 +16,8 @@ namespace nii::ui
             , size(size)
         { 
             setBoundSize(size);
+            renderer.create(32,32);
+            renderer.setSmooth(true);
         }
 
         Primitive* intersectNext(Vec2f pos) override;

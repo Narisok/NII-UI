@@ -18,6 +18,49 @@ namespace nii::ui
         IndentsFloat padding;
     };
 
+    class Focusable
+    {
+    public:
+        inline Focusable()
+            : focused(false)
+        {}
+
+        inline void beginFocus()
+        {
+            if (!focused) {
+                focused = true;
+                focus();
+            }
+        }
+
+        inline void endFocus()
+        {
+            if (focused) {
+                focused = false;
+                lostFocus();
+            }
+        }
+
+
+        inline virtual void focus() {};
+        inline virtual void lostFocus() {};
+
+        inline virtual void textEntered(sf::Uint32 unicode) {};
+        // template<class U>
+        // inline void setPadding(Indents<U> indents) {
+        //     padding = indents;
+        // }
+
+        inline void onText(nii::util::Event<sf::String>::Function calleable)
+        {
+            textEvent.addListener(std::move(calleable));
+        }
+
+    protected:
+        nii::util::Event<sf::String> textEvent;
+        bool focused;
+    };
+
     enum class ObjectFit: char
     {
         Fill = 0x1,
@@ -88,5 +131,5 @@ namespace nii::ui
         return font;
     }
 
-    
+
 }

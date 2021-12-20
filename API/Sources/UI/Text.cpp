@@ -17,7 +17,8 @@ namespace nii::ui
         , wrapAfter(500)
         , wrapEnabled(false)
     {
-        renderer.create(320, 32);
+        // renderer.create(320, 32);
+        // renderer.setSmooth(true);
     }
 
     Text::~Text()
@@ -26,10 +27,10 @@ namespace nii::ui
 
     void Text::redraw()
     {
-        auto states = sf::RenderStates::Default;
-        renderer.clear(sf::Color(0,0,0,0));
-        renderer.draw(text, states);
-        renderer.display();
+        // auto states = sf::RenderStates::Default;
+        // renderer.clear(sf::Color(0,0,0,0));
+        // renderer.draw(text, states);
+        // renderer.display();
 
 
         needRedraw = false;
@@ -46,7 +47,8 @@ namespace nii::ui
         if (needRedraw) {
             const_cast<Text*>(this)->redraw();
         }
-        target.draw(sf::Sprite(renderer.getTexture()), states);
+        // target.draw(sf::Sprite(renderer.getTexture()), states);
+        target.draw(text, states);
     }
 
     void Text::setSize(const Vec2f& newSize, bool withRedraw)
@@ -65,16 +67,16 @@ namespace nii::ui
 
     void Text::restartRenderer(Vec2f size)
     {
-        auto [width, height] = renderer.getSize();
-        if(size.x > width || size.y > height) {
-            while (width < size.x) {
-                width += 32;
-            }
-            while (height < size.y) {
-                height += 32;
-            }
-            renderer.create(width, height);
-        }
+        // auto [width, height] = renderer.getSize();
+        // if(size.x > width || size.y > height) {
+        //     while (width < size.x) {
+        //         width += 32;
+        //     }
+        //     while (height < size.y) {
+        //         height += 32;
+        //     }
+        //     renderer.create(width, height);
+        // }
     }
 
 

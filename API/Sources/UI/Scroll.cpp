@@ -18,6 +18,7 @@ namespace nii::ui
         , plane(PlaneVertical)
     {
         renderer.create(64, 64);
+        renderer.setSmooth(true);
         setSize({size.x, size.y});
     }
 

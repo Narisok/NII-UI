@@ -18,8 +18,9 @@ public:
     nii::ui::core::Primitive* mainUi {};
     nii::ui::core::Primitive* pressPrimitive {};
     nii::ui::core::Primitive* hoverPrimitive {};
+    nii::ui::core::Primitive* focusedPrimitive {};
 
-    sf::Window* window {};
+    sf::RenderWindow* window {};
 
     Vec2f mousePosition {};
 
@@ -30,7 +31,9 @@ int main(int argc, char **argv)
     sf::ContextSettings contextSettings;
 
     sf::RenderWindow window(sf::VideoMode(1200, 800), "SFML works!", sf::Style::Default, contextSettings);
+    // window.
     eventController.window = &window;
+
 
    
 
@@ -215,7 +218,16 @@ int main(int argc, char **argv)
     // nii::ui::Text nText(L"My new text");
     nii::ui::Button button;
     button.setShrinkToFit(true);
-    border1.setChild(&button);
+
+    nii::ui::TextArea area;
+    border1.setChild(&area);
+    area.setShrinkToFit(true);
+    area.onText([&area](sf::String str) {
+        if (str.getSize() == 0) {
+            // area.setInputString("Not empty");
+        }
+        printf("TEXT: %S\n", str.getData());
+    });
     button.onClick([]() {
         printf("CLICK FROM MYY\n");
     });
@@ -267,15 +279,7 @@ int main(int argc, char **argv)
 
         window.clear();
         
-        // auto view = sf::View({0,200}, {1200/2, 800/2});// 1200, 800
-        window.setView(tmp);
-        // auto rect = view.getViewport();
         window.draw(widget);
-        // sf::RectangleShape sh(view.getSize());
-        // sh.setPosition(view.getCenter());
-        // sh.setOrigin(view.getSize().x/2, view.getSize().y/2);
-        // sh.setFillColor({255,0,0});
-        // window.draw(sh);
 
         window.display();
     }
@@ -291,9 +295,17 @@ void EventController::update()
     while (window->pollEvent(event))
         {
             bool shiftPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::LShift);
-            
+
             if (event.type == sf::Event::Closed) {
                 window->close();
+            }
+            if (event.type == sf::Event::Resized) {
+                sf::FloatRect visibleArea(0, 0, event.size.width, event.size.height);
+                window->setView(sf::View(visibleArea));
+                if (mainUi) {
+                    auto [w, h] = window->getSize();
+                    mainUi->setSize({static_cast<float>(w), static_cast<float>(h)});
+                }
             }
 
 
@@ -320,7 +332,11 @@ void EventController::update()
 
             if (event.type == sf::Event::TextEntered)
             {
-                // text entered string UTF  event.text.unicode
+                if (focusedPrimitive) {
+                    if (auto focusable = dynamic_cast<nii::ui::Focusable*>(focusedPrimitive)) {
+                        focusable->textEntered(event.text.unicode);
+                    }
+                }
             }
 
             if (event.type == sf::Event::MouseWheelScrolled) {
@@ -334,27 +350,42 @@ void EventController::update()
             }
             if (event.type == sf::Event::MouseButtonPressed) {
                 switch (event.mouseButton.button) {
-                    case sf::Mouse::Button::Left:
+                    case sf::Mouse::Button::Left: {
                         pressPrimitive = hoverPrimitive;
                         if (pressPrimitive) {
                             pressPrimitive->beginPress();
                         }
+
+                        if (auto focusable = dynamic_cast<nii::ui::Focusable*>(focusedPrimitive)) {
+                            focusable->endFocus();
+                        }
+                        focusedPrimitive = nullptr;
+
                         break;
+                    }
                 }
             }
             if (event.type == sf::Event::MouseButtonReleased) {
                  switch(event.mouseButton.button) {
-                    case sf::Mouse::Button::Left:
+                    case sf::Mouse::Button::Left: {
+
                         auto releasePrimitive = hoverPrimitive;
                         if (releasePrimitive) {
                             releasePrimitive->beginRelease();
                         }
                         if (releasePrimitive == pressPrimitive) {
                             releasePrimitive->beginClick();
+
+                            focusedPrimitive = releasePrimitive;
+                            if (auto focusable = dynamic_cast<nii::ui::Focusable*>(focusedPrimitive)) {
+                                focusable->beginFocus();
+                            }
+
                         }
 
                         pressPrimitive = nullptr;
                         break;
+                    }
                  }
             }
         }

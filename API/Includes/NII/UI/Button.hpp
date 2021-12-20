@@ -26,19 +26,19 @@ namespace nii::ui
         {
             auto text = new Text(L"press");
             text->setFillColor({0, 0, 0});
-            // setChild(text);
-            auto l = new List;
-            l->setPlane(PlaneHorizontal);
-            sf::Texture* textureTrash = new sf::Texture;
-            textureTrash->loadFromFile("delete-white-24.png");
-            auto img = new Image;
-            img->setTexture(*textureTrash);
-            img->setFillColor({100, 70, 70});
-            img->setViewSize({32.f, 32.f});
-            l->addChild(img);
-            l->addChild(text);
-            l->setShrinkToFit(true);
-            setChild(l);
+            setChild(text);
+            // auto l = new List;
+            // l->setPlane(PlaneHorizontal);
+            // sf::Texture* textureTrash = new sf::Texture;
+            // textureTrash->loadFromFile("delete-white-24.png");
+            // auto img = new Image;
+            // img->setTexture(*textureTrash);
+            // img->setFillColor({100, 70, 70});
+            // img->setViewSize({32.f, 32.f});
+            // l->addChild(img);
+            // l->addChild(text);
+            // l->setShrinkToFit(true);
+            // setChild(l);
 
         }
 

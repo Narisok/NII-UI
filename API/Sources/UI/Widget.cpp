@@ -1,6 +1,7 @@
 #include "NII/UI/Widget.hpp"
 
 #include <SFML/Graphics/Sprite.hpp>
+#include <cmath>
 
 namespace nii::ui
 {
@@ -37,7 +38,10 @@ namespace nii::ui
 
     void Widget::setSize(const Vec2f& size, bool withRedraw)
     {
-        renderer.create(size.x, size.y);
+        renderer.create(ceil(size.x), ceil(size.y));
+        if (root) {
+            root->setBoundSize({size.x, size.y});
+        }
         if (withRedraw) {
             Primitive::redraw();
         }

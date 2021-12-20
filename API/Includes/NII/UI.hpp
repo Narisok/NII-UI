@@ -9,3 +9,4 @@
 #include "UI/Scroll.hpp"
 #include "UI/Canvas.hpp"
 #include "UI/Button.hpp"
+#include "UI/TextArea.hpp"

@@ -139,10 +139,10 @@ namespace nii::ui
         auto [width, height] = renderer.getSize();
         if(size.x > width || size.y > height) {
             while (width < size.x) {
-                width *= 2;
+                width += 32;
             }
             while (height < size.y) {
-                height *= 2;
+                height += 32;
             }
             renderer.create(width, height);
         }
