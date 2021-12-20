@@ -9,12 +9,13 @@ namespace nii::ui
 {
     class Paddingable
     {
+    public:
         // template<class U>
         // inline void setPadding(Indents<U> indents) {
         //     padding = indents;
         // }
 
-    protected:
+    // protected:
         IndentsFloat padding;
     };
 

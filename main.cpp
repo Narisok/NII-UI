@@ -220,14 +220,15 @@ int main(int argc, char **argv)
     button.setShrinkToFit(true);
 
     nii::ui::TextArea area;
-    border1.setChild(&area);
+    nii::ui::CheckBox check;
+    nii::ui::List l1;
+    l1.addChild(&area);
+    l1.addChild(&button);
+    l1.addChild(&check);
+    border1.setChild(&l1);
     area.setShrinkToFit(true);
-    area.onText([&area](sf::String str) {
-        if (str.getSize() == 0) {
-            // area.setInputString("Not empty");
-        }
-        printf("TEXT: %S\n", str.getData());
-    });
+    check.setShrinkToFit(true);
+    // check.setIsChecked(true);
     button.onClick([]() {
         printf("CLICK FROM MYY\n");
     });

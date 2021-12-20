@@ -152,6 +152,7 @@ namespace nii::ui
             if (needRedraw) {
                 const_cast<TextArea*>(this)->redraw();
             }
+            target.draw(shape, states);
             if (child) {
                 states.transform *= shape.getTransform();
                 states.transform.translate(padding.left, padding.top);
