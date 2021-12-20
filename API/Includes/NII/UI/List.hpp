@@ -16,6 +16,9 @@ namespace nii::ui
         virtual ~List();
 
 
+        Primitive* intersectNext(Vec2f pos) override;
+
+
 
         // Vec2f getChildBoundSize(size_t idx) const;
         void addChild(core::Primitive* child);

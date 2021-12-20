@@ -13,6 +13,8 @@ namespace nii::ui
     public:
         Scroll();
         virtual ~Scroll();
+
+        Primitive* intersectNext(Vec2f pos) override;
     
         void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
@@ -26,6 +28,10 @@ namespace nii::ui
         void setViewSize(const Vec2f& newSize);
         void resetViewSize();
         void move(Vec2f pos);
+
+
+        void scroll(float delta) override;
+        void scrollHorizontal(float delta) override;
 
 
     private:

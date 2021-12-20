@@ -24,11 +24,22 @@ namespace nii::ui
     {
     }
 
+    core::Primitive* Canvas::intersectNext(Vec2f pos)
+    {
+        for (auto& slot : slots) {
+            auto [width, height] = slot.getSize();
+            auto [x, y] = slot.getPosition();
+            if (sf::FloatRect(x, y, width, height).contains(pos.x, pos.y)) {
+                return slot.intersect({pos.x - x, pos.y - y});
+            }
+        }
+
+        return nullptr;
+    }
+
     void Canvas::redraw()
     {
         auto states = sf::RenderStates::Default;
-
-        cout << "REDRAW" << endl;
 
         renderer.clear(sf::Color(0,0,0,0));
         sf::RectangleShape s(getSize());

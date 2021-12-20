@@ -10,17 +10,29 @@
 #include <array>
 #include <iostream>
 
+class EventController
+{
+public:
+    void update();
+
+    nii::ui::core::Primitive* mainUi {};
+    nii::ui::core::Primitive* pressPrimitive {};
+    nii::ui::core::Primitive* releasePrimitive {};
+    nii::ui::core::Primitive* hoverPrimitive {};
+
+    sf::Window* window {};
+
+    Vec2f mousePosition {};
+
+}eventController;
+
 int main(int argc, char **argv)
 {
-    sf::ContextSettings contextSettings(
-        4, // depth
-        2, // stencil
-        0, // antialiasing
-        3,
-        0
-        );
+    sf::ContextSettings contextSettings;
 
     sf::RenderWindow window(sf::VideoMode(1200, 800), "SFML works!", sf::Style::Default, contextSettings);
+    eventController.window = &window;
+
    
 
     sf::Texture textureBookmark;
@@ -69,6 +81,7 @@ int main(int argc, char **argv)
     rs2.setFillColor({0, 250,0});
 
     nii::ui::Widget widget({1200, 800});
+    eventController.mainUi = &widget;
     widget.renderer.create(1920, 1080);
     widget.renderer.setSmooth(true);
 
@@ -83,6 +96,42 @@ int main(int argc, char **argv)
     // text.setWrapEnabled(true);
     text.setWrapAfter(200);
 
+    nii::ui::Text textc1;
+    textc1.setCharacterSize(20);
+    textc1.setFont(font);
+    textc1.setFillColor({255, 0,0});
+    textc1.setText("Hello1 omg long text omg oeunths sntaoeu");
+    // text.setWrapEnabled(true);
+    textc1.setWrapAfter(200);
+
+    nii::ui::Text text1;
+    text1.setCharacterSize(20);
+    text1.setFont(font);
+    text1.setFillColor({255, 0,0});
+    text1.setText("Hello2");
+
+    nii::ui::Text text2;
+    text2.setCharacterSize(60);
+    text2.setFont(font);
+    text2.setFillColor({255, 0,0});
+    text2.setText("Hellmg oeunths");
+    // text2.setWrapEnabled(true);
+    // text2.setWrapAfter(200);
+
+    nii::ui::Text text3;
+    text3.setCharacterSize(20);
+    text3.setFont(font);
+    text3.setFillColor({255, 0,0});
+    text3.setText("Hello1");
+
+    nii::ui::Text text4;
+    text4.setCharacterSize(14);
+    text4.setFont(font);
+    text4.setFillColor({255, 0,0});
+    text4.setText("Hellmg31 axoeu sntaoeu");
+    text4.setWrapEnabled(true);
+    text4.setWrapAfter(200);
+
     // border.shape.setFillColor({255,0,0});
     // border1.shape.setFillColor({0,255,0});
 
@@ -93,15 +142,21 @@ int main(int argc, char **argv)
     image.setTexture(textureFace, false);
     image.setViewSize({200, 200});
 
+    nii::ui::Image image1;
+
+    image1.setFillColor({100, 255, 60});
+    image1.setTexture(textureFace, false);
+    image1.setViewSize({200, 200});
+
     nii::ui::Grid grid;
 
-    // grid.addChild(&image,0,0);
+    grid.addChild(&text1,0,0);
 
-    // grid.addChild(&image,0,1);
+    grid.addChild(&text2,0,1);
+    grid.addChild(&text3,2,2);
 
-    // grid.addChild(&text,6,6);
 
-    // grid.addChild(&text,5,6);
+    grid.addChild(&text4,1,2);
 
     // grid.addChild(&text,4,6);
 
@@ -116,15 +171,19 @@ int main(int argc, char **argv)
 
     nii::ui::Canvas canvas;
     canvas.setViewSize({500.f, 500.f});
-    canvas.addChild(&text, {100.f, 100.f}, {20.f, 20.f});
+    canvas.addChild(&textc1, {100.f, 100.f}, {20.f, 20.f});
+
+    canvas.addChild(&image1, {100.f, 400.f}, {220.f, 220.f});
+
+
+
 
 
 
     nii::ui::List list;
 
-    // list.addChild(&image);
-    // list.addChild(&text);
-    // list.addChild(&image);
+    list.addChild(&text);
+    list.addChild(&image);
 
     // image.shape.setFillColor({100, 10, 60});
     // image.shape.setTexture(&textureBookmark);
@@ -136,17 +195,42 @@ int main(int argc, char **argv)
     text.setWrapEnabled(true);
 
     nii::ui::Scroll scroll;
-    scroll.setChild(&image);
-    image.setViewSize({1000, 1000});
-    scroll.setViewSize({200, 200});
+    scroll.setChild(&list);
+    // scroll.setChild(&grid);
+
+    canvas.addChild(&scroll, {300.f, 300.f}, {350.f, 100.f});
+    
+    // scroll.setChild(&image);
+    image.setUseTexture(true);
+    image.setViewSize({700, 300});
+    // image.set
+    scroll.setViewSize({300, 500});
     scroll.setShrinkToFit(false);
+    scroll.setShrinkToFit(true);
 
     widget.setRoot(&border);
     border.setChild(&border1);
+    // border1.setChild(&grid);
     // border1.setChild(&image);
     // border1.setChild(&scroll);
     border1.setChild(&canvas);
     // border1.setChild(&list);
+    // border1.setChild(&text);
+    text.setShrinkToFit(true);
+    text.setText("Hello my name is Andrew!");
+    border1.child.setAlign(nii::ui::AlignCenter);
+    border1.child.setVAlign(nii::ui::VAlignCenter);
+    // border1.setShrinkToFit(true);
+    // image.setShrinkToFit(false);
+    // scroll.move({0.f, 2056.f});
+    // list.setShrinkToFit(true);
+    // scroll.setShrinkToFit(true);
+    image.setViewSize({1200, 1200});
+    image.setShrinkToFit(false);
+    image.setShrinkToFit(true);
+    grid.setShrinkToFit(true);
+
+    list.setShrinkToFit(true);
 
     // border.setBorderThickness(10);
     border1.setBorderColor({50, 50, 255, 100});
@@ -154,8 +238,6 @@ int main(int argc, char **argv)
 
     border1.setBorderRadius(20);
 
-
-    canvas.addChild(&scroll, {300.f, 300.f}, {350.f, 100.f});
 
 
    
@@ -173,105 +255,10 @@ int main(int argc, char **argv)
     
     while (window.isOpen())
     {
-        sf::Event event;
-        while (window.pollEvent(event))
-        {
-            bool h = sf::Keyboard::isKeyPressed(sf::Keyboard::LShift);
-            if (event.type == sf::Event::Closed) {
-                window.close();
-            }
-            if (event.type == sf::Event::KeyPressed) {
-                switch (event.key.code) {
-                    case sf::Keyboard::A:
-                        // image.setObjectFit(nii::ui::ObjectFit::Fill);
-                        // text.setFontStyle(nii::ui::FontStyle::Regular);
-                        border1.child.setAlign(nii::ui::AlignLeft);
-                        
-                        break;
-                    case sf::Keyboard::O:
-                        // image.setObjectFit(nii::ui::ObjectFit::Cover);
-                        // text.setFontStyle(nii::ui::FontStyle::Bold);
-                        border1.child.setAlign(nii::ui::AlignCenter);
-                        break;
-                    case sf::Keyboard::E:
-                        // image.setObjectFit(nii::ui::ObjectFit::Contain);
-                        // text.setFontStyle(nii::ui::FontStyle::StrikeThrough);
-                        border1.child.setAlign(nii::ui::AlignRight);
-                        break;
+        
 
-                        case sf::Keyboard::SemiColon:
-                        border1.child.setVAlign(nii::ui::VAlignTop);
-                        
-                        break;
-                    case sf::Keyboard::Q:
-                        border1.child.setVAlign(nii::ui::VAlignCenter);
-                        break;
-                    case sf::Keyboard::J:
-                        border1.child.setVAlign(nii::ui::VAlignBottom);
-                        break;
-
-                    case sf::Keyboard::U:
-                        // image.setViewSize({200, 200});
-                        text.setText("Hello");
-                    break;
-
-                    case sf::Keyboard::I:
-                        // image.setViewSize({300, 150});
-                        text.setText(L"Привіт це дуже великий текст\nThis is a very long text!");
-                    break;
-
-                    case sf::Keyboard::W:
-                        text.setWrapEnabled(!text.wrapEnabled);
-                    break;
-
-                    case sf::Keyboard::M:
-                        list.setPlane(list.plane == nii::ui::Plane::Vertical ? nii::ui::Plane::Horizontal : nii::ui::Plane::Vertical);
-                    break;
-                }
-            }
-            if (event.type == sf::Event::MouseWheelScrolled) {
-                if (event.mouseWheelScroll.delta > 0) {
-                    scroll.move({h ? -10.f : 0.f, h ? 0.f : -10.f});
-                } else {
-                    scroll.move({h ? 10.f : 0.f, h ? 0.f : 10.f});
-                }
-            }
-            if (event.type == sf::Event::MouseButtonPressed) {
-                switch(event.mouseButton.button) {
-
-                    case sf::Mouse::Button::Left:
-                        border.setShrinkToFit(!border.shrinkToFit);
-                        rshape.setRadius(rshape.getRadius()+5);
-                        break;
-                    case sf::Mouse::Button::Right:
-                        list.setShrinkToFit(!list.shrinkToFit);
-                        grid.setShrinkToFit(!grid.shrinkToFit);
-                        // image.setShrinkToFit(!image.shrinkToFit);
-                        // text.setShrinkToFit(!text.shrinkToFit);
-                        // rshape.setRadius(rshape.getRadius()-5);
-                        break;
-
-                    case sf::Mouse::Button::Middle:
-                        border1.setShrinkToFit(!border1.shrinkToFit);
-                        break;
-
-                    case sf::Mouse::Button::XButton1:
-                        // image.setViewSize({300, 200});
-                        image.setUseTexture(!image.useTexture);
-
-                        // image.setFillColor({100, 255, 60});
-                        
-                        break;
-                    case sf::Mouse::Button::XButton2:
-                        // image.resetViewSize();
-                        image.setShrinkToFit(!text.shrinkToFit);
-                        text.setShrinkToFit(!text.shrinkToFit);
-
-                        // image.setFillColor({255, 255, 0});
-                        break;
-                }
-            }
-        }
+        eventController.update();
+        
 
         window.clear();
         
@@ -290,4 +277,74 @@ int main(int argc, char **argv)
 
 
     return 0;
+}
+
+
+void EventController::update()
+{
+    sf::Event event;
+    while (window->pollEvent(event))
+        {
+            bool shiftPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::LShift);
+            if (event.type == sf::Event::Closed) {
+                window->close();
+            }
+            if (event.type == sf::Event::KeyPressed) {
+                switch (event.key.code) {
+                    // key pressed
+                }
+            }
+
+            if (event.type == sf::Event::MouseMoved)
+            {
+                mousePosition = {static_cast<float>(event.mouseMove.x), static_cast<float>(event.mouseMove.y)};
+                // printf("M: x:%f; y:%f;\n", mousePosition.x, mousePosition.y);
+                auto hovered = mainUi->intersect(mousePosition);
+                // printf("H: %p;\n", hovered);
+                if (hovered != hoverPrimitive) {
+                    if (hoverPrimitive) {
+                        hoverPrimitive->beginUnhover();
+                    }
+                    hoverPrimitive = hovered;
+                    if (hovered) {
+                        hovered->beginHover();
+                    } 
+                }
+                // mouse moved event.mouseMove.x event.mouseMove.y
+            }
+
+            if (event.type == sf::Event::TextEntered)
+            {
+                // text entered string UTF  event.text.unicode
+            }
+
+            if (event.type == sf::Event::MouseWheelScrolled) {
+                // mouse wheel event.mouseWheelScroll.delta
+
+                // auto scrollPrimitive = mainUi->intersect(mousePosition);
+                if (hoverPrimitive) {
+                    if (shiftPressed) {
+                        hoverPrimitive->scrollHorizontal(event.mouseWheelScroll.delta);
+                    } else {
+                        hoverPrimitive->scroll(event.mouseWheelScroll.delta);
+                    }
+                }
+            }
+            if (event.type == sf::Event::MouseButtonPressed) {
+                switch(event.mouseButton.button) {
+
+                    case sf::Mouse::Button::Left:
+                        // press
+                        break;
+                }
+            }
+            if (event.type == sf::Event::MouseButtonReleased) {
+                 switch(event.mouseButton.button) {
+
+                    case sf::Mouse::Button::Left:
+                        // released
+                        break;
+                 }
+            }
+        }
 }

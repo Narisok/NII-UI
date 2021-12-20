@@ -28,6 +28,43 @@ namespace nii::ui::core
     ChildPrimitive::~ChildPrimitive()
     {}
 
+    Primitive* ChildPrimitive::intersect(Vec2f pos)
+    {
+        
+
+        if (child) {
+            auto [width, height] = child->getSize();
+            auto [bwidth, bheight] = child->getBoundSize();
+            Vec2f bound {0.f, 0.f};
+            switch (align) {
+                case Align::Left:
+                    break;
+                case Align::Center:
+                    bound.x = (bwidth-width) / 2.f;
+                    break;
+                case Align::Right:
+                    bound.x = bwidth-width;
+                    break;
+            }
+
+            switch (valign) {
+                case VAlign::Top:
+                    break;
+                case VAlign::Bottom:
+                    bound.y = bheight - height;
+                    break;
+                case VAlign::Center:
+                    bound.y = (bheight - height) / 2.f;
+                    break;
+            }
+            if (pos.x >= bound.x && pos.y >= bound.y) {
+                return child->intersect({pos.x - bound.x, pos.y - bound.y});
+            }
+        }
+
+        return nullptr;
+    }
+
     void ChildPrimitive::setChild(Primitive* parent, Primitive* newChild, Vec2f boundSize)
     {
         child = newChild;

@@ -20,6 +20,16 @@ namespace nii::ui
         void setSize(const nii::util::Vec2f& size, bool withRedraw = true) override;
         nii::util::Vec2f getShrinkedSize() const override;
 
+        inline void hover() override
+        {
+            setFillColor({0,220,30, 255});
+        }
+        
+        inline void unhover() override
+        {
+            setFillColor({0,30,30, 50});
+        }
+
 
         void setFillColor(sf::Color newColor);
 

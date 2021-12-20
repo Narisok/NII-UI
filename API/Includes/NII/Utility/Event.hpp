@@ -71,12 +71,13 @@ namespace nii::util
     template<class ... ARGS>
     class Event : public base::Event<ARGS...>
     {
-    using BaseListener = base::Listener<ARGS...>;
-    using Function  = std::function<void(ARGS...)>;
-    using Listener  = BaseListener*;
-    using Variant   = std::variant<Function, Listener>;
-    using Container = std::list<Variant>;
-    using Iterator  = typename Container::iterator;
+    public:
+     using BaseListener = base::Listener<ARGS...>;
+     using Function  = std::function<void(ARGS...)>;
+     using Listener  = BaseListener*;
+     using Variant   = std::variant<Function, Listener>;
+     using Container = std::list<Variant>;
+     using Iterator  = typename Container::iterator;
 
     public:
         class ListenerHandler

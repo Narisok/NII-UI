@@ -25,6 +25,28 @@ namespace nii::ui
     {
     }
 
+    core::Primitive* Scroll::intersectNext(Vec2f pos)
+    {
+        if (child) {
+            auto tmp = renderer.getSize();
+            float rx = tmp.x;
+            float ry = tmp.y;
+
+            auto [bx, by] = getSize();
+            bx;
+            by;
+            auto childSize = child.getSize();
+            childSize.x = bx > childSize.x ? bx : childSize.x;
+            childSize.y = by > childSize.y ? by : childSize.y;
+            center.x = std::clamp(center.x, bx / 2.f, childSize.x - bx / 2.f);
+            center.y = std::clamp(center.y, by / 2.f, childSize.y - by / 2.f);
+
+            return child.intersect({pos.x+(center.x - bx/2.f), pos.y+(center.y - by/2.f)});
+        }
+
+        return nullptr;
+    }
+
     void Scroll::redraw()
     {
         auto states = sf::RenderStates::Default;
@@ -108,6 +130,7 @@ namespace nii::ui
     void Scroll::setSize(const Vec2f& newSize, bool withRedraw)
     {
         restartRenderer(newSize);
+        // child.setBoundSize(child.getShrinkedSize());
 
         if(withRedraw) {
             Primitive::redraw();
@@ -119,10 +142,10 @@ namespace nii::ui
         auto [width, height] = renderer.getSize();
         if(size.x > width || size.y > height) {
             while (width < size.x) {
-                width *= 2;
+                width += 64;
             }
             while (height < size.y) {
-                height *= 2;
+                height += 64;
             }
             renderer.create(width, height);
         }
@@ -131,6 +154,7 @@ namespace nii::ui
 
     void Scroll::setChild(Primitive* newChild)
     {
+        printf("SET CHILD: x:%f; y:%f;\n", newChild->getShrinkedSize().x, newChild->getShrinkedSize().y);
         child.setChild(this, newChild, newChild->getShrinkedSize());
     }
 
@@ -138,8 +162,8 @@ namespace nii::ui
     void Scroll::setViewSize(const Vec2f& newSize)
     {
         size = newSize;
-        center.x = (size.x - 10) / 2.f;
-        center.y = (size.y - 10) / 2.f;
+        center.x = (size.x /* - 10 */) / 2.f;
+        center.y = (size.y /* - 10 */) / 2.f;
         setSize(size);
         setShrinkToFit(true);
     }
@@ -152,7 +176,6 @@ namespace nii::ui
         childSize.y = mySize.y > childSize.y ? mySize.y : childSize.y;
         center.x = std::clamp(center.x + pos.x, mySize.x / 2.f, childSize.x - mySize.x / 2.f);
         center.y = std::clamp(center.y + pos.y, mySize.y / 2.f, childSize.y - mySize.y / 2.f);
-        cout << "Y: " << mySize.y / 2.f << " | " << childSize.y - mySize.y / 2.f << endl;
 
         Primitive::redraw();
     }
@@ -171,4 +194,15 @@ namespace nii::ui
     {
         return size;
     }
+
+    void Scroll::scroll(float delta)
+    {
+        move({0.f, 20.f * -delta});
+    }
+
+    void Scroll::scrollHorizontal(float delta)
+    {
+        move({20.f * -delta, 0.f});
+    }
+
 }

@@ -21,6 +21,30 @@ namespace nii::ui
     Grid::~Grid()
     {}
 
+
+    core::Primitive* Grid::intersectNext(Vec2f pos)
+    {
+        float tmpColsWidth = 0;
+        for (auto r = 0u; r < rowsCount; r++) {
+            float height = findRowHeight(r);
+            
+            for (auto c = 0u; c < columnsCount; c++) {
+                float width = findColumnWidth(c);
+                tmpColsWidth += width;
+                if (width >= pos.x && height >= pos.y) {
+                    return children[r][c].intersect(pos);
+                }
+                pos.x -= width;
+                
+            }
+            pos.x += tmpColsWidth;
+            pos.y -= height;
+            tmpColsWidth = 0;
+            
+        }
+        return nullptr;
+    }
+
     void Grid::redraw()
     {
         if (shrinkToFit) {

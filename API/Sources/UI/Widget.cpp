@@ -7,10 +7,22 @@ namespace nii::ui
     void Widget::redraw()
     {
         renderer.clear();
-        root->draw(renderer, sf::RenderStates::Default);
+        
+        if (root) {
+            root->draw(renderer, sf::RenderStates::Default);
+        }
         renderer.display();
 
         needRedraw = false;
+    }
+
+    core::Primitive* Widget::intersectNext(Vec2f pos)
+    {
+        printf("W: x:%f; y:%f;\n", pos.x, pos.y);
+        if (root) {
+            return root->intersect(pos);
+        }
+        return nullptr;
     }
 
     void Widget::draw(sf::RenderTarget& target, sf::RenderStates states) const
@@ -28,7 +40,7 @@ namespace nii::ui
     {
         renderer.create(size.x, size.y);
         if (withRedraw) {
-            redraw();
+            Primitive::redraw();
         }
     }
 

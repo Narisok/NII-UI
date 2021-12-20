@@ -18,6 +18,18 @@ namespace nii::ui
         Border(Border&& other);
         virtual ~Border();
 
+        Primitive* intersectNext(Vec2f pos) override;
+
+        inline void hover() override
+        {
+            shape.setFillColor({255,0,0,50});
+            Primitive::redraw();
+        }
+        inline void unhover() override
+        {
+            shape.setFillColor({0,255,0,50});
+            Primitive::redraw();
+        }
 
         const sf::Color& getBorderColor() const;
         void setBorderColor(const sf::Color& color);

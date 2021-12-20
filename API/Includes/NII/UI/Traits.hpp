@@ -1,6 +1,7 @@
 #pragma once
 
 #include <NII/Utility/AgregatesLiterals.hpp>
+#include <NII/Utility/Event.hpp>
 
 #include <SFML/Graphics/Text.hpp>
 

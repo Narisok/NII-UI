@@ -14,6 +14,11 @@ namespace nii::ui::core
     { /* cout << "Primitive ~~" << endl; */ }
 
 
+    Primitive* Primitive::intersectNext(Vec2f pos)
+    {
+        return nullptr;
+    }
+
     void Primitive::redraw() const
     {
         bool recursive = !needRedraw;
@@ -72,15 +77,91 @@ namespace nii::ui::core
     }
 
 
-    // Vec2f Primitive::getSize() const
-    // {
-    //     auto [top, bottom, left, right] = getBound();
-    //     return {right - left, bottom - top};
-    // }
+    void Primitive::hover()
+    {
 
-    // void Primitive::setSize(const Vec2f& size)
-    // {
+    }
 
-    // }
+    void Primitive::unhover()
+    {
+
+    }
+
+    void Primitive::click()
+    {
+
+    }
+
+    void Primitive::press()
+    {
+
+    }
+
+    void Primitive::release()
+    {
+
+    }
+
+
+    void Primitive::scroll(float delta)
+    {
+        if (parent) {
+            parent->scroll(delta);
+        }
+    }
+    void Primitive::scrollHorizontal(float delta)
+    {
+        if (parent) {
+            parent->scrollHorizontal(delta);
+        }
+    }
+
+
+    void Primitive::onHover(Primitive::Event::Function calleable)
+    {
+        hoverEvent.addListener(std::move(calleable));
+    }
+
+    void Primitive::onUnhover(Primitive::Event::Function calleable)
+    {
+        unhoverEvent.addListener(std::move(calleable));
+    }
+    
+    void Primitive::onClick(Primitive::Event::Function calleable)
+    {
+        clickEvent.addListener(std::move(calleable));
+    }
+
+    void Primitive::onPress(Primitive::Event::Function calleable)
+    {
+        pressEvent.addListener(std::move(calleable));
+    }
+
+    void Primitive::onRelease(Primitive::Event::Function calleable)
+    {
+        releaseEvent.addListener(std::move(calleable));
+    }
+
+    void Primitive::beginHover()
+    {
+        if (!hovered) {
+            hovered = true;
+            if (parent) {
+                parent->beginHover();
+            }
+            hover();
+        }
+    }
+
+    void Primitive::beginUnhover()
+    {
+        if (hovered) {
+            hovered = false;
+            if (parent) {
+                parent->beginUnhover();
+            }
+            unhover();
+        }
+    }
 
 }

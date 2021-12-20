@@ -17,6 +17,16 @@ namespace nii::ui
 
         void redraw() /* override */;
 
+        inline void hover() override
+        {
+            setFillColor({0,0,255, 255});
+        }
+
+        inline void unhover() override
+        {
+            setFillColor({0,0,255, 120});
+        }
+
         void setSize(const Vec2f& size, bool withRedraw = true) override;
         Vec2f getShrinkedSize() const override;
 

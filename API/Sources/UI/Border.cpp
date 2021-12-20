@@ -14,7 +14,7 @@ namespace nii::ui
         , shape()
     { 
         padding = {10, 10, 10, 10};
-        cout << "Border ()" << endl; 
+        // cout << "Border ()" << endl; 
     }
 
     Border::Border(const Border& other)
@@ -22,7 +22,7 @@ namespace nii::ui
         , child()
         , shape()
     { 
-        cout << "Border cp" << endl; 
+        // cout << "Border cp" << endl; 
     }
 
     Border::Border(Border&& other)
@@ -30,12 +30,20 @@ namespace nii::ui
         , child()
         , shape()
     { 
-        cout << "Border mv" << endl; 
+        // cout << "Border mv" << endl; 
     }
 
     Border::~Border()
     { 
-        cout << "Border ~~" << endl; 
+        // cout << "Border ~~" << endl; 
+    }
+
+    core::Primitive* Border::intersectNext(Vec2f pos)
+    {
+        if (pos.x >= padding.left && pos.y >= padding.top) {
+            return child.intersect({pos.x - padding.left, pos.y - padding.top});
+        }
+        return nullptr;
     }
 
     void Border::setChild(Primitive* newChild)

@@ -14,6 +14,8 @@ namespace nii::ui
     public:
         Canvas();
         virtual ~Canvas();
+
+        Primitive* intersectNext(Vec2f pos) override;
     
         void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 

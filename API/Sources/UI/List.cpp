@@ -13,6 +13,24 @@ namespace nii::ui
     List::~List()
     {}
 
+    core::Primitive* List::intersectNext(Vec2f pos)
+    {
+        bool vr = plane == PlaneVertical;
+        for (auto& a : children) {
+            auto [width, height] = a.getSize();
+            if (pos.x <= width && pos.y <= height) {
+                return a.intersect(pos);
+            } else {
+                if (vr) {
+                    pos.y -= height;
+                } else {
+                    pos.x -= width;
+                }
+            }
+        }
+        return nullptr;
+    }
+
     void List::redraw()
     {
         if (shrinkToFit) {
@@ -67,7 +85,7 @@ namespace nii::ui
         for (auto& a : children) {
             auto [width, height] = a.getShrinkedSize();
             if (vr) {
-                if (maxWidth < width) {
+                if (width > maxWidth) {
                     maxWidth = width;
                 }
                 maxHeight += height;

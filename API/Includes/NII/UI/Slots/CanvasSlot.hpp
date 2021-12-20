@@ -38,6 +38,8 @@ namespace nii::ui::slots
             nii::ui::core::ChildPrimitive::setChild(parent, newChild, size);
         }
 
+        using sf::Transformable::getPosition;
+
     private:
         using nii::ui::core::ChildPrimitive::setChild;
         using nii::ui::core::ChildPrimitive::draw;

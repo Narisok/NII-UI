@@ -15,6 +15,8 @@ namespace nii::ui
         Grid();
         virtual ~Grid();
 
+        Primitive* intersectNext(Vec2f pos) override;
+
         size_t getRowsCount() const;
         size_t getColumnsCount() const;
 

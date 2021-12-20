@@ -20,7 +20,10 @@ namespace nii::ui::core
         ChildPrimitive(ChildPrimitive&& other);
         
         ChildPrimitive(Primitive* parent, Primitive* newChild, Vec2f boundSize);
+
         virtual ~ChildPrimitive();
+
+        Primitive* intersect(Vec2f pos);
 
         void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
@@ -40,7 +43,7 @@ namespace nii::ui::core
         void setAlign(Align align);
         void setVAlign(VAlign valign);
 
-    protected:
+    // protected:
         Primitive* child;
 
         Align align;
