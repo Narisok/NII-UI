@@ -154,7 +154,7 @@ namespace nii::ui
 
     void Scroll::setChild(Primitive* newChild)
     {
-        printf("SET CHILD: x:%f; y:%f;\n", newChild->getShrinkedSize().x, newChild->getShrinkedSize().y);
+        // printf("SET CHILD: x:%f; y:%f;\n", newChild->getShrinkedSize().x, newChild->getShrinkedSize().y);
         child.setChild(this, newChild, newChild->getShrinkedSize());
     }
 

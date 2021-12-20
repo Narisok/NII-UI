@@ -17,7 +17,6 @@ public:
 
     nii::ui::core::Primitive* mainUi {};
     nii::ui::core::Primitive* pressPrimitive {};
-    nii::ui::core::Primitive* releasePrimitive {};
     nii::ui::core::Primitive* hoverPrimitive {};
 
     sf::Window* window {};
@@ -213,7 +212,13 @@ int main(int argc, char **argv)
     // border1.setChild(&grid);
     // border1.setChild(&image);
     // border1.setChild(&scroll);
-    border1.setChild(&canvas);
+    // nii::ui::Text nText(L"My new text");
+    nii::ui::Button button;
+    button.setShrinkToFit(true);
+    border1.setChild(&button);
+    button.onClick([]() {
+        printf("CLICK FROM MYY\n");
+    });
     // border1.setChild(&list);
     // border1.setChild(&text);
     text.setShrinkToFit(true);
@@ -286,9 +291,12 @@ void EventController::update()
     while (window->pollEvent(event))
         {
             bool shiftPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::LShift);
+            
             if (event.type == sf::Event::Closed) {
                 window->close();
             }
+
+
             if (event.type == sf::Event::KeyPressed) {
                 switch (event.key.code) {
                     // key pressed
@@ -298,9 +306,7 @@ void EventController::update()
             if (event.type == sf::Event::MouseMoved)
             {
                 mousePosition = {static_cast<float>(event.mouseMove.x), static_cast<float>(event.mouseMove.y)};
-                // printf("M: x:%f; y:%f;\n", mousePosition.x, mousePosition.y);
                 auto hovered = mainUi->intersect(mousePosition);
-                // printf("H: %p;\n", hovered);
                 if (hovered != hoverPrimitive) {
                     if (hoverPrimitive) {
                         hoverPrimitive->beginUnhover();
@@ -310,7 +316,6 @@ void EventController::update()
                         hovered->beginHover();
                     } 
                 }
-                // mouse moved event.mouseMove.x event.mouseMove.y
             }
 
             if (event.type == sf::Event::TextEntered)
@@ -319,9 +324,6 @@ void EventController::update()
             }
 
             if (event.type == sf::Event::MouseWheelScrolled) {
-                // mouse wheel event.mouseWheelScroll.delta
-
-                // auto scrollPrimitive = mainUi->intersect(mousePosition);
                 if (hoverPrimitive) {
                     if (shiftPressed) {
                         hoverPrimitive->scrollHorizontal(event.mouseWheelScroll.delta);
@@ -331,18 +333,27 @@ void EventController::update()
                 }
             }
             if (event.type == sf::Event::MouseButtonPressed) {
-                switch(event.mouseButton.button) {
-
+                switch (event.mouseButton.button) {
                     case sf::Mouse::Button::Left:
-                        // press
+                        pressPrimitive = hoverPrimitive;
+                        if (pressPrimitive) {
+                            pressPrimitive->beginPress();
+                        }
                         break;
                 }
             }
             if (event.type == sf::Event::MouseButtonReleased) {
                  switch(event.mouseButton.button) {
-
                     case sf::Mouse::Button::Left:
-                        // released
+                        auto releasePrimitive = hoverPrimitive;
+                        if (releasePrimitive) {
+                            releasePrimitive->beginRelease();
+                        }
+                        if (releasePrimitive == pressPrimitive) {
+                            releasePrimitive->beginClick();
+                        }
+
+                        pressPrimitive = nullptr;
                         break;
                  }
             }

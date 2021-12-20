@@ -9,10 +9,10 @@ namespace nii::ui
 {
     class Paddingable
     {
-        template<class U>
-        inline void setPadding(Indents<U> indents) {
-            padding = indents;
-        }
+        // template<class U>
+        // inline void setPadding(Indents<U> indents) {
+        //     padding = indents;
+        // }
 
     protected:
         IndentsFloat padding;
@@ -75,4 +75,18 @@ namespace nii::ui
     inline constexpr Plane PlaneVertical   = Plane::Vertical;
     inline constexpr Plane PlaneHorizontal = Plane::Horizontal;
 
+
+    inline const sf::Font& GetDefaultFont()
+    {
+        static sf::Font font;
+        static bool loaded = false;
+
+        if (!loaded) {
+            loaded = font.loadFromFile("Fonts/Hauora-Regular.ttf");
+        }
+
+        return font;
+    }
+
+    
 }

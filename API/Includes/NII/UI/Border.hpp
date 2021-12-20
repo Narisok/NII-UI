@@ -20,16 +20,39 @@ namespace nii::ui
 
         Primitive* intersectNext(Vec2f pos) override;
 
-        inline void hover() override
+        // inline void hover() override
+        // {
+        //     shape.setFillColor({255,0,0,50});
+        //     Primitive::redraw();
+        // }
+
+        // inline void press() override
+        // {
+        //     shape.setFillColor({255,255,240,140});
+        //     Primitive::redraw();
+        // }
+
+        // inline void release() override
+        // {
+        //     shape.setFillColor({255,255,240,10});
+        //     Primitive::redraw();
+        // }
+
+        // inline void unhover() override
+        // {
+        //     shape.setFillColor({0,255,0,50});
+        //     Primitive::redraw();
+        // }
+
+        inline void setPadding(IndentsFloat newPadding)
         {
-            shape.setFillColor({255,0,0,50});
+            padding = newPadding;
             Primitive::redraw();
         }
-        inline void unhover() override
-        {
-            shape.setFillColor({0,255,0,50});
-            Primitive::redraw();
-        }
+
+        inline IndentsFloat getPadding() const { return padding; }
+
+
 
         const sf::Color& getBorderColor() const;
         void setBorderColor(const sf::Color& color);
@@ -52,7 +75,7 @@ namespace nii::ui
 
     // private:
         core::ChildPrimitive child;
-        nii::graphics::shapes::RoundedShape shape;
+        mutable nii::graphics::shapes::RoundedShape shape;
         
     };
 }

@@ -4,7 +4,6 @@
 #include <list>
 #include <variant>
 #include <functional>
-;
 
 #include <iostream>
 
@@ -171,20 +170,20 @@ namespace nii::util
         inline Event<ARGS...>::Event()
             : listeners()
         {
-            std::cout << "EVENT" << std::endl;
+            // std::cout << "EVENT" << std::endl;
         }
 
         template<class ... ARGS>
         inline Event<ARGS...>::Event(Event&& other)
             : listeners(std::move(other.listeners))
         {
-            std::cout << "EVENT mv" << std::endl;
+            // std::cout << "EVENT mv" << std::endl;
         }
 
         template<class ... ARGS>
         inline Event<ARGS...>::~Event()
         {
-            std::cout << "~EVENT" << std::endl;
+            // std::cout << "~EVENT" << std::endl;
             for(auto &listener : listeners) {
                 std::visit([this](auto && arg) {
                     if constexpr (std::is_same_v<std::decay_t<decltype(arg)>, Listener>)
@@ -271,7 +270,7 @@ namespace nii::util
             : event(event)
             , iterator(iterator)
         { 
-            std::cout << "LISTENER HAND" << std::endl; 
+            // std::cout << "LISTENER HAND" << std::endl; 
         }
 
         template<class ... ARGS>
@@ -285,7 +284,7 @@ namespace nii::util
                 template<class ... ARGS>
         inline Event<ARGS...>::ListenerHandler::~ListenerHandler()
         {
-            std::cout << "~LISTENER HAND" << std::endl;
+            // std::cout << "~LISTENER HAND" << std::endl;
             if(event != nullptr) {
                 unbind();
             }
@@ -312,20 +311,20 @@ namespace nii::util
         inline Listener<ARGS...>::Listener()
             : events()
         {
-            std::cout << "LISTENER" << std::endl;
+            // std::cout << "LISTENER" << std::endl;
         }
 
         template<class ... ARGS>
         inline Listener<ARGS...>::Listener(Listener&& other)
             : events(std::move(other.events))
         {
-            std::cout << "LISTENER mv" << std::endl;
+            // std::cout << "LISTENER mv" << std::endl;
         }
 
         template<class ... ARGS>
         inline Listener<ARGS...>::~Listener()
         {
-            std::cout << "~LISTENER" << std::endl;
+            // std::cout << "~LISTENER" << std::endl;
             for(auto i : events) {
                 i->unbind(this);
             }

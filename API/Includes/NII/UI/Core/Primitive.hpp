@@ -37,7 +37,6 @@ namespace nii::ui::core
         inline Primitive* intersect(Vec2f pos)
         {
             auto [width, height] = getSize();
-            // printf("PS: x:%f; y:%f;\n", width, height);
             if (static_cast<float>(pos.x) <= width && static_cast<float>(pos.y) <= height) {
                 auto primitive = intersectNext({static_cast<float>(pos.x), static_cast<float>(pos.y)});
                 if (primitive) {
@@ -51,26 +50,13 @@ namespace nii::ui::core
 
         virtual Primitive* intersectNext(Vec2f pos);
 
-        inline void mouseMove(Vec2i pos)
-        {
-            if (!hovered) {
-                hovered = true;
-                if (parent) {
-                    parent->beginHover();
-                }
-                hover();
-            }
-            if (hovered) {
-                hovered = false;
-                if (parent) {
-                    parent->beginUnhover();
-                }
-                unhover();
-            }
-        }
 
         void beginHover();
         void beginUnhover();
+        void beginPress();
+        void beginRelease();
+        void beginClick();
+
     
         virtual void hover();
         virtual void unhover();

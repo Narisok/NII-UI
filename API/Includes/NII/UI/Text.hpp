@@ -10,7 +10,7 @@ namespace nii::ui
     class Text: public core::Primitive
     {
     public:
-        Text();
+        Text(const sf::String& str = sf::String());
         virtual ~Text();
     
         void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
@@ -28,6 +28,16 @@ namespace nii::ui
         inline void unhover() override
         {
             setFillColor({0,30,30, 50});
+        }
+
+        inline void press() override
+        {
+            setFillColor({255,255,240,140});
+        }
+
+        inline void release() override
+        {
+            setFillColor({255,255,240,255});
         }
 
 

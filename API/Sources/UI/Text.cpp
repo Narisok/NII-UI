@@ -8,56 +8,27 @@ using std::endl;
 
 namespace nii::ui
 {
-    Text::Text()
+    Text::Text(const sf::String& str)
         : Primitive()
         , color({255, 255, 255})
-        , text()
-        , string()
+        , text(str, GetDefaultFont(), 16)
+        , string(str)
         , renderer()
-        , wrapAfter(100)
+        , wrapAfter(500)
         , wrapEnabled(false)
     {
-        renderer.create(32, 32);
-        // setSize(size);
-        cout << "Text ()" << endl;
+        renderer.create(320, 32);
     }
 
     Text::~Text()
     {
-        cout << "Text ~~" << endl;
     }
 
     void Text::redraw()
     {
         auto states = sf::RenderStates::Default;
         renderer.clear(sf::Color(0,0,0,0));
-        // text.setString(string);
-        // if (wrapEnabled) {
-        //     float startPos = text.getGlobalBounds().left;
-        //     auto prevString = text.getString();
-        //     sf::String newStr;
-            
-        //     float current = 0;
-        //     for (auto i = 0u; i < text.getString().getSize(); i++) {
-        //         newStr += prevString[i];
-        //         if (prevString[i] == '\n') {
-        //             current = 0;
-        //             startPos = text.getGlobalBounds().left;
-        //             continue;
-        //         }
-        //         current += text.findCharacterPos(i).x - startPos;
-        //         if (current >= wrapAfter) {
-        //             newStr += '\n';
-        //             current = 0;
-        //             startPos = text.findCharacterPos(i).x;
-        //         }
-        //     }
-
-        //     text.setString(newStr);
-        //     renderer.draw(text, states);
-        // } else {
-        // }
-            renderer.draw(text, states);
+        renderer.draw(text, states);
         renderer.display();
 
 
@@ -97,10 +68,10 @@ namespace nii::ui
         auto [width, height] = renderer.getSize();
         if(size.x > width || size.y > height) {
             while (width < size.x) {
-                width *= 2;
+                width += 32;
             }
             while (height < size.y) {
-                height *= 2;
+                height += 32;
             }
             renderer.create(width, height);
         }

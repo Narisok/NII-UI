@@ -23,12 +23,12 @@ namespace nii::ui
     {
         renderer.create(32, 32);
         setSize(size);
-        cout << "Image ()" << endl;
+        // cout << "Image ()" << endl;
     }
 
     Image::~Image()
     {
-        cout << "Image ~~" << endl;
+        // cout << "Image ~~" << endl;
     }
 
     void Image::redraw()

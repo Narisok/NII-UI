@@ -18,7 +18,6 @@ namespace nii::ui
 
     core::Primitive* Widget::intersectNext(Vec2f pos)
     {
-        printf("W: x:%f; y:%f;\n", pos.x, pos.y);
         if (root) {
             return root->intersect(pos);
         }

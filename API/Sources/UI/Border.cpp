@@ -14,7 +14,7 @@ namespace nii::ui
         , shape()
     { 
         padding = {10, 10, 10, 10};
-        // cout << "Border ()" << endl; 
+        // cout << "Border ()" << endl; include
     }
 
     Border::Border(const Border& other)

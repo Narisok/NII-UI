@@ -150,6 +150,7 @@ namespace nii::ui::core
                 parent->beginHover();
             }
             hover();
+            hoverEvent.call();
         }
     }
 
@@ -161,7 +162,29 @@ namespace nii::ui::core
                 parent->beginUnhover();
             }
             unhover();
+            unhoverEvent.call();
         }
+    }
+
+    void Primitive::beginClick()
+    {
+        click();
+        clickEvent.call();
+    }
+
+
+    void Primitive::beginPress()
+    {
+        pressed = true;
+        press();
+        pressEvent.call();
+    }
+
+    void Primitive::beginRelease()
+    {
+        pressed = false;
+        release();
+        releaseEvent.call();
     }
 
 }
