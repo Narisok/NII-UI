@@ -3,20 +3,53 @@
 
 namespace nii::ui::core
 {
-    Primitive::Primitive()
-        : parent(nullptr)
+    Primitive::Primitive(const std::string& name)
+        : name(name)
+        , parent(nullptr)
         , boundSize({0, 0})
+
+        , hoverEvent()
+        , unhoverEvent()
+        , clickEvent()
+        , pressEvent()
+        , releaseEvent()
+
         , shrinkToFit(false)
+        , pressed(false)
+        , hovered(false)
         , needRedraw(true)
-    { /* cout << "Primitive ()" << endl; */ }
+    {
+        if (!this->name.size()) {
+            this->name = naming::GenerateName<Primitive>();
+        }
+    }
 
     Primitive::~Primitive()
-    { /* cout << "Primitive ~~" << endl; */ }
+    {    }
+    
 
+    Primitive* Primitive::intersect(Vec2f pos)
+    {
+        auto [width, height] = getSize();
+        if (static_cast<float>(pos.x) <= width && static_cast<float>(pos.y) <= height) {
+            auto primitive = intersectNext({static_cast<float>(pos.x), static_cast<float>(pos.y)});
+            if (primitive) {
+                return primitive;
+            } else {
+                return this;
+            }
+        }
+        return nullptr;
+    }
 
     Primitive* Primitive::intersectNext(Vec2f pos)
     {
         return nullptr;
+    }
+
+    Primitive* Primitive::findByName(const std::string& name)
+    {
+        return name == this->name ? this : nullptr;
     }
 
     void Primitive::redraw() const
@@ -185,6 +218,17 @@ namespace nii::ui::core
         pressed = false;
         release();
         releaseEvent.call();
+    }
+
+
+    const std::string& Primitive::getName() const
+    {
+        return name;
+    }
+
+    void Primitive::setName(const std::string& newName)
+    {
+        name = newName;
     }
 
 }

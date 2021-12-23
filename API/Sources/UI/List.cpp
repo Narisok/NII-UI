@@ -4,8 +4,8 @@
 
 namespace nii::ui
 {
-    List::List()
-        : Primitive()
+    List::List(const std::string& name)
+        : Primitive(name.size() ? name : naming::GenerateName<List>())
         , children()
         , plane(PlaneVertical)
     {}
@@ -101,10 +101,15 @@ namespace nii::ui
 
     void List::addChild(core::Primitive* child)
     {
+        addChild(std::unique_ptr<core::Primitive>(child));
+    }
+
+    void List::addChild(std::unique_ptr<core::Primitive>&& child)
+    {
         auto [width, height] = getSize();
         auto [cWidth, cHeight] = child->getShrinkedSize();
         bool vr = plane == PlaneVertical;
-        children.emplace_back(this, child, Vec2f{vr ? width : cWidth, vr ? cHeight : height});
+        children.emplace_back(this, std::move(child), Vec2f{vr ? width : cWidth, vr ? cHeight : height});
     }
 
     // void List::removeChild(size_t idx)

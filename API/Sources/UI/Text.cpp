@@ -8,8 +8,8 @@ using std::endl;
 
 namespace nii::ui
 {
-    Text::Text(const sf::String& str)
-        : Primitive()
+    Text::Text(const sf::String& str, const std::string& name)
+        : Primitive(name.size() ? name : naming::GenerateName<Text>())
         , color({255, 255, 255})
         , text(str, GetDefaultFont(), 16)
         , string(str)

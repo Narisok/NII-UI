@@ -4,6 +4,7 @@
 #include <NII/Utility/Event.hpp>
 
 #include <SFML/Graphics/Text.hpp>
+#include <type_traits>
 
 namespace nii::ui
 {
@@ -132,5 +133,16 @@ namespace nii::ui
         return font;
     }
 
+    namespace naming
+    {
+
+        template<class T>
+        inline std::string GenerateName()
+        {
+            static size_t gen = 0;
+            auto cur = gen++;
+            return T::GetDefaultName() +( cur == 0 ? std::string("") : ("_" + std::to_string(cur)));
+        }
+    }
 
 }

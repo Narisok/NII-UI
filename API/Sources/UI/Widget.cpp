@@ -5,6 +5,24 @@
 
 namespace nii::ui
 {
+
+    Widget::Widget(Vec2f size)
+        : renderer()
+        , root()
+        , size(size)
+    { 
+        setBoundSize(size);
+        renderer.create(32,32);
+        renderer.setSmooth(true);
+        printf("WIDGET %s\n", name.c_str());
+    }
+
+    Widget::~Widget()
+    {
+        printf("~WIDGET %s\n", name.c_str());
+    }
+
+
     void Widget::redraw()
     {
         renderer.clear();
@@ -53,13 +71,42 @@ namespace nii::ui
         return {static_cast<float>(width), static_cast<float>(height)};
     }
 
-    void Widget::setRoot(Primitive* newRoot)
+    void Widget::setRoot(core::Primitive* newRoot)
     {
-        root = newRoot;
+        setRoot(std::unique_ptr<core::Primitive>(newRoot));
+    }
+
+    void Widget::setRoot(std::unique_ptr<core::Primitive>&& newRoot)
+    {
+        root = std::move(newRoot);
         auto [width, height] = size;// renderer.getSize();
         root->setBoundSize({static_cast<float>(width), static_cast<float>(height)});
         root->setParent(this);
         // redraw();
+    }
+
+    void Widget::removeRoot()
+    {
+        root.reset();
+    }
+
+    std::unique_ptr<core::Primitive> Widget::extractRoot()
+    {
+        if (root) {
+            root->setParent(nullptr);
+        }
+        return std::move(root);
+    }
+
+    core::Primitive* Widget::findByName(const std::string& name)
+    {
+        if (this->name == name) {
+            return this;
+        }
+        if (root) {
+            return root->findByName(name);
+        }
+        return nullptr;
     }
 
 

@@ -9,8 +9,8 @@ using std::endl;
 
 namespace nii::ui
 {
-     Scroll::Scroll()
-        : Primitive()
+     Scroll::Scroll(const std::string& name)
+        : Primitive(name.size() ? name : naming::GenerateName<Scroll>())
         , size({50,50})
         , center({20, 20})
         , renderer()
@@ -155,8 +155,12 @@ namespace nii::ui
 
     void Scroll::setChild(Primitive* newChild)
     {
-        // printf("SET CHILD: x:%f; y:%f;\n", newChild->getShrinkedSize().x, newChild->getShrinkedSize().y);
-        child.setChild(this, newChild, newChild->getShrinkedSize());
+        setChild(std::unique_ptr<core::Primitive>(newChild));
+    }
+
+    void Scroll::setChild(std::unique_ptr<core::Primitive>&& newChild)
+    {
+        child.setChild(this, std::move(newChild), newChild->getShrinkedSize());
     }
 
 

@@ -10,7 +10,9 @@ namespace nii::ui
     class Image: public core::Primitive
     {
     public:
-        Image();
+        inline static std::string GetDefaultName() { return "Image"; }
+
+        Image(const std::string& name = {});
         virtual ~Image();
     
         void draw(sf::RenderTarget& target, sf::RenderStates states) const override;

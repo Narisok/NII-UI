@@ -34,8 +34,13 @@ namespace nii::ui::slots
 
         inline void setChild(nii::ui::core::Primitive* parent, nii::ui::core::Primitive* newChild, Vec2f size, Vec2f position)
         {
+            setChild(parent, std::unique_ptr<nii::ui::core::Primitive>(newChild), size, position);
+        }
+
+        inline void setChild(nii::ui::core::Primitive* parent, std::unique_ptr<nii::ui::core::Primitive>&& newChild, Vec2f size, Vec2f position)
+        {
             sf::Transformable::setPosition(position);
-            nii::ui::core::ChildPrimitive::setChild(parent, newChild, size);
+            nii::ui::core::ChildPrimitive::setChild(parent, std::move(newChild), size);
         }
 
         using sf::Transformable::getPosition;

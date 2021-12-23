@@ -19,7 +19,7 @@ namespace nii::ui::core
 
         ChildPrimitive(ChildPrimitive&& other);
         
-        ChildPrimitive(Primitive* parent, Primitive* newChild, Vec2f boundSize);
+        ChildPrimitive(Primitive* parent, std::unique_ptr<core::Primitive>&& newChild, Vec2f boundSize);
 
         virtual ~ChildPrimitive();
 
@@ -27,8 +27,10 @@ namespace nii::ui::core
 
         void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
-        void setChild(Primitive* parent, Primitive* newChild, Vec2f boundSize);
+        void setChild(Primitive* parent, std::unique_ptr<Primitive>&& newChild, Vec2f boundSize);
         void setBoundSize(Vec2f bound);
+        std::unique_ptr<Primitive> extractChild();
+        void removeChild();
 
         Vec2f getShrinkedSize() const;
         Vec2f getSize() const;
@@ -43,8 +45,10 @@ namespace nii::ui::core
         void setAlign(Align align);
         void setVAlign(VAlign valign);
 
+        core::Primitive* findByName(const std::string& name);
+
     // protected:
-        Primitive* child;
+        std::unique_ptr<Primitive> child;
 
         Align align;
         VAlign valign;

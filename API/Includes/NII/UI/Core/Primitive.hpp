@@ -3,6 +3,7 @@
 #include "../Traits.hpp"
 #include <NII/Utility/AgregatesLiterals.hpp>
 #include <SFML/Graphics/Drawable.hpp>
+#include <memory>
 
 namespace nii::ui::core
 {
@@ -11,21 +12,18 @@ namespace nii::ui::core
      using Event = nii::util::Event<>;
 
     public:
-        Primitive();
+        inline static std::string GetDefaultName() { return "Primitive"; }
+    
+        Primitive(const std::string& name = {});
         virtual ~Primitive();
         
         void draw(sf::RenderTarget& target, sf::RenderStates states) const override =0;
 
-
         void redraw() const;
-        // virtual void updatedGeometry();
 
-        virtual void setParent(Primitive* parent); //TODO: IS NEED? 
+        virtual void setParent(Primitive* parent);
 
         void setShrinkToFit(bool shrink);
-
-        // IndentsFloat getBound() const;
-        // virtual void setBound(const IndentsFloat& bound);
 
         Vec2f         getSize()         const;
         Vec2f         getBoundSize()    const;
@@ -34,20 +32,7 @@ namespace nii::ui::core
         void setBoundSize(const Vec2f& size);
         virtual void setSize(const Vec2f& size, bool withRedraw = true) =0;
 
-        inline Primitive* intersect(Vec2f pos)
-        {
-            auto [width, height] = getSize();
-            if (static_cast<float>(pos.x) <= width && static_cast<float>(pos.y) <= height) {
-                auto primitive = intersectNext({static_cast<float>(pos.x), static_cast<float>(pos.y)});
-                if (primitive) {
-                    return primitive;
-                } else {
-                    return this;
-                }
-            }
-            return nullptr;
-        }
-
+        Primitive* intersect(Vec2f pos);
         virtual Primitive* intersectNext(Vec2f pos);
 
 
@@ -74,8 +59,29 @@ namespace nii::ui::core
         void onPress(Event::Function calleable);
         void onRelease(Event::Function calleable);
 
+        virtual Primitive* findByName(const std::string& name);
+
+        const std::string& getName() const;
+        void setName(const std::string& newName);
+
+        template<class T>
+        inline T* as()
+        {
+            return dynamic_cast<T*>(this);
+        }
+
+        template<class T>
+        inline void as(std::function<void(T*)> fun)
+        {
+            auto ptr = dynamic_cast<T*>(this);
+            if (ptr) {
+                fun(ptr);
+            }
+        }
 
     // protected:
+        std::string name;
+
         Primitive *parent;
         Vec2f boundSize;
 

@@ -1,6 +1,5 @@
 #include "NII/UI/Border.hpp"
 
-#include <iostream>
 
 using std::cout;
 using std::endl;
@@ -8,34 +7,18 @@ using std::endl;
 
 namespace nii::ui
 {
-     Border::Border()
-        : Primitive()
+     Border::Border(const std::string& name)
+        : Primitive(name.size() ? name : naming::GenerateName<Border>())
         , child()
         , shape()
     { 
         padding = {10, 10, 10, 10};
-        // cout << "Border ()" << endl; include
-    }
-
-    Border::Border(const Border& other)
-        : Primitive()
-        , child()
-        , shape()
-    { 
-        // cout << "Border cp" << endl; 
-    }
-
-    Border::Border(Border&& other)
-        : Primitive()
-        , child()
-        , shape()
-    { 
-        // cout << "Border mv" << endl; 
+        printf("Border %s\n", this->name.c_str());
     }
 
     Border::~Border()
     { 
-        // cout << "Border ~~" << endl; 
+        printf("~Border %s\n", name.c_str());
     }
 
     core::Primitive* Border::intersectNext(Vec2f pos)
@@ -48,7 +31,17 @@ namespace nii::ui
 
     void Border::setChild(Primitive* newChild)
     {
-        child.setChild(this, newChild, getChildBoundSize());
+        setChild(std::unique_ptr<core::Primitive>(newChild));
+    }
+
+    void Border::setChild(std::unique_ptr<core::Primitive>&& newChild)
+    {
+        child.setChild(this, std::move(newChild), getChildBoundSize());
+    }
+
+    std::unique_ptr<core::Primitive> Border::extractRoot()
+    {
+        return child.extractChild();
     }
 
     void Border::redraw()
@@ -137,6 +130,14 @@ namespace nii::ui
     {
         shape.setOutlineColor(color);
         Primitive::redraw();
+    }
+
+    core::Primitive* Border::findByName(const std::string& name)
+    {
+        if (this->name == name) {
+            return this;
+        }
+        return child.findByName(name);
     }
 
 }

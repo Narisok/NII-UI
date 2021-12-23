@@ -11,6 +11,9 @@ namespace nii::ui
     class TextArea: public Border, public Focusable
     {
     public:
+
+        inline static std::string GetDefaultName() { return "Text_area"; }
+
         struct Style
         {
             sf::Color baseColor;
@@ -25,8 +28,8 @@ namespace nii::ui
             sf::Color inputTextColor;
         };
 
-        inline TextArea()
-            : Border()
+        inline TextArea(const std::string& name = {})
+            : Border(name.size() ? name : naming::GenerateName<Button>())
             , Focusable()
             , inputString(L"")
             , previewString(L"Write text here...")
@@ -60,6 +63,14 @@ namespace nii::ui
             return inputString.getSize() > 0;
         }
 
+        TextArea(const TextArea&) = delete;
+        TextArea(TextArea&&) = delete;
+        
+        inline virtual ~TextArea()
+        {
+
+        }
+
         inline void configureStyle()
         {
             Style current;
@@ -84,11 +95,6 @@ namespace nii::ui
             } else {
                 insideText->setFontStyle(FontStyle::Regular);
             }
-
-        }
-
-        inline virtual ~TextArea()
-        {
 
         }
 
@@ -144,6 +150,7 @@ namespace nii::ui
             }
             cursorPosition = std::max(std::min(cursorPosition, (int)inputString.getSize()), 0);
             textEvent.call(inputString);
+            redraw();
             Primitive::redraw();
         }
 

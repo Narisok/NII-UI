@@ -13,36 +13,14 @@ namespace nii::ui
     class Border: public core::Primitive, public Paddingable
     {
     public:
-        Border();
-        Border(const Border& other);
-        Border(Border&& other);
+        inline static std::string GetDefaultName() { return "Border"; }
+
+        Border(const std::string& name = {});
+        Border(const Border& other) = delete;
+        Border(Border&& other) = delete;
         virtual ~Border();
 
         Primitive* intersectNext(Vec2f pos) override;
-
-        // inline void hover() override
-        // {
-        //     shape.setFillColor({255,0,0,50});
-        //     Primitive::redraw();
-        // }
-
-        // inline void press() override
-        // {
-        //     shape.setFillColor({255,255,240,140});
-        //     Primitive::redraw();
-        // }
-
-        // inline void release() override
-        // {
-        //     shape.setFillColor({255,255,240,10});
-        //     Primitive::redraw();
-        // }
-
-        // inline void unhover() override
-        // {
-        //     shape.setFillColor({0,255,0,50});
-        //     Primitive::redraw();
-        // }
 
         inline void setPadding(IndentsFloat newPadding)
         {
@@ -51,7 +29,6 @@ namespace nii::ui
         }
 
         inline IndentsFloat getPadding() const { return padding; }
-
 
 
         const sf::Color& getBorderColor() const;
@@ -66,12 +43,17 @@ namespace nii::ui
 
         Vec2f getChildBoundSize() const;
         void setChild(core::Primitive* child);
+        void setChild(std::unique_ptr<core::Primitive>&& child);
+        std::unique_ptr<core::Primitive> extractRoot();
+
     
         void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
         void redraw() /* override */;
 
         void setSize(const Vec2f& size, bool withRedraw = true) override;
         Vec2f getShrinkedSize() const override;
+
+        core::Primitive* findByName(const std::string& name) override;
 
     // private:
         core::ChildPrimitive child;

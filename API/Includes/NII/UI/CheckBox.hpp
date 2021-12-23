@@ -10,6 +10,8 @@ namespace nii::ui
     class CheckBox: public Border
     {
     public:
+        inline static std::string GetDefaultName() { return "Check_box"; }
+
         struct Style
         {
             sf::Color color;
@@ -18,8 +20,9 @@ namespace nii::ui
             sf::Texture* texture;
         };
 
-        inline CheckBox()
-            : Border()
+
+        inline CheckBox(const std::string& name = {})
+            : Border(name.size() ? name : naming::GenerateName<CheckBox>())
             , normalStyle{{70, 70, 70, 255}, {200, 200, 200, 255}, {0, 0, 0, 0}, nullptr}
             , hoverStyle{{30, 30, 30, 255}, {200, 200, 200, 255}, {0, 0, 0, 0}, nullptr}
             , checkedStyle{{100, 100, 100, 255}, {255, 133, 51}, {200, 200, 200, 255}, nullptr}

@@ -10,8 +10,8 @@ using std::endl;
 
 namespace nii::ui
 {
-     Canvas::Canvas()
-        : Primitive()
+     Canvas::Canvas(const std::string& name)
+        : Primitive(name.size() ? name : naming::GenerateName<Canvas>())
         , renderer()
         , slots()
         , size({64.f, 64.f})

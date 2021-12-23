@@ -12,7 +12,9 @@ namespace nii::ui
     class Canvas: public core::Primitive
     {
     public:
-        Canvas();
+        inline static std::string GetDefaultName() { return "Canvas"; }
+
+        Canvas(const std::string& name = {});
         virtual ~Canvas();
 
         Primitive* intersectNext(Vec2f pos) override;

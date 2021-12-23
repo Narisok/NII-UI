@@ -10,15 +10,15 @@ namespace nii::ui
     {
         
     public:
-        inline Widget(Vec2f size)
-            : renderer()
-            , root(nullptr)
-            , size(size)
-        { 
-            setBoundSize(size);
-            renderer.create(32,32);
-            renderer.setSmooth(true);
-        }
+
+        inline static std::string GetDefaultName() { return "Widget"; }
+
+        Widget(Vec2f size);
+
+        Widget(const Widget&) = delete;
+        Widget(Widget&&) = delete;
+
+        virtual ~Widget();
 
         Primitive* intersectNext(Vec2f pos) override;
 
@@ -28,6 +28,17 @@ namespace nii::ui
         void redraw() /* override */;
 
         void setRoot(core::Primitive* root);
+        void setRoot(std::unique_ptr<core::Primitive>&& root);
+        void removeRoot();
+        std::unique_ptr<core::Primitive> extractRoot();
+
+        core::Primitive* findByName(const std::string& name) override;
+
+        core::Primitive* operator[](const std::string& name)
+        {
+            return findByName(name);
+        }
+
 
 
         void setSize(const Vec2f& size, bool withRedraw = true) override;
@@ -35,7 +46,7 @@ namespace nii::ui
 
     // private:
         sf::RenderTexture renderer;
-        core::Primitive *root;
+        std::unique_ptr<core::Primitive> root;
         Vec2f size;
     };
 }

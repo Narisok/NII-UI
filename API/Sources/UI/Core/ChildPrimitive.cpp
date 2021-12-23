@@ -4,26 +4,24 @@
 namespace nii::ui::core
 {
     ChildPrimitive::ChildPrimitive()
-        : child(nullptr)
+        : child()
         , align(AlignFill)
         , valign(VAlignFill)
     {}
     
-    ChildPrimitive::ChildPrimitive(Primitive* parent, Primitive* newChild, Vec2f boundSize)
-        : child(nullptr)
+    ChildPrimitive::ChildPrimitive(Primitive* parent, std::unique_ptr<core::Primitive>&& newChild, Vec2f boundSize)
+        : child()
         , align(AlignFill)
         , valign(VAlignFill)
     {
-        setChild(parent, newChild, boundSize);
+        setChild(parent, std::move(newChild), boundSize);
     }
 
     ChildPrimitive::ChildPrimitive(ChildPrimitive&& other)
-        : child(other.child)
+        : child(std::move(other.child))
         , align(other.align)
         , valign(other.valign)
-    {
-        other.child = nullptr;
-    }
+    {    }
 
     ChildPrimitive::~ChildPrimitive()
     {}
@@ -65,11 +63,26 @@ namespace nii::ui::core
         return nullptr;
     }
 
-    void ChildPrimitive::setChild(Primitive* parent, Primitive* newChild, Vec2f boundSize)
+    void ChildPrimitive::setChild(Primitive* parent, std::unique_ptr<Primitive>&& newChild, Vec2f boundSize)
     {
-        child = newChild;
+        child = std::move(newChild);
         child->setBoundSize(boundSize);
         child->setParent(parent);
+    }
+
+    std::unique_ptr<core::Primitive> ChildPrimitive::extractChild()
+    {
+        if (child) {
+            child->setParent(nullptr);
+        }
+        return std::move(child);
+    }
+
+    void ChildPrimitive::removeChild()
+    {
+        if (child) {
+            child.reset();
+        }
     }
 
     void ChildPrimitive::draw(sf::RenderTarget& target, sf::RenderStates states) const
@@ -149,12 +162,20 @@ namespace nii::ui::core
 
     const Primitive* ChildPrimitive::getChildPrimitive() const
     {
-        return child;
+        return child.get();
     }
 
     Primitive* ChildPrimitive::getChildPrimitive()
     {
-        return child;
+        return child.get();
+    }
+
+    core::Primitive* ChildPrimitive::findByName(const std::string& name)
+    {
+        if (child) {
+            return child->findByName(name);
+        }
+        return nullptr;
     }
 
 }

@@ -11,8 +11,13 @@ namespace nii::ui
     class Scroll: public core::Primitive
     {
     public:
-        Scroll();
+        inline static std::string GetDefaultName() { return "Scroll"; }
+
+        Scroll(const std::string& name = {});
         virtual ~Scroll();
+
+        Scroll(const Scroll& other) = delete;
+        Scroll(Scroll&& other) = delete;
 
         Primitive* intersectNext(Vec2f pos) override;
     
@@ -24,6 +29,7 @@ namespace nii::ui
         Vec2f getShrinkedSize() const override;
 
         void setChild(core::Primitive* child);
+        void setChild(std::unique_ptr<core::Primitive>&& child);
 
         void setViewSize(const Vec2f& newSize);
         void resetViewSize();

@@ -10,6 +10,7 @@ namespace nii::ui
     class Button: public Border
     {
     public:
+        inline static std::string GetDefaultName() { return "Button"; }
         struct Style
         {
             IndentsFloat padding;
@@ -17,8 +18,8 @@ namespace nii::ui
             sf::Texture* texture;
         };
 
-        inline Button()
-            : Border()
+        inline Button(const std::string& name = {})
+            : Border(name.size() ? name : naming::GenerateName<Button>())
             , normalStyle{{10.f, 10.f, 10.f, 10.f}, {200, 200, 200, 200},                nullptr}
             , hoverStyle{{10.f, 10.f, 10.f, 10.f},  {200 - 20, 200 - 20, 200 - 20, 255}, nullptr}
             , pressStyle{{12.f, 8.f, 12.f, 8.f},    {200 - 50, 200 - 50, 200 - 50, 255}, nullptr}
@@ -27,6 +28,7 @@ namespace nii::ui
             auto text = new Text(L"press");
             text->setFillColor({0, 0, 0});
             setChild(text);
+
             // auto l = new List;
             // l->setPlane(PlaneHorizontal);
             // sf::Texture* textureTrash = new sf::Texture;
@@ -40,7 +42,12 @@ namespace nii::ui
             // l->setShrinkToFit(true);
             // setChild(l);
 
+               Primitive::redraw();
+
         }
+
+        Button(const Button&) = delete;
+        Button(Button&&) = delete;
 
         inline virtual ~Button()
         {

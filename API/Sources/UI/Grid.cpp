@@ -115,12 +115,17 @@ namespace nii::ui
 
     void Grid::addChild(core::Primitive* child, size_t row, size_t col)
     {
+        addChild(std::unique_ptr<core::Primitive>(child), row, col);
+    }
+
+    void Grid::addChild(std::unique_ptr<core::Primitive>&& child, size_t row, size_t col)
+    {
         calculateGridSize(row, col);
         auto [width, height] = child->getShrinkedSize();
         Vec2f bound = findBound(row, col);
         bound.x = width > bound.x ? width : bound.x;
         bound.y = height > bound.y ? height : bound.y;
-        children[row][col].setChild(this, child, bound);
+        children[row][col].setChild(this, std::move(child), bound);
     }
 
 

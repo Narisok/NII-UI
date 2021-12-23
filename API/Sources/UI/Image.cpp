@@ -8,8 +8,8 @@ using std::endl;
 
 namespace nii::ui
 {
-     Image::Image()
-        : Primitive()
+     Image::Image(const std::string& name)
+        : Primitive(name.size() ? name : naming::GenerateName<Image>())
         , isRepeated(false)
         , useTexture(false)
         , objectFit(ObjectFit::Fill)

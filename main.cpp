@@ -26,251 +26,36 @@ public:
 
 }eventController;
 
+
 int main(int argc, char **argv)
 {
     sf::ContextSettings contextSettings;
 
     sf::RenderWindow window(sf::VideoMode(1200, 800), "SFML works!", sf::Style::Default, contextSettings);
-    // window.
     eventController.window = &window;
 
 
-   
-
-    sf::Texture textureBookmark;
-    std::cout << (textureBookmark.loadFromFile("bookmark-32.png") ? "texture bookmark loaded successfully" : "texture bookmark error loading") << std::endl;
-    sf::Texture textureClose;
-    std::cout << (textureClose.loadFromFile("close-32.png") ? "texture close loaded successfully" : "texture close error loading") << std::endl;
-    sf::Texture textureTrash;
-    std::cout << (textureTrash.loadFromFile("delete-white-24.png") ? "texture close loaded successfully" : "texture close error loading") << std::endl;
-    sf::Texture textureFace;
-    std::cout << (textureFace.loadFromFile("face.png") ? "texture close loaded successfully" : "texture close error loading") << std::endl;
-
-    sf::Font font;
-    
-    std::cout << (font.loadFromFile("Fonts/Hauora-Regular.ttf") ? "font loaded successfully" : "font error loading") << std::endl;
-
-    sf::VertexArray quad(sf::Quads, 4);
-
-    // define it as a rectangle, located at (10, 10) and with size 100x100
-    quad[0].position = sf::Vector2f(10.f, 10.f);
-    quad[1].position = sf::Vector2f(110.f, 10.f);
-    quad[2].position = sf::Vector2f(110.f, 110.f);
-    quad[3].position = sf::Vector2f(10.f, 110.f);
-
-    // define its texture area to be a 25x50 rectangle starting at (0, 0)
-    quad[0].texCoords = sf::Vector2f(0.f, 0.f);
-    quad[1].texCoords = sf::Vector2f(24.0f, 0.f);
-    quad[2].texCoords = sf::Vector2f(24.0f, 24.f);
-    quad[3].texCoords = sf::Vector2f(0.f, 24.f);
-
-    quad[0].color = sf::Color({255, 255, 255});
-    quad[1].color = sf::Color({255, 255, 0});
-    quad[2].color = sf::Color({255, 0, 255});
-    quad[3].color = sf::Color({0, 255, 255});
-
-    sf::RenderStates quadState;
-
-    quadState.texture = &textureTrash;
-    quadState.blendMode = sf::BlendAlpha;
-
-    sf::RectangleShape rs1({500, 400});
-    rs1.setFillColor({255,0,0});
-    rs1.setPosition(100, 100);
-
-
-    sf::RectangleShape rs2({400, 300});
-    rs2.setFillColor({0, 250,0});
-
     nii::ui::Widget widget({1200, 800});
     eventController.mainUi = &widget;
-    widget.renderer.create(1920, 1080);
-    widget.renderer.setSmooth(true);
+    widget.setRoot(new nii::ui::Border("B1"));
 
-    nii::ui::Border border;
-    nii::ui::Border border1;
+    widget["B1"]->as<nii::ui::Border>()->setChild(new nii::ui::Border("B2"));
+    widget["B2"]->as<nii::ui::Border>()->setBorderColor({255,200, 200});
+    widget["B2"]->as<nii::ui::Border>()->setChild(new nii::ui::Button("btn"));
 
-    nii::ui::Text text;
-    text.setCharacterSize(20);
-    text.setFont(font);
-    text.setFillColor({255, 0,0});
-    text.setText("Hello1 omg long text omg oeunths sntaoeu");
-    // text.setWrapEnabled(true);
-    text.setWrapAfter(200);
-
-    nii::ui::Text textc1;
-    textc1.setCharacterSize(20);
-    textc1.setFont(font);
-    textc1.setFillColor({255, 0,0});
-    textc1.setText("Hello1 omg long text omg oeunths sntaoeu");
-    // text.setWrapEnabled(true);
-    textc1.setWrapAfter(200);
-
-    nii::ui::Text text1;
-    text1.setCharacterSize(20);
-    text1.setFont(font);
-    text1.setFillColor({255, 0,0});
-    text1.setText("Hello2");
-
-    nii::ui::Text text2;
-    text2.setCharacterSize(60);
-    text2.setFont(font);
-    text2.setFillColor({255, 0,0});
-    text2.setText("Hellmg oeunths");
-    // text2.setWrapEnabled(true);
-    // text2.setWrapAfter(200);
-
-    nii::ui::Text text3;
-    text3.setCharacterSize(20);
-    text3.setFont(font);
-    text3.setFillColor({255, 0,0});
-    text3.setText("Hello1");
-
-    nii::ui::Text text4;
-    text4.setCharacterSize(14);
-    text4.setFont(font);
-    text4.setFillColor({255, 0,0});
-    text4.setText("Hellmg31 axoeu sntaoeu");
-    text4.setWrapEnabled(true);
-    text4.setWrapAfter(200);
-
-    // border.shape.setFillColor({255,0,0});
-    // border1.shape.setFillColor({0,255,0});
-
-
-    nii::ui::Image image;
-
-    image.setFillColor({100, 255, 60});
-    image.setTexture(textureFace, false);
-    image.setViewSize({200, 200});
-
-    nii::ui::Image image1;
-
-    image1.setFillColor({100, 255, 60});
-    image1.setTexture(textureFace, false);
-    image1.setViewSize({200, 200});
-
-    nii::ui::Grid grid;
-
-    grid.addChild(&text1,0,0);
-
-    grid.addChild(&text2,0,1);
-    grid.addChild(&text3,2,2);
-
-
-    grid.addChild(&text4,1,2);
-
-    // grid.addChild(&text,4,6);
-
-    // grid.addChild(&text,3,6);
-
-    // grid.addChild(&text,2,6);
-
-
-    // grid.addChild(&text,1,0);
-
-    // grid.addChild(&text,1,1);
-
-    nii::ui::Canvas canvas;
-    canvas.setViewSize({500.f, 500.f});
-    canvas.addChild(&textc1, {100.f, 100.f}, {20.f, 20.f});
-
-    canvas.addChild(&image1, {100.f, 400.f}, {220.f, 220.f});
-
-
-
-
-
-
-    nii::ui::List list;
-
-    list.addChild(&text);
-    list.addChild(&image);
-
-    // image.shape.setFillColor({100, 10, 60});
-    // image.shape.setTexture(&textureBookmark);
-    // image.setSize({32.f, 32.f});
-
-    text.setText(L"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.");
-    text.setWrapAfter(500);
-    text.setCharacterSize(16);
-    text.setWrapEnabled(true);
-
-    nii::ui::Scroll scroll;
-    scroll.setChild(&list);
-    // scroll.setChild(&grid);
-
-    canvas.addChild(&scroll, {300.f, 300.f}, {350.f, 100.f});
-    
-    // scroll.setChild(&image);
-    image.setUseTexture(true);
-    image.setViewSize({700, 300});
-    // image.set
-    scroll.setViewSize({300, 500});
-    scroll.setShrinkToFit(false);
-    scroll.setShrinkToFit(true);
-
-    widget.setRoot(&border);
-    border.setChild(&border1);
-    // border1.setChild(&grid);
-    // border1.setChild(&image);
-    // border1.setChild(&scroll);
-    // nii::ui::Text nText(L"My new text");
-    nii::ui::Button button;
-    button.setShrinkToFit(true);
-
-    nii::ui::TextArea area;
-    nii::ui::CheckBox check;
-    nii::ui::List l1;
-    l1.addChild(&area);
-    l1.addChild(&button);
-    l1.addChild(&check);
-    border1.setChild(&l1);
-    area.setShrinkToFit(true);
-    check.setShrinkToFit(true);
-    // check.setIsChecked(true);
-    button.onClick([]() {
-        printf("CLICK FROM MYY\n");
+    widget["btn"]->as<nii::ui::Button>()->onClick([]() {
+        printf("Hello click\n");
     });
-    // border1.setChild(&list);
-    // border1.setChild(&text);
-    text.setShrinkToFit(true);
-    text.setText("Hello my name is Andrew!");
-    border1.child.setAlign(nii::ui::AlignCenter);
-    border1.child.setVAlign(nii::ui::VAlignCenter);
-    // border1.setShrinkToFit(true);
-    // image.setShrinkToFit(false);
-    // scroll.move({0.f, 2056.f});
-    // list.setShrinkToFit(true);
-    // scroll.setShrinkToFit(true);
-    image.setViewSize({1200, 1200});
-    image.setShrinkToFit(false);
-    image.setShrinkToFit(true);
-    grid.setShrinkToFit(true);
+    widget["B2"]->as<nii::ui::Border>()->setChild(new nii::ui::TextArea("area"));
 
-    list.setShrinkToFit(true);
+    // widget["B2"]->as<nii::ui::Border>()->setChild(new nii::ui::Text(std::wstring(L"Hello text привіт"), "text"));
 
-    // border.setBorderThickness(10);
-    border1.setBorderColor({50, 50, 255, 100});
-    // border1.setBorderThickness(5);
+    widget["area"]->as<nii::ui::TextArea>([] (auto item) {
+        item->onText([](auto text) {
+            
+        });
+    });
 
-    border1.setBorderRadius(20);
-
-
-
-   
-    nii::graphics::shapes::RoundedShape rshape({500, 500});
-    rshape.setOutlineThickness(10);
-    rshape.setFillColor({255,255,255});
-    rshape.setOutlineColor({0,0,255});
-    rshape.setSize({100, 500});
-    rshape.setRadius(50);
-
-    rshape.setPosition(200, 200);
-
-    auto tmp = window.getView();
-    // tmp.zoom(1.2);
-    
     while (window.isOpen())
     {
         

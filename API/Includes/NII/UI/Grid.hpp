@@ -14,6 +14,8 @@ namespace nii::ui
     
         Grid();
         virtual ~Grid();
+        Grid(const Grid& other) = delete;
+        Grid(Grid&& other) = delete;
 
         Primitive* intersectNext(Vec2f pos) override;
 
@@ -21,6 +23,7 @@ namespace nii::ui
         size_t getColumnsCount() const;
 
         void addChild(core::Primitive* child, size_t row, size_t col);
+        void addChild(std::unique_ptr<core::Primitive>&& child, size_t row, size_t col);
         // void removeChild(size_t row, size_t col);
         // Primitive* fetchChild(size_t row, size_t col);
         // void changeChild(size_t row, size_t col, core::Primitive* newChild);
