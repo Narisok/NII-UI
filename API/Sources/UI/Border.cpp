@@ -13,12 +13,12 @@ namespace nii::ui
         , shape()
     { 
         padding = {10, 10, 10, 10};
-        printf("Border %s\n", this->name.c_str());
+        // printf("Border %s\n", this->name.c_str());
     }
 
     Border::~Border()
     { 
-        printf("~Border %s\n", name.c_str());
+        // printf("~Border %s\n", name.c_str());
     }
 
     core::Primitive* Border::intersectNext(Vec2f pos)

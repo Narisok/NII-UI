@@ -133,7 +133,6 @@ namespace nii::ui
 
         inline void textEntered(sf::Uint32 unicode) override
         {
-            // printf("UNI %u\n", unicode);
             switch (unicode) {
                 case 13:
                     inputString.insert(cursorPosition++, '\n');

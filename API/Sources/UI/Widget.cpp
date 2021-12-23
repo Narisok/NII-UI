@@ -14,12 +14,12 @@ namespace nii::ui
         setBoundSize(size);
         renderer.create(32,32);
         renderer.setSmooth(true);
-        printf("WIDGET %s\n", name.c_str());
+        // printf("WIDGET %s\n", name.c_str());
     }
 
     Widget::~Widget()
     {
-        printf("~WIDGET %s\n", name.c_str());
+        // printf("~WIDGET %s\n", name.c_str());
     }
 
 
