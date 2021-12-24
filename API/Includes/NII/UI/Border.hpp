@@ -34,7 +34,7 @@ namespace nii::ui
         const sf::Color& getBorderColor() const;
         void setBorderColor(const sf::Color& color);
 
-        float getBorderRadius(float radius) const;
+        float getBorderRadius() const;
         void setBorderRadius(float radius);
         
         void setOutlineThickness(float thickness);
@@ -54,6 +54,18 @@ namespace nii::ui
         Vec2f getShrinkedSize() const override;
 
         core::Primitive* findByName(const std::string& name) override;
+
+        void serialize(nii::json::entities::wrapper wrapper) override;
+        core::Primitive* deserialize(nii::json::entities::wrapper wrapper) override;
+
+        inline void setAlign(Align align)
+        {
+            child.setAlign(align);
+        }
+        inline void setVAlign(VAlign valign)
+        {
+            child.setVAlign(valign);
+        }
 
     // private:
         core::ChildPrimitive child;

@@ -6,8 +6,9 @@
 namespace nii::ui
 {
 
-    Widget::Widget(Vec2f size)
-        : renderer()
+    Widget::Widget(Vec2f size, const std::string& name)
+        : Primitive(name.size() ? name : naming::GenerateName<Widget>())
+        , renderer()
         , root()
         , size(size)
     { 
@@ -107,6 +108,41 @@ namespace nii::ui
             return root->findByName(name);
         }
         return nullptr;
+    }
+
+    void Widget::serialize(nii::json::entities::wrapper wrapper)
+    {
+        wrapper["name"] = name;
+        wrapper["type"] = "widget";
+
+        auto details = wrapper["details"];
+            details["shrink_to_fit"] = shrinkToFit;
+            details["size"]["x"] = size.x;
+            details["size"]["y"] = size.y;
+
+        if (root) {
+            root->serialize(wrapper["root"]);
+        } else {
+            wrapper["root"] = nullptr;
+        }
+    }
+
+    core::Primitive* Widget::deserialize(nii::json::entities::wrapper wrapper)
+    {
+        name = wrapper["name"]->string();
+
+        auto details = wrapper["details"];
+            shrinkToFit = details["shrink_to_fit"]->boolean();
+            size.x = details["size"]["x"]->number();
+            size.y = details["size"]["y"]->number();
+
+        if (wrapper["root"]->isObject()) {
+            auto primitive = serialization::createPrimitiveFromType(wrapper["root"]["type"]);
+            primitive->deserialize(wrapper["root"]);
+            setRoot(std::move(primitive));
+        }
+        Primitive::redraw();
+        return this;
     }
 
 

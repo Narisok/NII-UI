@@ -46,6 +46,7 @@ namespace nii::ui::core
         void setVAlign(VAlign valign);
 
         core::Primitive* findByName(const std::string& name);
+        void serialize(nii::json::entities::wrapper wrapper);
 
     // protected:
         std::unique_ptr<Primitive> child;

@@ -6,6 +6,7 @@
 #include <SFML/Graphics/Text.hpp>
 #include <type_traits>
 
+
 namespace nii::ui
 {
     class Paddingable
@@ -131,6 +132,19 @@ namespace nii::ui
         }
 
         return font;
+    }
+
+    namespace core
+    {
+        class Primitive;
+    }
+
+    namespace serialization
+    {
+        
+
+        std::unique_ptr<nii::ui::core::Primitive> createPrimitiveFromType(const std::string& type);
+        
     }
 
     namespace naming

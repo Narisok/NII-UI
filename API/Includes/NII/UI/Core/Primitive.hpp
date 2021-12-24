@@ -1,9 +1,14 @@
 #pragma once
 
 #include "../Traits.hpp"
+
 #include <NII/Utility/AgregatesLiterals.hpp>
+#include <NII/json>
+
 #include <SFML/Graphics/Drawable.hpp>
+
 #include <memory>
+
 
 namespace nii::ui::core
 {
@@ -78,6 +83,9 @@ namespace nii::ui::core
                 fun(ptr);
             }
         }
+
+        virtual void serialize(nii::json::entities::wrapper wrapper);
+        virtual Primitive* deserialize(nii::json::entities::wrapper wrapper);
 
     // protected:
         std::string name;

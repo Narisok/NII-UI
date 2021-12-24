@@ -31,6 +31,15 @@ namespace nii::ui
 
         void addChild(Primitive* primitive, Vec2f size, Vec2f position);
 
+        void addChild(std::unique_ptr<core::Primitive> primitive, Vec2f size, Vec2f position);
+
+
+
+        core::Primitive* findByName(const std::string& name) override;
+
+        void serialize(nii::json::entities::wrapper wrapper) override;
+        core::Primitive* deserialize(nii::json::entities::wrapper wrapper) override;
+
     private:
         void restartRenderer(Vec2f size);
     public:

@@ -43,10 +43,26 @@ namespace nii::ui::slots
             nii::ui::core::ChildPrimitive::setChild(parent, std::move(newChild), size);
         }
 
+        inline void serialize(nii::json::entities::wrapper wrapper)
+        {
+            if (child) {
+                wrapper["slot"]["position"]["x"] = getPosition().x;
+                wrapper["slot"]["position"]["y"] = getPosition().y;
+
+                wrapper["slot"]["size"]["x"] = child->boundSize.x;
+                wrapper["slot"]["size"]["y"] = child->boundSize.y;
+                
+                child->serialize(wrapper);
+            } else {
+                wrapper = nullptr;
+            }
+        }
+
         using sf::Transformable::getPosition;
 
     private:
         using nii::ui::core::ChildPrimitive::setChild;
+        using nii::ui::core::ChildPrimitive::serialize;
         using nii::ui::core::ChildPrimitive::draw;
 
         using sf::Transformable::setPosition;

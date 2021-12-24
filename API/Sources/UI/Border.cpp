@@ -102,7 +102,7 @@ namespace nii::ui
         return shape.getFillColor();
     }
 
-    float Border::getBorderRadius(float radius) const
+    float Border::getBorderRadius() const
     {
         return shape.getRadius();
     }
@@ -138,6 +138,64 @@ namespace nii::ui
             return this;
         }
         return child.findByName(name);
+    }
+
+    void Border::serialize(nii::json::entities::wrapper wrapper)
+    {
+        wrapper["name"] = name;
+        wrapper["type"] = "border";
+
+        auto details = wrapper["details"];
+            details["shrink_to_fit"] = shrinkToFit;
+            auto [r, g, b, a] = getBorderColor();
+            details["border_color"]["r"] = r;
+            details["border_color"]["g"] = g;
+            details["border_color"]["b"] = b;
+            details["border_color"]["a"] = a;
+            details["border_radius"] = getBorderRadius();
+            details["child_align"] = (int)child.align;
+            details["child_valign"] = (int)child.valign;
+
+            details["paddings"]["top"] = padding.top;
+            details["paddings"]["bottom"] = padding.bottom;
+            details["paddings"]["left"] = padding.left;
+            details["paddings"]["right"] = padding.right;
+
+        child.serialize(wrapper["child"]);
+    }
+
+    core::Primitive* Border::deserialize(nii::json::entities::wrapper wrapper)
+    {
+        name = wrapper["name"]->string();
+
+        auto details = wrapper["details"];
+            shrinkToFit = details["shrink_to_fit"]->boolean();
+            sf::Color borderColor;
+            borderColor.r = details["border_color"]["r"]->number();
+            borderColor.g = details["border_color"]["g"]->number();
+            borderColor.b = details["border_color"]["b"]->number();
+            borderColor.a = details["border_color"]["a"]->number();
+            setBorderColor(borderColor);
+            setBorderRadius(details["border_radius"]->number());
+
+            Align align = (Align)details["child_align"]->number();
+            child.setAlign(align);
+            VAlign valign = (VAlign)details["child_valign"]->number();
+            child.setVAlign(valign);
+
+            padding.top =    details["paddings"]["top"]->number();
+            padding.bottom = details["paddings"]["bottom"]->number();
+            padding.left =   details["paddings"]["left"]->number();
+            padding.right =  details["paddings"]["right"]->number();
+            
+
+        if (wrapper["child"].valid() && wrapper["child"]->isObject()) {
+            auto primitive = serialization::createPrimitiveFromType(wrapper["child"]["type"]);
+            primitive->deserialize(wrapper["child"]);
+            setChild(std::move(primitive));
+        }
+        Primitive::redraw();
+        return this;
     }
 
 }

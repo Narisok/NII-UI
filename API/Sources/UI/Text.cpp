@@ -164,4 +164,49 @@ namespace nii::ui
             text.setString(newStr);
         }
     }
+
+
+    void Text::serialize(nii::json::entities::wrapper wrapper)
+    {
+        wrapper["name"] = name;
+        wrapper["type"] = "text";
+
+        auto details = wrapper["details"];
+            details["shrink_to_fit"] = shrinkToFit;
+            auto [r, g, b, a] = getFillColor();
+            details["color"]["r"] = r;
+            details["color"]["g"] = g;
+            details["color"]["b"] = b;
+            details["color"]["a"] = a;
+
+            details["text"] = string.toAnsiString();
+
+            details["wrap"]["after"] = wrapAfter;
+            details["wrap"]["enabled"] = wrapEnabled;
+            details["style"] = (int)getFontStyle();
+            
+    }
+
+    core::Primitive* Text::deserialize(nii::json::entities::wrapper wrapper)
+    {
+        name = wrapper["name"]->string();
+
+        auto details = wrapper["details"];
+            shrinkToFit = details["shrink_to_fit"]->boolean();
+            color.r = details["color"]["r"]->number();
+            color.g = details["color"]["g"]->number();
+            color.b = details["color"]["b"]->number();
+            color.a = details["color"]["a"]->number();
+
+            auto str = details["text"]->string();
+            string = str;
+
+            wrapAfter = details["wrap"]["after"]->number();
+            wrapEnabled = details["wrap"]["enabled"]->boolean();
+            setFontStyle((FontStyle) details["style"]->number());
+            
+
+        Primitive::redraw();
+        return this;
+    }
 }

@@ -18,5 +18,10 @@ add_subdirectory("${PROJECT_SOURCE_DIR}/API/Includes")
 
 add_executable(Main ${SOURCES})
 
+
+set(HEADERS ${HEADERS} Vendor/Json/includes)
+set(VENDOR_LIBRARIES ${VENDOR_LIBRARIES} json)
+
 target_include_directories(Main PUBLIC ${HEADERS})
-target_link_libraries(Main PUBLIC ${SFML_LIBRARIES})
+target_link_libraries(Main PUBLIC ${SFML_LIBRARIES} ${VENDOR_LIBRARIES})
+target_link_directories(Main PUBLIC ./Vendor/Json)

@@ -22,40 +22,25 @@ namespace nii::ui
         void setSize(const nii::util::Vec2f& size, bool withRedraw = true) override;
         nii::util::Vec2f getShrinkedSize() const override;
 
-        inline void hover() override
-        {
-            setFillColor({0,220,30, 255});
-        }
-        
-        inline void unhover() override
-        {
-            setFillColor({0,30,30, 50});
-        }
-
-        inline void press() override
-        {
-            setFillColor({255,255,240,140});
-        }
-
-        inline void release() override
-        {
-            setFillColor({255,255,240,255});
-        }
-
-
         void setFillColor(sf::Color newColor);
+        inline sf::Color getFillColor() const { return color; }
 
         void setText(const sf::String& text);
+        inline sf::String getText() const { return string; }
 
         void setFont(const sf::Font& font);
         void setCharacterSize(unsigned int size);
-        // void setStyl
 
         void setFontStyle(FontStyle style);
+        inline FontStyle getFontStyle() const { return (FontStyle)text.getStyle(); }
 
 
         void setWrapEnabled(bool enable);
         void setWrapAfter(float wrap);
+
+
+        void serialize(nii::json::entities::wrapper wrapper) override;
+        core::Primitive* deserialize(nii::json::entities::wrapper wrapper) override;
 
     private:
         void restartRenderer(nii::util::Vec2f size);

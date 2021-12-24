@@ -130,5 +130,56 @@ namespace nii::ui
     }
 
 
+    core::Primitive* List::findByName(const std::string& name)
+    {
+        if (this->name == name) {
+            return this;
+        }
+        for (auto &a : children) {
+            auto res = a.findByName(name);
+            if (res) {
+                return res;
+            }
+        }
+        return nullptr;
+    }
+
+
+    void List::serialize(nii::json::entities::wrapper wrapper)
+    {
+        wrapper["name"] = name;
+        wrapper["type"] = "list";
+
+        auto details = wrapper["details"];
+            details["shrink_to_fit"] = shrinkToFit;
+            details["plane"] = (int)plane;
+
+        auto wrapperChildren = wrapper["children"];
+        int idx = 0;
+        for (auto &a : children) {
+            a.serialize(wrapperChildren[idx++]);
+        }
+    }
+
+    core::Primitive* List::deserialize(nii::json::entities::wrapper wrapper)
+    {
+        name = wrapper["name"]->string();
+
+        auto details = wrapper["details"];
+            shrinkToFit = details["shrink_to_fit"]->boolean();
+            plane = (Plane)details["plane"]->number();
+
+        if (wrapper["children"].valid() && wrapper["children"]->isArray()) {
+            for (auto wrap : wrapper["children"]->array()) {
+                auto primitive = serialization::createPrimitiveFromType(wrap["type"]);
+                primitive->deserialize(wrap);
+                addChild(std::move(primitive));
+            }
+        }
+        Primitive::redraw();
+        return this;
+    }
+
+
 
 }

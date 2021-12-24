@@ -39,7 +39,7 @@ namespace nii::ui
 
     void Canvas::redraw()
     {
-        auto states = sf::RenderStates::Default;
+        // auto states = sf::RenderStates::Default;
 
         // renderer.clear(sf::Color(0,0,0,0));
 
@@ -69,7 +69,7 @@ namespace nii::ui
         }
         // target.draw(sf::Sprite(renderer.getTexture()), states);
         for (auto& slot : slots) {
-            renderer.draw(slot, states);
+            target.draw(slot, states);
         }
     }
 
@@ -105,7 +105,75 @@ namespace nii::ui
 
     void Canvas::addChild(Primitive* primitive, Vec2f size, Vec2f position)
     {
+        addChild(std::unique_ptr<core::Primitive>(primitive), size, position);
+    }
+
+    void Canvas::addChild(std::unique_ptr<core::Primitive> primitive, Vec2f size, Vec2f position)
+    {
         slots.emplace_back();
-        slots.back().setChild(this, primitive, size, position);
+        slots.back().setChild(this, std::move(primitive), size, position);
+    }
+
+    core::Primitive* Canvas::findByName(const std::string& name)
+    {
+        if (this->name == name) {
+            return this;
+        }
+        for (auto &a : slots) {
+            auto res = a.findByName(name);
+            if (res) {
+                return res;
+            }
+        }
+        return nullptr;
+    }
+
+    void Canvas::serialize(nii::json::entities::wrapper wrapper)
+    {
+        wrapper["name"] = name;
+        wrapper["type"] = "canvas";
+
+        auto details = wrapper["details"];
+            details["shrink_to_fit"] = shrinkToFit;
+            details["size"]["x"] = size.x;
+            details["size"]["y"] = size.y;
+
+        auto wrapperChildren = wrapper["children"];
+        int idx = 0;
+        for (auto &a : slots) {
+            a.serialize(wrapperChildren[idx++]);
+        }
+    }
+
+    core::Primitive* Canvas::deserialize(nii::json::entities::wrapper wrapper)
+    {
+        name = wrapper["name"]->string();
+
+        auto details = wrapper["details"];
+            shrinkToFit = details["shrink_to_fit"]->boolean();
+            size.x = details["size"]["x"]->number();
+            size.y = details["size"]["y"]->number();
+
+            
+
+        if (wrapper["children"].valid() && wrapper["children"]->isArray()) {
+            for (auto wrap : wrapper["children"]->array()) {
+                auto primitive = serialization::createPrimitiveFromType(wrap["type"]);
+                primitive->deserialize(wrap);
+
+                Vec2f lSize{100,100};
+                Vec2f lPos{100,100};
+                lPos.x = wrap["slot"]["position"]["x"]->number();
+                lPos.y = wrap["slot"]["position"]["y"]->number();
+
+                lSize.x = wrap["slot"]["size"]["x"]->number();
+                lSize.y = wrap["slot"]["size"]["y"]->number();
+
+                
+                addChild(std::move(primitive), lSize, lPos);
+            }
+        }
+        Primitive::redraw();
+        return this;
     }
 }

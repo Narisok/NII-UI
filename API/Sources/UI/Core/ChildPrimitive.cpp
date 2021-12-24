@@ -158,6 +158,15 @@ namespace nii::ui::core
         }
     }
 
+    void ChildPrimitive::serialize(nii::json::entities::wrapper wrapper)
+    {
+        if (child) {
+            child->serialize(wrapper);
+        } else {
+            wrapper = nullptr;
+        }
+    }
+
 
 
     const Primitive* ChildPrimitive::getChildPrimitive() const

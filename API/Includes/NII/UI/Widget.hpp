@@ -13,7 +13,7 @@ namespace nii::ui
 
         inline static std::string GetDefaultName() { return "Widget"; }
 
-        Widget(Vec2f size);
+        Widget(Vec2f size, const std::string& name = {});
 
         Widget(const Widget&) = delete;
         Widget(Widget&&) = delete;
@@ -43,6 +43,9 @@ namespace nii::ui
 
         void setSize(const Vec2f& size, bool withRedraw = true) override;
         Vec2f getShrinkedSize() const override;
+
+        void serialize(nii::json::entities::wrapper wrapper) override;
+        core::Primitive* deserialize(nii::json::entities::wrapper wrapper) override;
 
     // private:
         sf::RenderTexture renderer;

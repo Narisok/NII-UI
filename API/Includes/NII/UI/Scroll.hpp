@@ -39,6 +39,11 @@ namespace nii::ui
         void scroll(float delta) override;
         void scrollHorizontal(float delta) override;
 
+        core::Primitive* findByName(const std::string& name) override;
+
+        void serialize(nii::json::entities::wrapper wrapper) override;
+        core::Primitive* deserialize(nii::json::entities::wrapper wrapper) override;
+
 
     private:
         void restartRenderer(Vec2f size);

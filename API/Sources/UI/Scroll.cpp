@@ -11,15 +11,16 @@ namespace nii::ui
 {
      Scroll::Scroll(const std::string& name)
         : Primitive(name.size() ? name : naming::GenerateName<Scroll>())
-        , size({50,50})
-        , center({20, 20})
+        , size({200,200})
+        , center({50, 50})
         , renderer()
         , child()
         , plane(PlaneVertical)
     {
-        renderer.create(64, 64);
+        renderer.create(256, 256);
         renderer.setSmooth(true);
-        setSize({size.x, size.y});
+        // setSize({size.x, size.y});
+        setViewSize({200.f, 200.f});
     }
 
     Scroll::~Scroll()
@@ -181,7 +182,6 @@ namespace nii::ui
         childSize.y = mySize.y > childSize.y ? mySize.y : childSize.y;
         center.x = std::clamp(center.x + pos.x, mySize.x / 2.f, childSize.x - mySize.x / 2.f);
         center.y = std::clamp(center.y + pos.y, mySize.y / 2.f, childSize.y - mySize.y / 2.f);
-
         Primitive::redraw();
     }
 
@@ -208,6 +208,56 @@ namespace nii::ui
     void Scroll::scrollHorizontal(float delta)
     {
         move({20.f * -delta, 0.f});
+    }
+
+    core::Primitive* Scroll::findByName(const std::string& name)
+    {
+        if (this->name == name) {
+            return this;
+        }
+        return child.findByName(name);
+    }
+
+    void Scroll::serialize(nii::json::entities::wrapper wrapper)
+    {
+        wrapper["name"] = name;
+        wrapper["type"] = "scroll";
+
+        auto details = wrapper["details"];
+            details["shrink_to_fit"] = shrinkToFit;
+            details["child_align"] = (int)child.align;
+            details["child_valign"] = (int)child.valign;
+            details["size"]["x"] = size.x;
+            details["size"]["y"] = size.y;
+            details["plane"] = (int) plane;
+
+        child.serialize(wrapper["child"]);
+    }
+
+    core::Primitive* Scroll::deserialize(nii::json::entities::wrapper wrapper)
+    {
+        name = wrapper["name"]->string();
+
+        auto details = wrapper["details"];
+            shrinkToFit = details["shrink_to_fit"]->boolean();
+            size.x = details["size"]["x"]->number();
+            size.y = details["size"]["y"]->number();
+
+            Align align = (Align)details["child_align"]->number();
+            child.setAlign(align);
+            VAlign valign = (VAlign)details["child_valign"]->number();
+            child.setVAlign(valign);
+
+            this->plane = (Plane)details["plane"]->number();
+            
+
+        if (wrapper["child"].valid() && wrapper["child"]->isObject()) {
+            auto primitive = serialization::createPrimitiveFromType(wrapper["child"]["type"]);
+            primitive->deserialize(wrapper["child"]);
+            setChild(std::move(primitive));
+        }
+        Primitive::redraw();
+        return this;
     }
 
 }

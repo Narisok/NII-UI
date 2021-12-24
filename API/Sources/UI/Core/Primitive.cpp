@@ -231,4 +231,12 @@ namespace nii::ui::core
         name = newName;
     }
 
+    void Primitive::serialize(nii::json::entities::wrapper wrapper)
+    {
+    }
+    Primitive* Primitive::deserialize(nii::json::entities::wrapper wrapper)
+    {
+        return nullptr;
+    }
+
 }
