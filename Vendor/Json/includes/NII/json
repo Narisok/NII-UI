@@ -1,0 +1,58 @@
+#ifndef NII_JSON_HEADER
+#define NII_JSON_HEADER
+
+#include "json-files/entities.hpp"
+#include "json-files/deserializator.hpp"
+
+
+namespace nii {
+namespace json 
+{
+    class json
+    {
+     using j_wrapper = entities::wrapper;
+     
+    public:
+
+        inline json()
+                :_object()
+            {}
+
+        inline json(const std::string& str)
+                :_object()
+            {
+                auto obj = deserializator::parse(str);
+                _object = std::move(*obj);
+                delete obj;
+            }
+
+        inline json& operator=(const std::string& str)
+            {
+                auto obj = deserializator::parse(str);
+                _object = std::move(*obj);
+                delete obj;
+                return *this;
+            }
+
+        inline j_wrapper operator[](const std::string& str) {
+            return _object.get(str);
+        }
+
+        inline std::string serialize() {
+            return _object.serialize();
+        }
+
+        inline auto begin() {
+            return _object.begin();
+        }
+
+        inline auto end() {
+            return _object.end();
+        }
+
+    private:
+        entities::Object _object;
+    };
+} }// namespace nii::json
+    
+#endif

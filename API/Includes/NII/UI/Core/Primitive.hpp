@@ -14,10 +14,10 @@ namespace nii::ui::core
 {
     class  Primitive: public sf::Drawable
     {
-     using Event = nii::util::Event<>;
+     using Event = nii::util::Event<Primitive*>;
 
     public:
-        inline static std::string GetDefaultName() { return "Primitive"; }
+        inline static std::string GetDefaultName() { return "primitive"; }
     
         Primitive(const std::string& name = {});
         virtual ~Primitive();
@@ -39,6 +39,15 @@ namespace nii::ui::core
 
         Primitive* intersect(Vec2f pos);
         virtual Primitive* intersectNext(Vec2f pos);
+        virtual Vec2f getLocalPosition(Vec2f pos);
+
+        Primitive* intersectWith(Vec2f& pos);
+        virtual Primitive* intersectNextWith(Vec2f& pos);
+
+        void removeFromParent();
+        virtual void removeChild(Primitive* child);
+
+       
 
 
         void beginHover();
@@ -70,15 +79,21 @@ namespace nii::ui::core
         void setName(const std::string& newName);
 
         template<class T>
-        inline T* as()
+        inline std::decay_t<T>* as()
         {
-            return dynamic_cast<T*>(this);
+            return dynamic_cast<std::decay_t<T>*>(this);
+        }
+
+        inline void outline(bool out = true)
+        {
+            outlined =  out;
+            redraw();
         }
 
         template<class T>
-        inline void as(std::function<void(T*)> fun)
+        inline void as(std::function<void(std::decay_t<T>*)> fun)
         {
-            auto ptr = dynamic_cast<T*>(this);
+            auto ptr = dynamic_cast<std::decay_t<T>*>(this);
             if (ptr) {
                 fun(ptr);
             }
@@ -104,6 +119,9 @@ namespace nii::ui::core
         bool pressed;
         bool hovered;
         mutable bool needRedraw;
+
+        bool visibility;
+        bool outlined;
 
     };
 }

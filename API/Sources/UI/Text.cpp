@@ -38,6 +38,13 @@ namespace nii::ui
 
     void Text::draw(sf::RenderTarget& target, sf::RenderStates states) const
     {
+        if (outlined) {
+            sf::RectangleShape shape(getSize());
+            shape.setFillColor({0,250,0,0});
+            shape.setOutlineColor({255, 128, 0, 220});
+            shape.setOutlineThickness(4);
+            target.draw(shape, states);
+        }
         // sf::RectangleShape shape(getSize());
         // shape.setFillColor({0,250,0,50});
         // shape.setOutlineColor({0,0,250,100});

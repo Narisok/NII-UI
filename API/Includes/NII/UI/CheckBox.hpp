@@ -10,7 +10,7 @@ namespace nii::ui
     class CheckBox: public Border
     {
     public:
-        inline static std::string GetDefaultName() { return "Check_box"; }
+        inline static std::string GetDefaultName() { return "check_box"; }
 
         struct Style
         {

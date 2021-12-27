@@ -23,6 +23,14 @@ namespace nii::ui::core
         , valign(other.valign)
     {    }
 
+    ChildPrimitive& ChildPrimitive::operator=(ChildPrimitive&&other)
+    {
+        child = std::move(other.child);
+        align = other.align;
+        valign = other.valign;
+        return *this;
+    }
+
     ChildPrimitive::~ChildPrimitive()
     {}
 
@@ -57,6 +65,45 @@ namespace nii::ui::core
             }
             if (pos.x >= bound.x && pos.y >= bound.y) {
                 return child->intersect({pos.x - bound.x, pos.y - bound.y});
+            }
+        }
+
+        return nullptr;
+    }
+
+     Primitive* ChildPrimitive::intersectWith(Vec2f& pos)
+    {
+        
+
+        if (child) {
+            auto [width, height] = child->getSize();
+            auto [bwidth, bheight] = child->getBoundSize();
+            Vec2f bound {0.f, 0.f};
+            switch (align) {
+                case Align::Left:
+                    break;
+                case Align::Center:
+                    bound.x = (bwidth-width) / 2.f;
+                    break;
+                case Align::Right:
+                    bound.x = bwidth-width;
+                    break;
+            }
+
+            switch (valign) {
+                case VAlign::Top:
+                    break;
+                case VAlign::Bottom:
+                    bound.y = bheight - height;
+                    break;
+                case VAlign::Center:
+                    bound.y = (bheight - height) / 2.f;
+                    break;
+            }
+            if (pos.x >= bound.x && pos.y >= bound.y) {
+                pos.x -= bound.x;
+                pos.y -= bound.y;
+                return child->intersectWith(pos);
             }
         }
 

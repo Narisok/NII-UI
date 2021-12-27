@@ -13,7 +13,7 @@ namespace nii::ui
     class Border: public core::Primitive, public Paddingable
     {
     public:
-        inline static std::string GetDefaultName() { return "Border"; }
+        inline static std::string GetDefaultName() { return "border"; }
 
         Border(const std::string& name = {});
         Border(const Border& other) = delete;
@@ -21,6 +21,8 @@ namespace nii::ui
         virtual ~Border();
 
         Primitive* intersectNext(Vec2f pos) override;
+        Primitive* intersectNextWith(Vec2f& pos) override;
+        Vec2f getLocalPosition(Vec2f pos) override;
 
         inline void setPadding(IndentsFloat newPadding)
         {
@@ -65,6 +67,11 @@ namespace nii::ui
         inline void setVAlign(VAlign valign)
         {
             child.setVAlign(valign);
+        }
+
+        inline void removeChild(Primitive* other) override
+        {
+            child.removeChild();
         }
 
     // private:

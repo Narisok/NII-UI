@@ -49,6 +49,30 @@ namespace nii::ui
         return nullptr;
     }
 
+    core::Primitive* Scroll::intersectNextWith(Vec2f& pos)
+    {
+        if (child) {
+            auto tmp = renderer.getSize();
+            float rx = tmp.x;
+            float ry = tmp.y;
+
+            auto [bx, by] = getSize();
+            bx;
+            by;
+            auto childSize = child.getSize();
+            childSize.x = bx > childSize.x ? bx : childSize.x;
+            childSize.y = by > childSize.y ? by : childSize.y;
+            center.x = std::clamp(center.x, bx / 2.f, childSize.x - bx / 2.f);
+            center.y = std::clamp(center.y, by / 2.f, childSize.y - by / 2.f);
+
+            pos.x += (center.x - bx/2.f);
+            pos.y += (center.y - by/2.f);
+            return child.intersectWith(pos);
+        }
+
+        return nullptr;
+    }
+
     void Scroll::redraw()
     {
         auto states = sf::RenderStates::Default;
@@ -116,12 +140,15 @@ namespace nii::ui
 
     void Scroll::draw(sf::RenderTarget& target, sf::RenderStates states) const
     {
-
-        // sf::RectangleShape shape(getSize());
-        // shape.setFillColor({0,250,0,50});
-        // shape.setOutlineColor({0,0,250,100});
-        // shape.setOutlineThickness(5);
-        // target.draw(shape, states);
+        if (outlined) {
+            sf::RectangleShape shape(getSize());
+            shape.setFillColor({0,250,0,0});
+            shape.setOutlineColor({255, 128, 0, 220});
+            shape.setOutlineThickness(4);
+            target.draw(shape, states);
+        } else {
+        }
+        
 
         if (needRedraw) {
             const_cast<Scroll*>(this)->redraw();
@@ -161,7 +188,9 @@ namespace nii::ui
 
     void Scroll::setChild(std::unique_ptr<core::Primitive>&& newChild)
     {
+        newChild->setShrinkToFit(true);
         child.setChild(this, std::move(newChild), newChild->getShrinkedSize());
+        Primitive::redraw();
     }
 
 

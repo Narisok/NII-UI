@@ -18,6 +18,8 @@ namespace nii::ui::core
         , pressed(false)
         , hovered(false)
         , needRedraw(true)
+        , visibility(true)
+        , outlined(false)
     {
         if (!this->name.size()) {
             this->name = naming::GenerateName<Primitive>();
@@ -42,9 +44,35 @@ namespace nii::ui::core
         return nullptr;
     }
 
+    Primitive* Primitive::intersectWith(Vec2f& pos)
+    {
+        auto [width, height] = getSize();
+        if (static_cast<float>(pos.x) <= width && static_cast<float>(pos.y) <= height) {
+            auto primitive = intersectNextWith(pos);
+            if (primitive) {
+                return primitive;
+            } else {
+                return this;
+            }
+        }
+        return nullptr;
+    }
+
     Primitive* Primitive::intersectNext(Vec2f pos)
     {
         return nullptr;
+    }
+    Primitive* Primitive::intersectNextWith(Vec2f& pos)
+    {
+        return nullptr;
+    }
+
+    Vec2f  Primitive::getLocalPosition(Vec2f pos)
+    {
+        if (parent) {
+            return parent->getLocalPosition(pos);
+        }
+        return pos;
     }
 
     Primitive* Primitive::findByName(const std::string& name)
@@ -183,7 +211,7 @@ namespace nii::ui::core
                 parent->beginHover();
             }
             hover();
-            hoverEvent.call();
+            hoverEvent.call(this);
         }
     }
 
@@ -195,14 +223,14 @@ namespace nii::ui::core
                 parent->beginUnhover();
             }
             unhover();
-            unhoverEvent.call();
+            unhoverEvent.call(this);
         }
     }
 
     void Primitive::beginClick()
     {
         click();
-        clickEvent.call();
+        clickEvent.call(this);
     }
 
 
@@ -210,14 +238,14 @@ namespace nii::ui::core
     {
         pressed = true;
         press();
-        pressEvent.call();
+        pressEvent.call(this);
     }
 
     void Primitive::beginRelease()
     {
         pressed = false;
         release();
-        releaseEvent.call();
+        releaseEvent.call(this);
     }
 
 
@@ -237,6 +265,20 @@ namespace nii::ui::core
     Primitive* Primitive::deserialize(nii::json::entities::wrapper wrapper)
     {
         return nullptr;
+    }
+
+
+    void Primitive::removeFromParent()
+    {
+        if (parent) {
+            parent->removeChild(this);
+            redraw();
+        }
+    }
+
+    void Primitive::removeChild(Primitive* child)
+    {
+
     }
 
 }

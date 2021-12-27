@@ -11,7 +11,7 @@ namespace nii::ui
     class List: public core::Primitive
     {
     public:
-        inline static std::string GetDefaultName() { return "List"; }
+        inline static std::string GetDefaultName() { return "list"; }
 
         List(const std::string& name = {});
         virtual ~List();
@@ -21,6 +21,7 @@ namespace nii::ui
 
 
         Primitive* intersectNext(Vec2f pos) override;
+        Primitive* intersectNextWith(Vec2f& pos) override;
 
 
 
@@ -38,6 +39,15 @@ namespace nii::ui
         Vec2f getShrinkedSize() const override;
 
         void setPlane(Plane newPlane);
+
+        inline void removeChild(Primitive* other) override
+        {
+            for (auto &a : children) {
+                if (a.child.get() == other) {
+                    a.removeChild();
+                }
+            }
+        }
 
 
         core::Primitive* findByName(const std::string& name) override;

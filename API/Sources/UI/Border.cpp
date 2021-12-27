@@ -12,8 +12,9 @@ namespace nii::ui
         , child()
         , shape()
     { 
-        padding = {10, 10, 10, 10};
+        padding = {10};
         // printf("Border %s\n", this->name.c_str());
+        shape.setFillColor({200, 200, 200, 100});
     }
 
     Border::~Border()
@@ -29,6 +30,23 @@ namespace nii::ui
         return nullptr;
     }
 
+    core::Primitive* Border::intersectNextWith(Vec2f& pos)
+    {
+        if (pos.x >= padding.left && pos.y >= padding.top) {
+            pos.x -= padding.left;
+            pos.y -= padding.top;
+            return child.intersectWith(pos);
+        }
+        return nullptr;
+    }
+
+    Vec2f  Border::getLocalPosition(Vec2f pos)
+    {
+        pos.x + padding.left;
+        pos.y + padding.top;
+        return Primitive::getLocalPosition(pos);
+    }
+
     void Border::setChild(Primitive* newChild)
     {
         setChild(std::unique_ptr<core::Primitive>(newChild));
@@ -37,6 +55,7 @@ namespace nii::ui
     void Border::setChild(std::unique_ptr<core::Primitive>&& newChild)
     {
         child.setChild(this, std::move(newChild), getChildBoundSize());
+        Primitive::redraw();
     }
 
     std::unique_ptr<core::Primitive> Border::extractRoot()
@@ -57,6 +76,15 @@ namespace nii::ui
     {
         if (needRedraw) {
             const_cast<Border*>(this)->redraw();
+        }
+
+        if (outlined) {
+            sf::RectangleShape shape(getSize());
+            shape.setFillColor({0,250,0,0});
+            shape.setOutlineColor({255, 128, 0, 220});
+            shape.setOutlineThickness(4);
+            target.draw(shape, states);
+        } else {
         }
 
         target.draw(shape, states);

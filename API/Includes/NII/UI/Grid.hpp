@@ -43,6 +43,17 @@ namespace nii::ui
         float findPositionX(size_t row) const;
         float findPositionY(size_t col) const;
 
+        inline void removeChild(Primitive* other) override
+        {
+            for (auto &vec : children) {
+                for( auto &a : vec) {
+                    if (a.child.get() == other) {
+                        a.removeChild();
+                    }
+                }
+            }
+        }
+
     // private:
         std::vector<std::vector<core::ChildPrimitive>> children;
         size_t rowsCount;

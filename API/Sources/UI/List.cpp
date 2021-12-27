@@ -30,6 +30,23 @@ namespace nii::ui
         }
         return nullptr;
     }
+    core::Primitive* List::intersectNextWith(Vec2f& pos)
+    {
+        bool vr = plane == PlaneVertical;
+        for (auto& a : children) {
+            auto [width, height] = a.getSize();
+            if (pos.x <= width && pos.y <= height) {
+                return a.intersectWith(pos);
+            } else {
+                if (vr) {
+                    pos.y -= height;
+                } else {
+                    pos.x -= width;
+                }
+            }
+        }
+        return nullptr;
+    }
 
     void List::redraw()
     {
@@ -44,11 +61,14 @@ namespace nii::ui
 
     void List::draw(sf::RenderTarget& target, sf::RenderStates states) const
     {
-        // sf::RectangleShape shape(getSize());
-        // shape.setFillColor({0,0,0,50});
-        // shape.setOutlineColor({255,0,0,100});
-        // shape.setOutlineThickness(1);
-        // target.draw(shape, states);
+
+        if (outlined) {
+            sf::RectangleShape shape(getSize());
+            shape.setFillColor({0,250,0,0});
+            shape.setOutlineColor({255, 128, 0, 220});
+            shape.setOutlineThickness(4);
+            target.draw(shape, states);
+        }
 
         if (needRedraw) {
             const_cast<List*>(this)->redraw();
@@ -79,8 +99,8 @@ namespace nii::ui
 
     Vec2f List::getShrinkedSize() const
     {
-        float maxWidth = 0;
-        float maxHeight = 0;
+        float maxWidth = 20;
+        float maxHeight = 20;
         bool vr = plane == PlaneVertical;
         for (auto& a : children) {
             auto [width, height] = a.getShrinkedSize();
@@ -110,6 +130,7 @@ namespace nii::ui
         auto [cWidth, cHeight] = child->getShrinkedSize();
         bool vr = plane == PlaneVertical;
         children.emplace_back(this, std::move(child), Vec2f{vr ? width : cWidth, vr ? cHeight : height});
+        Primitive::redraw();
     }
 
     // void List::removeChild(size_t idx)

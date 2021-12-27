@@ -10,7 +10,7 @@ namespace nii::ui
     class Button: public Border
     {
     public:
-        inline static std::string GetDefaultName() { return "Button"; }
+        inline static std::string GetDefaultName() { return "button"; }
         struct Style
         {
             IndentsFloat padding = {10.f, 10.f, 10.f, 10.f};
@@ -18,14 +18,14 @@ namespace nii::ui
             sf::Texture* texture = nullptr;
         };
 
-        inline Button(const std::string& name = {})
+        inline Button(const std::string& name = {}, const sf::String& buttonText = {L"press"})
             : Border(name.size() ? name : naming::GenerateName<Button>())
             , normalStyle{{10.f, 10.f, 10.f, 10.f}, {200, 200, 200, 200},                nullptr}
             , hoverStyle{{10.f, 10.f, 10.f, 10.f},  {200 - 20, 200 - 20, 200 - 20, 255}, nullptr}
             , pressStyle{{12.f, 8.f, 12.f, 8.f},    {200 - 50, 200 - 50, 200 - 50, 255}, nullptr}
             , currentStyle{}
         {
-            auto text = new Text(L"press");
+            auto text = new Text(buttonText);
             text->setFillColor({0, 0, 0});
             setChild(text);
 
@@ -84,7 +84,15 @@ namespace nii::ui
             if (needRedraw) {
                 const_cast<Button*>(this)->redraw();
             }
+            if (outlined) {
+                shape.setOutlineColor({255, 128, 0, 220});
+                shape.setOutlineThickness(4);
+            } else {
+                 shape.setOutlineColor({255, 166, 77, 0});
+                shape.setOutlineThickness(0);
+            }
             target.draw(shape, states);
+
 
             if (child) {
                 states.transform *= shape.getTransform();

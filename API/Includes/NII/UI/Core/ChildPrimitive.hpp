@@ -23,7 +23,10 @@ namespace nii::ui::core
 
         virtual ~ChildPrimitive();
 
+        ChildPrimitive& operator=(ChildPrimitive&&other);
+
         Primitive* intersect(Vec2f pos);
+        Primitive* intersectWith(Vec2f& pos);
 
         void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 

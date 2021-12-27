@@ -11,7 +11,7 @@ namespace nii::ui
         
     public:
 
-        inline static std::string GetDefaultName() { return "Widget"; }
+        inline static std::string GetDefaultName() { return "widget"; }
 
         Widget(Vec2f size, const std::string& name = {});
 
@@ -47,9 +47,18 @@ namespace nii::ui
         void serialize(nii::json::entities::wrapper wrapper) override;
         core::Primitive* deserialize(nii::json::entities::wrapper wrapper) override;
 
+        void setClearColor(const sf::Color& newColor);
+
+        inline void removeChild(Primitive* other) override
+        {
+            removeRoot();
+        }
+
     // private:
         sf::RenderTexture renderer;
         std::unique_ptr<core::Primitive> root;
         Vec2f size;
+
+        sf::Color clearColor;
     };
 }

@@ -144,6 +144,9 @@ namespace nii::ui
         
 
         std::unique_ptr<nii::ui::core::Primitive> createPrimitiveFromType(const std::string& type);
+
+
+        std::string getPrimitiveTypeFromPtr(const nii::ui::core::Primitive* primitive);
         
     }
 

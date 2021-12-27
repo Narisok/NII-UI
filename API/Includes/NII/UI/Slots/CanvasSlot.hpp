@@ -13,6 +13,26 @@ namespace nii::ui::slots
     class CanvasSlot: public nii::ui::core::ChildPrimitive, private sf::Transformable
     {
     public:
+
+        inline CanvasSlot(CanvasSlot&&other)
+            : ChildPrimitive(std::move(other))
+            , Transformable(std::move(other))
+        {}
+
+        inline CanvasSlot()
+            : ChildPrimitive()
+            , Transformable()
+        {}
+
+
+        CanvasSlot(const CanvasSlot&) = delete;
+
+        inline CanvasSlot& operator=(CanvasSlot&&other) {
+            static_cast<ChildPrimitive&&>(*this) = std::move(other);
+            static_cast<Transformable&&>(*this) = std::move(other);
+            return *this;
+        }
+
         inline void setPosition(Vec2f position)
         {
             sf::Transformable::setPosition(position);

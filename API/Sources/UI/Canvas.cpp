@@ -37,6 +37,21 @@ namespace nii::ui
         return nullptr;
     }
 
+    core::Primitive* Canvas::intersectNextWith(Vec2f& pos)
+    {
+        for (auto& slot : slots) {
+            auto [width, height] = slot.getSize();
+            auto [x, y] = slot.getPosition();
+            if (sf::FloatRect(x, y, width, height).contains(pos.x, pos.y)) {
+                pos.x -= x;
+                pos.y -= y;
+                return slot.intersectWith(pos);
+            }
+        }
+
+        return nullptr;
+    }
+
     void Canvas::redraw()
     {
         // auto states = sf::RenderStates::Default;
@@ -57,12 +72,13 @@ namespace nii::ui
 
     void Canvas::draw(sf::RenderTarget& target, sf::RenderStates states) const
     {
-
-        // sf::RectangleShape shape(getSize());
-        // shape.setFillColor({0,250,0,50});
-        // shape.setOutlineColor({0,0,250,100});
-        // shape.setOutlineThickness(5);
-        // target.draw(shape, states);
+        if (outlined) {
+            sf::RectangleShape shape(getSize());
+            shape.setFillColor({255, 128, 0,40});
+            shape.setOutlineColor({255, 128, 0, 220});
+            shape.setOutlineThickness(4);
+            target.draw(shape, states);
+        }
 
         if (needRedraw) {
             const_cast<Canvas*>(this)->redraw();
@@ -112,6 +128,7 @@ namespace nii::ui
     {
         slots.emplace_back();
         slots.back().setChild(this, std::move(primitive), size, position);
+        Primitive::redraw();
     }
 
     core::Primitive* Canvas::findByName(const std::string& name)

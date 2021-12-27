@@ -12,7 +12,7 @@ namespace nii::ui
     {
     public:
 
-        inline static std::string GetDefaultName() { return "Text_area"; }
+        inline static std::string GetDefaultName() { return "text_area"; }
 
         struct Style
         {

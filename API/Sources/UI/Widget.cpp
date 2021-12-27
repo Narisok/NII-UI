@@ -9,8 +9,9 @@ namespace nii::ui
     Widget::Widget(Vec2f size, const std::string& name)
         : Primitive(name.size() ? name : naming::GenerateName<Widget>())
         , renderer()
-        , root()
+        , root(nullptr)
         , size(size)
+        , clearColor{0, 0, 0, 0}
     { 
         setBoundSize(size);
         renderer.create(32,32);
@@ -26,7 +27,7 @@ namespace nii::ui
 
     void Widget::redraw()
     {
-        renderer.clear();
+        renderer.clear(clearColor);
         
         if (root) {
             root->draw(renderer, sf::RenderStates::Default);
@@ -79,16 +80,20 @@ namespace nii::ui
 
     void Widget::setRoot(std::unique_ptr<core::Primitive>&& newRoot)
     {
+        printf("SETTED ROOT IN WIDGET\n");
         root = std::move(newRoot);
         auto [width, height] = size;// renderer.getSize();
         root->setBoundSize({static_cast<float>(width), static_cast<float>(height)});
         root->setParent(this);
-        // redraw();
+        Primitive::redraw();
     }
 
     void Widget::removeRoot()
     {
-        root.reset();
+        if (root) {
+            root.reset();
+        Primitive::redraw();
+        }
     }
 
     std::unique_ptr<core::Primitive> Widget::extractRoot()
@@ -143,6 +148,13 @@ namespace nii::ui
         }
         Primitive::redraw();
         return this;
+    }
+
+
+    void Widget::setClearColor(const sf::Color& newColor)
+    {
+        clearColor = newColor;
+        Primitive::redraw();
     }
 
 

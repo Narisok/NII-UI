@@ -10,9 +10,9 @@ namespace nii::ui
     class Text: public core::Primitive
     {
     public:
-        inline static std::string GetDefaultName() { return "Text"; }
+        inline static std::string GetDefaultName() { return "text"; }
 
-        Text(const sf::String& str = sf::String(), const std::string& name = {});
+        Text(const sf::String& str = sf::String(L"Hello there"), const std::string& name = {});
         virtual ~Text();
     
         void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
