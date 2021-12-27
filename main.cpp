@@ -13,6 +13,8 @@
 #include <fstream>
 #include <filesystem>
 
+namespace fs = std::filesystem;
+
 class EventController: public sf::Drawable
 {
 public:
@@ -137,12 +139,15 @@ int main(int argc, char **argv)
                         added1->as<nii::ui::Border>([&name](auto textBorder) {
                             textBorder->setChild(new nii::ui::List(name + std::string("_list")));
                             textBorder->setBorderColor({50,40,50,50});
-                            textBorder->setChild(new nii::ui::Text(name + std::string(" my name"), name+std::string("_text")));
+                            textBorder->setChild(new nii::ui::Text(name + std::string(" primitive"), name+std::string("_text")));
                         }); // text border
 
                         added1 = list->findByName(name+std::string("_image"));
                         added1->as<nii::ui::Image>([&name](auto img) {
-                            
+                            sf::Texture tex;
+                            if (tex.loadFromFile(std::string(name)+".png")) {
+                                img->setTexture(tex, true);
+                            }
                         });
                     }); // list
 
@@ -152,9 +157,6 @@ int main(int argc, char **argv)
 
             
         }
-        // item->addChild(new nii::ui::Text("Prmitive 2", "p2"));
-        // item->addChild(new nii::ui::Text("Prmitive 3", "p3"));
-        // item->redraw();
     });
 
     widget["details-scroll"]->as<nii::ui::Scroll>([] (auto item) {
@@ -175,50 +177,9 @@ int main(int argc, char **argv)
         btn->onClick([&eventController](auto button) {
             eventController.deleteSelected();
         });
-        // item->visibility = false;
-        // auto shrinkList = new nii::ui::List("shrink-list");
-        // shrinkList->setPlane(nii::ui::PlaneHorizontal);
-        // auto border = new nii::ui::Border;
-        // border->setChild(new nii::ui::Text("Shrink to fit"));
-        // auto checkBox = new nii::ui::CheckBox("shrink-to-fit");
-        // checkBox->setShrinkToFit(true);
-        // shrinkList->addChild(border);
-        // shrinkList->addChild(checkBox);
-        // shrinkList->children[1].setVAlign(nii::ui::VAlignCenter);
-        // shrinkList->setShrinkToFit(true);
-        // item->addChild(shrinkList);
-        // item->children[1].setVAlign(nii::ui::VAlignCenter);
     });
 
 
-
-
-
-
-
-// try {
-    // nii::json::json json(R"""(
-    //      { "data": { "details": { "shrink_to_fit": false, "size": { "x": 1200.000000, "y": 800.000000 } }, "name": "Widget", "root": { "children": [ { "child": { "child": { "children": [ { "details": { "color": { "a": 255.000000, "b": 120.000000, "g": 255.000000, "r": 170.000000 }, "shrink_to_fit": false, "style": 1.000000, "text": "My text      ", "wrap": { "after": 200.000000, "enabled": true } }, "name": "text", "type": "text" }, { "child": { "child": { "details": { "color": { "a": 255.000000, "b": 0.000000, "g": 0.000000, "r": 0.000000 }, "shrink_to_fit": false, "style": 0.000000, "text": "press", "wrap": { "after": 500.000000, "enabled": false } }, "name": "Text", "type": "text" }, "details": { "border_color": { "a": 255.000000, "b": 255.000000, "g": 255.000000, "r": 255.000000 }, "border_radius": 5.000000, "child_align": 8.000000, "child_valign": 8.000000, "paddings": { "bottom": 10.000000, "left": 10.000000, "right": 10.000000, "top": 10.000000 }, "shrink_to_fit": false, "styles": { "hover": { "color": { "a": 255.000000, "b": 180.000000, "g": 150.000000, "r": 200.000000 }, "paddings": { "bottom": 10.000000, "left": 10.000000, "right": 10.000000, "top": 10.000000 } }, "normal": { "color": { "a": 200.000000, "b": 200.000000, "g": 200.000000, "r": 200.000000 }, "paddings": { "bottom": 10.000000, "left": 10.000000, "right": 10.000000, "top": 10.000000 } }, "press": { "color": { "a": 255.000000, "b": 150.000000, "g": 150.000000, "r": 150.000000 }, "paddings": { "bottom": 11.000000, "left": 8.000000, "right": 8.000000, "top": 11.000000 } } } }, "name": "btn", "type": "button" }, "details": { "border_color": { "a": 255.000000, "b": 200.000000, "g": 200.000000, "r": 255.000000 }, "border_radius": 5.000000, "child_align": 8.000000, "child_valign": 8.000000, "paddings": { "bottom": 150.000000, "left": 50.000000, "right": 50.000000, "top": 50.000000 }, "shrink_to_fit": true }, "name": "B2", "type": "border" } ], "details": { "plane": 0.000000, "shrink_to_fit": true }, "name": "list", "type": "list" }, "details": { "child_align": 8.000000, "child_valign": 8.000000, "plane": 0.000000, "shrink_to_fit": true, "size": { "x": 200.000000, "y": 200.000000 } }, "name": "scroll", "type": "scroll" }, "details": { "border_color": { "a": 255.000000, "b": 80.000000, "g": 50.000000, "r": 50.000000 }, "border_radius": 0.000000, "child_align": 2.000000, "child_valign": 4.000000, "paddings": { "bottom": 10.000000, "left": 10.000000, "right": 10.000000, "top": 10.000000 }, "shrink_to_fit": false }, "name": "B1", "slot": { "position": { "x": 400.000000, "y": 100.000000 }, "size": { "x": 350.000000, "y": 350.000000 } }, "type": "border" }, { "child": null, "details": { "border_color": { "a": 255.000000, "b": 255.000000, "g": 255.000000, "r": 255.000000 }, "border_radius": 5.000000, "child_align": 8.000000, "child_valign": 8.000000, "paddings": { "bottom": 10.000000, "left": 10.000000, "right": 10.000000, "top": 10.000000 }, "shrink_to_fit": false }, "name": "B18", "slot": { "position": { "x": 100.000000, "y": 500.000000 }, "size": { "x": 250.000000, "y": 250.000000 } }, "type": "border" } ], "details": { "shrink_to_fit": false, "size": { "x": 64.000000, "y": 64.000000 } }, "name": "canvas", "type": "canvas" }, "type": "widget" } }
-    // )""");
-// } catch (const char* str) {
-//     std::cout << "ERROR: " << str << std::endl;
-// }
-
-    // nii::json::json json;
-
-// try {
-    // widget.deserialize(json["data"]);
-// } catch (const char* str) {
-//     std::cout << "ERROR: " << str << std::endl;
-// }
-
-
-    // json["name"] = "My widget";
-
-    // widget.serialize(json["data"]);
-
-
-    // std::cout << json.serialize() << std::endl;
 
     nii::ui::Widget drawWidget({800, 500});
     eventController.drawWidget = &drawWidget;
@@ -279,36 +240,33 @@ int main(int argc, char **argv)
                     list->setShrinkToFit(true);
                     bor->setShrinkToFit(true);
                     bor->setChild(list);
-                    printf("BOR: %p\n", bor);
-                    // modal->setRoot(bor);
-                    printf("BOR: %p\n", bor);
                     bor->setShrinkToFit(false);
                     canvas->addChild(bor, {(float)window.getSize().x, (float)window.getSize().y}, {0.f, 0.f});
-                    // bor->removeFromParent();
-                    for( auto &a : {"Myown.wdg","widget_1.wdg","3",",4","5"}) {
-                        auto btn = new nii::ui::Button(std::string(a), std::string(a));
-                        btn->onClick([&, bor] (auto i) {
-                            printf("BOR: %p\n", bor);
-                            try {
-                                drawWidget.removeRoot();
-                                std::ifstream file(i->name);
-                                std::stringstream buffer;
-                                buffer << file.rdbuf();
-                                nii::json::json json(buffer.str());
-                                drawWidget.deserialize(json["data"]);
-                                // bor->child.removeChild();
-                            } catch (const char* str) {
-                                std::cerr << "ERROR: " << str << std::endl;
-                            } catch (const std::exception& ex) {
-                                std::cerr << ex.what() << std::endl;
-                            }
-                            printf("BOR: %p\n", bor);
-                            click = true;
-                            // eventController.mainUi = &widget;
-                            // delete modal;
-                            // modal = nullptr;
-                        });
-                        list->addChild(btn);
+                    
+                    fs::path path(".");
+
+                    // for( auto &a : {"Myown.wdg","widget_1.wdg","3",",4","5"}) {
+                    for (auto &dir_entry : fs::directory_iterator(path)) {
+                        if (dir_entry.path().extension() == ".wdg") {
+                            auto btn = new nii::ui::Button(std::string(dir_entry.path()), std::string(dir_entry.path()));
+                            btn->onClick([&, bor] (auto i) {
+                                try {
+                                    drawWidget.removeRoot();
+                                    std::ifstream file(i->name);
+                                    std::stringstream buffer;
+                                    buffer << file.rdbuf();
+                                    nii::json::json json(buffer.str());
+                                    drawWidget.deserialize(json["data"]);
+                                    // bor->child.removeChild();
+                                } catch (const char* str) {
+                                    std::cerr << "ERROR: " << str << std::endl;
+                                } catch (const std::exception& ex) {
+                                    std::cerr << ex.what() << std::endl;
+                                }
+                                click = true;
+                            });
+                            list->addChild(btn);
+                        }
                     }
             });
         });
@@ -319,6 +277,23 @@ int main(int argc, char **argv)
     while (window.isOpen())
     {
         if (click) {
+           
+            if ( eventController.hoverPrimitive) {
+                    eventController.hoverPrimitive->beginUnhover();
+                    eventController.hoverPrimitive = nullptr;
+            }
+
+            if ( eventController.pressPrimitive) {
+                    // eventController.hoverPrimitive->beginUnhover();
+                    eventController.pressPrimitive = nullptr;
+            }
+
+            if ( eventController.focusedPrimitive) {
+                    // eventController.hoverPrimitive->beginUnhover();
+                    eventController.focusedPrimitive = nullptr;
+            }
+            eventController.editorFocused = nullptr;
+            eventController.editorHover = nullptr;
             bor->removeFromParent();
             // bor->child.removeChild();
             click = false;
