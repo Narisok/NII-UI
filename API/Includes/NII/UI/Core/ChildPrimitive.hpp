@@ -14,16 +14,23 @@ namespace nii::ui::core
     public:
 
         ChildPrimitive();
-
         ChildPrimitive(const ChildPrimitive&) = delete;
-
         ChildPrimitive(ChildPrimitive&& other);
-        
         ChildPrimitive(Primitive* parent, std::unique_ptr<core::Primitive>&& newChild, Vec2f boundSize);
-
         virtual ~ChildPrimitive();
 
         ChildPrimitive& operator=(ChildPrimitive&&other);
+
+        const Primitive* getChildPrimitive() const;
+        Primitive* getChildPrimitive();
+
+        inline operator bool()const { return static_cast<bool>(child); }
+
+        void setAlign(Align align);
+        void setVAlign(VAlign valign);
+
+        core::Primitive* findByName(const std::string& name);
+        void serialize(nii::json::entities::wrapper wrapper);
 
         Primitive* intersect(Vec2f pos);
         Primitive* intersectWith(Vec2f& pos);
@@ -40,16 +47,7 @@ namespace nii::ui::core
         Vec2f getBoundSize() const;
         
 
-        const Primitive* getChildPrimitive() const;
-        Primitive* getChildPrimitive();
-
-        inline operator bool()const { return static_cast<bool>(child); }
-
-        void setAlign(Align align);
-        void setVAlign(VAlign valign);
-
-        core::Primitive* findByName(const std::string& name);
-        void serialize(nii::json::entities::wrapper wrapper);
+        
 
     // protected:
         std::unique_ptr<Primitive> child;

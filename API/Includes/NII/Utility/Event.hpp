@@ -169,16 +169,12 @@ namespace nii::util
         template<class ... ARGS>
         inline Event<ARGS...>::Event()
             : listeners()
-        {
-            // std::cout << "EVENT" << std::endl;
-        }
+        {}
 
         template<class ... ARGS>
         inline Event<ARGS...>::Event(Event&& other)
             : listeners(std::move(other.listeners))
-        {
-            // std::cout << "EVENT mv" << std::endl;
-        }
+        {}
 
         template<class ... ARGS>
         inline Event<ARGS...>::~Event()

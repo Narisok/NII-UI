@@ -72,9 +72,6 @@ int main(int argc, char **argv)
         item->addChild(new nii::ui::List("top-list"), {350, 50}, {0, 0});
         item->addChild(new nii::ui::List("left-list"), {350, 800}, {0, 50});
 
-        // item->addChild(new nii::ui::Border("B18"), {250, 250}, {100, 500});
-        // item->setViewSize({1000, 1000});
-        // printf("Canvas here %i\n", item->slots.size());
     });
     widget["top-list"]->as<nii::ui::List>([] (auto item) {
         item->setPlane(nii::ui::PlaneHorizontal);

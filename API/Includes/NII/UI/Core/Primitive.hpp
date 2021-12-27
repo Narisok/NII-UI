@@ -23,31 +23,27 @@ namespace nii::ui::core
         virtual ~Primitive();
         
         void draw(sf::RenderTarget& target, sf::RenderStates states) const override =0;
-
         void redraw() const;
 
         virtual void setParent(Primitive* parent);
-
-        void setShrinkToFit(bool shrink);
 
         Vec2f         getSize()         const;
         Vec2f         getBoundSize()    const;
         virtual Vec2f getShrinkedSize() const =0;
 
-        void setBoundSize(const Vec2f& size);
         virtual void setSize(const Vec2f& size, bool withRedraw = true) =0;
+        void         setBoundSize(const Vec2f& size);
+        void         setShrinkToFit(bool shrink);
 
-        Primitive* intersect(Vec2f pos);
+        Primitive*         intersect(Vec2f pos);
         virtual Primitive* intersectNext(Vec2f pos);
-        virtual Vec2f getLocalPosition(Vec2f pos);
+        virtual Vec2f      getLocalPosition(Vec2f pos);
 
-        Primitive* intersectWith(Vec2f& pos);
+        Primitive*         intersectWith(Vec2f& pos);
         virtual Primitive* intersectNextWith(Vec2f& pos);
 
-        void removeFromParent();
+        void         removeFromParent();
         virtual void removeChild(Primitive* child);
-
-       
 
 
         void beginHover();
@@ -62,7 +58,6 @@ namespace nii::ui::core
         virtual void click();
         virtual void press();
         virtual void release();
-
 
         virtual void scroll(float delta);
         virtual void scrollHorizontal(float delta);
