@@ -88,7 +88,7 @@ namespace nii::ui
             Border::redraw();
         }
 
-        inline core::Primitive* intersectNext(Vec2f pos)
+        inline core::Primitive* intersectNext(Vec2f pos) override
         {
             return nullptr;
         }

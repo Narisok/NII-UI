@@ -79,7 +79,7 @@ namespace nii::ui
             return nullptr;
         }
 
-        void draw(sf::RenderTarget& target, sf::RenderStates states) const
+        void draw(sf::RenderTarget& target, sf::RenderStates states) const override
         {
             if (needRedraw) {
                 const_cast<Button*>(this)->redraw();

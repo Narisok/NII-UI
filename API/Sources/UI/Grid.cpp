@@ -115,6 +115,7 @@ namespace nii::ui
 
     void Grid::addChild(core::Primitive* child, size_t row, size_t col)
     {
+    printf("ADDD CHILD\n");
         addChild(std::unique_ptr<core::Primitive>(child), row, col);
     }
 

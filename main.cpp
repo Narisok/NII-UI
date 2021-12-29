@@ -11,6 +11,7 @@
 #include <array>
 #include <iostream>
 #include <fstream>
+#include <sstream>
 #include <filesystem>
 
 namespace fs = std::filesystem;
@@ -49,6 +50,8 @@ public:
 
     nii::ui::core::Primitive* drawWidget {};
 
+    Vec2f* winSize;
+
 };
 
 
@@ -60,10 +63,14 @@ int main(int argc, char **argv)
     sf::RenderWindow window(sf::VideoMode(1200, 800), "SFML works!", sf::Style::Default, contextSettings);
     eventController.window = &window;
 
+    Vec2f winSize {static_cast<float>(window.getSize().x), static_cast<float>(window.getSize().y)};
+    eventController.winSize = &winSize;
+
     // nii::ui::Widget* modal = new nii::ui::Widget({1200, 800});
 
-    nii::ui::Widget widget({1200, 800});
+    nii::ui::Widget widget(winSize);
     eventController.mainUi = &widget;
+    widget.setSize(winSize);
     widget.setRoot(new nii::ui::Canvas("canvas"));
 //     // widget.setRoot(new nii::ui::Border("B1"));
 //     // widget.setRoot(new nii::ui::Border("B16"));
@@ -183,16 +190,17 @@ int main(int argc, char **argv)
     drawWidget.setClearColor({0,0,0, 80});
     drawWidget.setSize({800, 500});
 
-    sf::View view({-290, -30, static_cast<float>(window.getSize().x), static_cast<float>(window.getSize().y)});
-
+    
+    sf::View view({-290, -30, winSize.x, winSize.y});
+    // view.setSize(winSize.x/2.f, winSize.y/2.f);
     eventController.view = &view;
 
-    nii::graphics::shapes::RoundedShape rsY({5.f, static_cast<float>(window.getSize().y)-20.f});
+    nii::graphics::shapes::RoundedShape rsY({5.f, winSize.y-20.f});
     rsY.setRadius(2.5f);
     rsY.setFillColor({50,255,50, 50});
     
 
-    nii::graphics::shapes::RoundedShape rsX({static_cast<float>(window.getSize().x)-20.f, 5.f});
+    nii::graphics::shapes::RoundedShape rsX({winSize.x-20.f, 5.f});
     rsX.setRadius(2.5f);
     rsX.setFillColor({255,50,50, 50});
     
@@ -299,15 +307,15 @@ int main(int argc, char **argv)
 
         window.setView(view);
         sf::RenderStates screenStates = sf::RenderStates::Default;
-        screenStates.transform.translate((view.getCenter().x)-static_cast<float>(window.getSize().x)/2.f,(view.getCenter().y)-static_cast<float>(window.getSize().y)/2.f);
+        screenStates.transform.translate((view.getCenter().x)-winSize.x/2.f,(view.getCenter().y)-winSize.y/2.f);
 
         {
-            rsY.setSize({5.f, static_cast<float>(window.getSize().y)});
-            rsX.setSize({static_cast<float>(window.getSize().x), 5.f});
+            rsY.setSize({5.f, winSize.y});
+            rsX.setSize({winSize.x, 5.f});
             rsY.setPosition(0.f, view.getCenter().y+10.f);
             rsX.setPosition(view.getCenter().x+10.f, 0.f);
-            rsY.setOrigin({2.5f, static_cast<float>(window.getSize().y)/2.f});
-            rsX.setOrigin({static_cast<float>(window.getSize().x)/2.f, 2.5f});
+            rsY.setOrigin({2.5f, winSize.y/2.f});
+            rsX.setOrigin({winSize.x/2.f, 2.5f});
             rsX.setRadius(2.5f);
             rsX.setFillColor({255,50,50, 50});
             rsY.setRadius(2.5f);
@@ -321,8 +329,8 @@ int main(int argc, char **argv)
         window.draw(rsY);
         window.draw(rsX);
         {
-            rsY.setSize({2.f, static_cast<float>(window.getSize().y)});
-            rsX.setSize({static_cast<float>(window.getSize().x), 2.f});
+            rsY.setSize({2.f, winSize.y});
+            rsX.setSize({winSize.x, 2.f});
             rsY.setPosition(drawWidget.size.x, view.getCenter().y+10.f);
             rsX.setPosition(view.getCenter().x+10.f, drawWidget.size.y);
             rsX.setRadius(1.f);
@@ -362,12 +370,14 @@ void EventController::update()
                 window->close();
             }
             if (event.type == sf::Event::Resized) {
+
                 view->setSize(event.size.width, event.size.height);
                 // window->setView(*view);
                 if (mainUi) {
                     auto [w, h] = window->getSize();
                     mainUi->setSize({static_cast<float>(w), static_cast<float>(h)});
                 }
+                *winSize =  {static_cast<float>(window->getSize().x), static_cast<float>(window->getSize().y)};
             }
 
 
@@ -379,7 +389,10 @@ void EventController::update()
 
             if (event.type == sf::Event::MouseMoved)
             {
-                mousePosition = {static_cast<float>(event.mouseMove.x), static_cast<float>(event.mouseMove.y)};
+                // mousePosition = {static_cast<float>(event.mouseMove.x), static_cast<float>(event.mouseMove.y)};
+                auto pos1 = window->mapPixelToCoords(sf::Mouse::getPosition(*window));
+                mousePosition = {static_cast<float>(sf::Mouse::getPosition(*window).x), static_cast<float>(sf::Mouse::getPosition(*window).y)};
+                // mousePosition = { pos1.x + view->getCenter().x, pos1.y + view->getCenter().y};
                 auto hovered = mainUi->intersect(mousePosition);
                 if (hovered != hoverPrimitive) {
                     if (hoverPrimitive) {
@@ -394,7 +407,7 @@ void EventController::update()
                 if (mprEnabled) {
                     view->setCenter({mpr.x-mousePosition.x, mpr.y-mousePosition.y});
                 }
-                auto pos1 = window->mapPixelToCoords(sf::Mouse::getPosition(*window));
+                
                 if (pos1.x >= 0 && pos1.y >= 0) {
                     editorHover = drawWidget->intersect({pos1.x, pos1.y});
                 }
@@ -509,13 +522,19 @@ void EventController::releaseHook(nii::ui::core::Primitive* primitive)
             std::cout << "Widget: " << name << std::endl;
             widget->setRoot(std::move(nii::ui::serialization::createPrimitiveFromType(name)));
         });
-        inter->as<nii::ui::Canvas>([&primitive, x, y] (auto canvas) {
+            Vec2f vecc;
+            vecc.x = x;
+            vecc.y = y;
+
+        inter->as<nii::ui::Canvas>([&primitive, vecc] (auto canvas) {
             auto name = primitive->name.substr(0, primitive->name.find("_button"));
             std::cout << "Canvas: " << name << std::endl;
-            auto newPrimitive = nii::ui::serialization::createPrimitiveFromType(name);
 
+            auto newPrimitive = nii::ui::serialization::createPrimitiveFromType(name);
+            
             newPrimitive->setShrinkToFit(true);
-            canvas->addChild(std::move(newPrimitive), newPrimitive->getShrinkedSize(), {x, y});
+            auto size = newPrimitive->getShrinkedSize();
+            canvas->addChild(std::move(newPrimitive), size, vecc);
         });
 
         inter->as<nii::ui::Border>([&primitive] (auto border) {
