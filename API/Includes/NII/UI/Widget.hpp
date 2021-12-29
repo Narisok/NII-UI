@@ -4,6 +4,10 @@
 
 #include <SFML/Graphics/RenderTexture.hpp>
 
+#include <fstream>
+#include <sstream>
+#include <iostream>
+
 namespace nii::ui
 {
     class Widget: public core::Primitive
@@ -23,6 +27,20 @@ namespace nii::ui
         Primitive* intersectNext(Vec2f pos) override;
 
         void draw(sf::RenderTarget& target, sf::RenderStates states) const override final;
+
+        inline bool loadFromFile(const std::string& fileName)
+        {
+            try {
+                std::ifstream file(fileName);
+                std::stringstream buffer;
+                buffer << file.rdbuf();
+                nii::json::json json(buffer.str());
+                deserialize(json["data"]);
+                return true;
+            } catch (...) {
+                return false;
+            }
+        }
         
     // protected:
         void redraw() /* override */;
